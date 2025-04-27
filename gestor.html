@@ -6,10 +6,8 @@
   <title>Painel do Gestor | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
-  <!-- SheetJS (para Excel e CSV) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- jsPDF + html2canvas (para PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -19,78 +17,91 @@
     <h1>Painel do Gestor</h1>
   </header>
 
-  <!-- Filtros -->
-  <div class="filtro-dia">
-    <label for="filtroDia">Filtrar por dia:</label>
-    <select id="filtroDia" onchange="filtrarDia(this.value)">
-      <option value="Todos">Todos os dias</option>
-      <option value="Segunda-feira">Segunda-feira</option>
-      <option value="Terça-feira">Terça-feira</option>
-      <option value="Quarta-feira">Quarta-feira</option>
-      <option value="Quinta-feira">Quinta-feira</option>
-      <option value="Sexta-feira">Sexta-feira</option>
-      <option value="Sábado">Sábado</option>
-      <option value="Domingo">Domingo</option>
-    </select>
-  </div>
   <div class="filtros">
-    <div class="lojas">
-      <button onclick="filtrarLoja('Todos')">Todas</button>
-      <button onclick="filtrarLoja('001')">Brasil (001)</button>
-      <button onclick="filtrarLoja('002')">Parque Verde (002)</button>
-      <button onclick="filtrarLoja('003')">Floresta (003)</button>
-      <button onclick="filtrarLoja('004')">Tancredo (004)</button>
-      <button onclick="filtrarLoja('005')">Gourmet (005)</button>
-      <button onclick="filtrarLoja('201')">Portí 1 (201)</button>
-      <button onclick="filtrarLoja('202')">Portí 2 (202)</button>
-      <button onclick="filtrarLoja('203')">Portí 3 (203)</button>
-      <button onclick="filtrarLoja('204')">Portí 4 (204)</button>
+    <div class="filtro-group">
+      <h3>Filtrar por Loja:</h3>
+      <div class="lojas">
+        <button onclick="filtrarPorLoja('Todos')">Todas</button>
+        <button onclick="filtrarPorLoja('001')">Loja 001</button>
+        <button onclick="filtrarPorLoja('002')">Loja 002</button>
+        <button onclick="filtrarPorLoja('003')">Loja 003</button>
+        <button onclick="filtrarPorLoja('004')">Loja 004</button>
+        <button onclick="filtrarPorLoja('005')">Loja 005</button>
+        <button onclick="filtrarPorLoja('201')">Portí 1</button>
+        <button onclick="filtrarPorLoja('202')">Portí 2</button>
+        <button onclick="filtrarPorLoja('203')">Portí 3</button>
+        <button onclick="filtrarPorLoja('204')">Portí 4</button>
+      </div>
     </div>
 
-    <input type="text" id="buscaGestor" oninput="filtrarDadosGestor()" placeholder="Buscar em qualquer campo...">
+    <div class="filtro-group">
+      <h3>Filtrar por Dia:</h3>
+      <select onchange="filtrarPorDia(this.value)">
+        <option value="Todos">Todos os dias</option>
+        <option value="Segunda-feira">Segunda-feira</option>
+        <option value="Terça-feira">Terça-feira</option>
+        <option value="Quarta-feira">Quarta-feira</option>
+        <option value="Quinta-feira">Quinta-feira</option>
+        <option value="Sexta-feira">Sexta-feira</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+      </select>
+    </div>
+
+    <div class="filtro-group">
+      <h3>Busca:</h3>
+      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDados()">
+    </div>
   </div>
 
-  <!-- Botões de Exportação -->
-  <div class="exportacoes">
-    <button onclick="exportarExcel()">📥 Exportar Excel</button>
-    <button onclick="exportarCSV()">🧾 Exportar CSV</button>
-    <button onclick="exportarPDF()">📄 Exportar PDF</button>
-    <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+  <div class="acoes">
+    <button onclick="exportarExcel()">Exportar Excel</button>
+    <button onclick="exportarPDF()">Exportar PDF</button>
+    <button onclick="atualizarPlanilha()">Atualizar Dados</button>
     <span id="statusAtualiza"></span>
   </div>
 
   <section class="graficos">
-    <div class="grafico-card">
-      <canvas id="graficoLoja"></canvas>
+    <div class="grafico-container">
+      <canvas id="graficoLojas"></canvas>
     </div>
-    <div class="grafico-card">
-      <canvas id="graficoDia"></canvas>
+    <div class="grafico-container">
+      <canvas id="graficoDias"></canvas>
     </div>
-    <div class="grafico-card">
-      <canvas id="graficoPromotor"></canvas>
+    <div class="grafico-container">
+      <canvas id="graficoPromotores"></canvas>
     </div>
   </section>
-  
-  <section class="ranking-section">
-    <h2>🏆 Ranking de Promotores</h2>
-    <div class="ranking-cards">
+
+  <section class="ranking">
+    <h2>Rankings</h2>
+    <div class="ranking-container">
       <div class="ranking-card">
-        <h3>Top Marcas Atendidas</h3>
+        <h3>Top Marcas</h3>
         <ol id="topMarcas"></ol>
       </div>
       <div class="ranking-card">
-        <h3>Maior Cobertura</h3>
-        <ol id="topCobertura"></ol>
+        <h3>Top Promotores</h3>
+        <ol id="topPromotores"></ol>
       </div>
     </div>
   </section>
 
-  <!-- Tabela -->
   <table id="tabelaGestor">
-    <thead><tr id="cabecalhoGestor"></tr></thead>
+    <thead>
+      <tr id="cabecalhoGestor"></tr>
+    </thead>
     <tbody></tbody>
   </table>
-<!-- No final do body em gestor.html -->
-<button class="btn-voltar-login" onclick="window.location.href='index.html'">← Voltar para Login</button>
+
+  <button class="btn-voltar" onclick="window.location.href='index.html'">
+    ← Voltar para Login
+  </button>
+
+  <script>
+    // URL da planilha mestra
+    window.PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrPYK0tixO-Ri8vEuchgH1nLv2uI1kISzupeWTOU2B_nLFE8kCmwUul4taiRfaxacnR3mVWMqOonTI/pubhtml";
+  </script>
+  <script src="js/gestor.js"></script>
 </body>
 </html>
