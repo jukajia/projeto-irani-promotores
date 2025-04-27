@@ -1,9 +1,8 @@
 let dadosGestor = [];
 let cabecalhos = [];
 let lojaAtual = "Todos";
-let chartLoja, chartDia, chartPromotor;
+let diaAtual = "Todos";
 
-// Carregar os dados da planilha
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
@@ -12,13 +11,9 @@ function atualizarPlanilha() {
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substring(47).slice(0, -2));
-      const cols = json.table.cols;
-      const rows = json.table.rows;
+      cabecalhos = json.table.cols.map(col => col.label);
+      dadosGestor = json.table.rows.map(r => r.c.map(c => c?.v || ""));
 
-      cabecalhos = cols.map(col => col.label);
-      dadosGestor = rows.map(r => r.c.map(c => c?.v || ""));
-
-      // Armazenar localmente com timestamp
       localStorage.setItem('dadosGestor', JSON.stringify({
         data: new Date().getTime(),
         cabecalhos: cabecalhos,
@@ -26,28 +21,50 @@ function atualizarPlanilha() {
       }));
 
       renderCabecalho();
-      renderTabela(dadosGestor);
-      gerarGraficos(dadosGestor);
-      gerarRanking(dadosGestor);
+      filtrarDadosGestor();
       status.textContent = "✅ Atualizado!";
       setTimeout(() => status.textContent = "", 2000);
     })
-    .catch(() => {
+    .catch(err => {
+      console.error("Erro ao carregar planilha:", err);
       status.textContent = "❌ Erro ao carregar";
-      // Tentar usar dados locais se houver
       const dadosLocais = localStorage.getItem('dadosGestor');
       if (dadosLocais) {
         const { data, cabecalhos: cab, dados } = JSON.parse(dadosLocais);
         cabecalhos = cab;
         dadosGestor = dados;
         renderCabecalho();
-        renderTabela(dadosGestor);
-        gerarGraficos(dadosGestor);
-        gerarRanking(dadosGestor);
+        filtrarDadosGestor();
       }
     });
 }
 
+function filtrarLoja(loja) {
+  lojaAtual = loja;
+  filtrarDadosGestor();
+}
+
+function filtrarDia(dia) {
+  diaAtual = dia;
+  filtrarDadosGestor();
+}
+
+function filtrarDadosGestor() {
+  const termo = document.getElementById("buscaGestor").value.toLowerCase();
+  const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
+  const colDia = cabecalhos.findIndex(c => c.toLowerCase().includes("dia"));
+
+  const filtrado = dadosGestor.filter(linha => {
+    const textoLinha = linha.join(" ").toLowerCase();
+    const condTexto = textoLinha.includes(termo);
+    const condLoja = lojaAtual === "Todos" || (linha[colLoja]?.includes(lojaAtual));
+    const condDia = diaAtual === "Todos" || (linha[colDia]?.toLowerCase().includes(diaAtual.toLowerCase()));
+    
+    return condTexto && condLoja && condDia;
+  });
+
+  renderTabela(filtrado);
+}
 // Renderizar o cabeçalho da tabela
 function renderCabecalho() {
   const head = document.getElementById("cabecalhoGestor");

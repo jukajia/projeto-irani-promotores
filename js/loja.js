@@ -1,7 +1,15 @@
+// Configuração das colunas (ajustada conforme sua solicitação)
+const COLUNAS_PUBLICAS = {
+  DIA_SEMANA: 6,    // Coluna "Dias da Semana" (antiga Data/Hora)
+  NOME: 2,          // Coluna "Nome"
+  MARCA: 3,         // Coluna "Marca"
+  PRODUTO: 4,       // Coluna "Produto"
+  TELEFONE: 9       // Coluna "Telefone"
+};
+
 let dadosPublicos = [];
 let diaSelecionado = "Todos";
 
-// Buscar os dados
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
@@ -13,15 +21,15 @@ function atualizarPlanilha() {
       const rows = json.table.rows;
 
       dadosPublicos = rows.map(r => ({
-        dataHora: r.c[0]?.f || "",
-        nome: r.c[2]?.v || "",
-        marca: r.c[6]?.v || "",
-        produto: r.c[7]?.v || "",
-        telefone: r.c[5]?.v || "",
-        diaSemana: r.c[8]?.v || ""
+        diaSemana: r.c[COLUNAS_PUBLICAS.DIA_SEMANA]?.v || "",
+        nome: r.c[COLUNAS_PUBLICAS.NOME]?.v || "",
+        marca: r.c[COLUNAS_PUBLICAS.MARCA]?.v || "",
+        produto: r.c[COLUNAS_PUBLICAS.PRODUTO]?.v || "",
+        telefone: r.c[COLUNAS_PUBLICAS.TELEFONE]?.v || "",
+        // Guarda todos os dados originais para possível exportação
+        rawData: r.c.map(c => c?.v || "")
       }));
 
-      // Armazenar localmente com timestamp (válido por 1 hora)
       localStorage.setItem(`dadosPromotores_${window.PLANILHA_URL}`, JSON.stringify({
         data: new Date().getTime(),
         dados: dadosPublicos
@@ -31,66 +39,61 @@ function atualizarPlanilha() {
       status.textContent = "✅ Atualizado!";
       setTimeout(() => status.textContent = "", 2000);
     })
-    .catch(() => {
+    .catch(err => {
+      console.error("Erro ao carregar planilha:", err);
       status.textContent = "❌ Erro ao carregar";
-      // Tentar usar dados locais se houver
+      // Tenta usar dados locais
       const dadosLocais = localStorage.getItem(`dadosPromotores_${window.PLANILHA_URL}`);
       if (dadosLocais) {
         const { data, dados } = JSON.parse(dadosLocais);
-        // Usar dados locais apenas se tiverem menos de 1 hora
         if (new Date().getTime() - data < 3600000) {
           dadosPublicos = dados;
           filtrarDadosPublico();
-          status.textContent = "⚠️ Dados locais (última atualização: " + 
-            new Date(data).toLocaleTimeString() + ")";
+          status.textContent = "⚠️ Dados locais (última atualização: " + new Date(data).toLocaleTimeString() + ")";
         }
       }
     });
 }
 
-// Filtrar por dia da semana
 function filtrarDia(dia) {
   diaSelecionado = dia;
   filtrarDadosPublico();
 }
 
-// Filtrar geral
 function filtrarDadosPublico() {
   const termo = document.getElementById("buscaPublica").value.toLowerCase();
   const tabela = document.querySelector("#tabelaPublica tbody");
 
   const filtrados = dadosPublicos.filter(d => {
-    const condDia = diaSelecionado === "Todos" || d.diaSemana === diaSelecionado;
+    const condDia = diaSelecionado === "Todos" || 
+                   d.diaSemana.toLowerCase().includes(diaSelecionado.toLowerCase());
+    
     const condTexto = 
       d.nome.toLowerCase().includes(termo) ||
       d.marca.toLowerCase().includes(termo) ||
       d.produto.toLowerCase().includes(termo) ||
       d.telefone.toLowerCase().includes(termo);
+    
     return condDia && condTexto;
   });
 
-  tabela.innerHTML = "";
-
-  filtrados.forEach(d => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${d.dataHora}</td>
+  tabela.innerHTML = filtrados.map(d => `
+    <tr>
+      <td>${d.diaSemana}</td>
       <td>${d.nome}</td>
       <td>${d.marca}</td>
       <td>${d.produto}</td>
       <td>${d.telefone}</td>
-    `;
-    tabela.appendChild(tr);
-  });
+    </tr>
+  `).join("");
 }
-
 // Carregar inicialmente
 document.addEventListener("DOMContentLoaded", () => {
   // Verificar se há dados locais válidos
   const dadosLocais = localStorage.getItem(`dadosPromotores_${window.PLANILHA_URL}`);
   if (dadosLocais) {
     const { data, dados } = JSON.parse(dadosLocais);
-    if (new Date().getTime() - data < 3600000) {
+    if (new Date().getTime() - data < 30000) {
       dadosPublicos = dados;
       filtrarDadosPublico();
     }
