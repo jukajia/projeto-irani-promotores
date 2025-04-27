@@ -364,3 +364,14 @@ tr.destacado {
 .btn-voltar-login:hover {
   background-color: #D32F2F;
 }
+
+  .filtro-dia {
+    margin: 10px 0;
+    text-align: center;
+  }
+  .filtro-dia select {
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #00C853;
