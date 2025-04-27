@@ -1,101 +1,99 @@
-// loja.js (corrigido)
-const COLUNAS = {
-  DIA_SEMANA: 6,
-  NOME: 2,
-  MARCA: 3,
-  PRODUTO: 4,
-  TELEFONE: 9
-};
 let dadosPublicos = [];
 let diaSelecionado = "Todos";
 
-function extractJSONFromGviz(text) {
-  const start = text.indexOf('{');
-  const end = text.lastIndexOf('}') + 1;
-  const jsonText = text.substring(start, end);
-  return JSON.parse(jsonText);
-}
-
+// Buscar os dados
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
 
   fetch(window.PLANILHA_URL)
-    .then(async res => {
-      if (!res.ok) {
-        const errorBody = await res.text().catch(() => '');
-        throw new Error(`HTTP ${res.status} - ${errorBody || 'Sem detalhes'}`);
-      }
-      return res.text();
-    })
+    .then(res => res.text())
     .then(text => {
-      const json = extractJSONFromGviz(text);
-      dadosPublicos = json.table.rows.map(row => ({
-        diaSemana: row.c[COLUNAS.DIA_SEMANA]?.v || "",
-        nome:      row.c[COLUNAS.NOME]?.v      || "",
-        marca:     row.c[COLUNAS.MARCA]?.v     || "",
-        produto:   row.c[COLUNAS.PRODUTO]?.v   || "",
-        telefone:  row.c[COLUNAS.TELEFONE]?.v  || ""
+      const json = JSON.parse(text.substring(47).slice(0, -2));
+      const rows = json.table.rows;
+
+      dadosPublicos = rows.map(r => ({
+        dataHora: r.c[0]?.f || "",
+        nome: r.c[2]?.v || "",
+        marca: r.c[6]?.v || "",
+        produto: r.c[7]?.v || "",
+        telefone: r.c[5]?.v || "",
+        diaSemana: r.c[8]?.v || ""
       }));
 
-      localStorage.setItem(
-        `dadosPromotores_${window.PLANILHA_URL}`,
-        JSON.stringify({ data: Date.now(), dados: dadosPublicos })
-      );
+      // Armazenar localmente com timestamp (válido por 1 hora)
+      localStorage.setItem(`dadosPromotores_${window.PLANILHA_URL}`, JSON.stringify({
+        data: new Date().getTime(),
+        dados: dadosPublicos
+      }));
 
       filtrarDadosPublico();
       status.textContent = "✅ Atualizado!";
+      setTimeout(() => status.textContent = "", 2000);
     })
-    .catch(err => {
-      console.error("Erro completo:", err);
+    .catch(() => {
       status.textContent = "❌ Erro ao carregar";
-      status.title = err.message;
-      carregarDadosLocais();
+      // Tentar usar dados locais se houver
+      const dadosLocais = localStorage.getItem(`dadosPromotores_${window.PLANILHA_URL}`);
+      if (dadosLocais) {
+        const { data, dados } = JSON.parse(dadosLocais);
+        // Usar dados locais apenas se tiverem menos de 1 hora
+        if (new Date().getTime() - data < 3600000) {
+          dadosPublicos = dados;
+          filtrarDadosPublico();
+          status.textContent = "⚠️ Dados locais (última atualização: " + 
+            new Date(data).toLocaleTimeString() + ")";
+        }
+      }
     });
 }
 
-function carregarDadosLocais() {
-  const key = `dadosPromotores_${window.PLANILHA_URL}`;
-  const dadosLocais = localStorage.getItem(key);
-  if (dadosLocais) {
-    const { data, dados } = JSON.parse(dadosLocais);
-    if (Date.now() - data < 3600000) {
-      dadosPublicos = dados;
-      filtrarDadosPublico();
-      document.getElementById("statusAtualiza").textContent = 
-        `⚠️ Dados locais (atualizados em ${new Date(data).toLocaleTimeString()})`;
-    }
-  }
-}
-
+// Filtrar por dia da semana
 function filtrarDia(dia) {
   diaSelecionado = dia;
   filtrarDadosPublico();
 }
 
+// Filtrar geral
 function filtrarDadosPublico() {
   const termo = document.getElementById("buscaPublica").value.toLowerCase();
   const tabela = document.querySelector("#tabelaPublica tbody");
 
-  const filtrados = dadosPublicos.filter(item => {
-    const diaOK   = diaSelecionado === "Todos" || item.diaSemana.toLowerCase().includes(diaSelecionado.toLowerCase());
-    const textoOK = termo === "" || Object.values(item).some(val => val.toLowerCase().includes(termo));
-    return diaOK && textoOK;
+  const filtrados = dadosPublicos.filter(d => {
+    const condDia = diaSelecionado === "Todos" || d.diaSemana === diaSelecionado;
+    const condTexto = 
+      d.nome.toLowerCase().includes(termo) ||
+      d.marca.toLowerCase().includes(termo) ||
+      d.produto.toLowerCase().includes(termo) ||
+      d.telefone.toLowerCase().includes(termo);
+    return condDia && condTexto;
   });
 
-  tabela.innerHTML = filtrados.map(item => `
-    <tr>
-      <td>${item.diaSemana}</td>
-      <td>${item.nome}</td>
-      <td>${item.marca}</td>
-      <td>${item.produto}</td>
-      <td>${item.telefone}</td>
-    </tr>
-  `).join('');
+  tabela.innerHTML = "";
+
+  filtrados.forEach(d => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${d.dataHora}</td>
+      <td>${d.nome}</td>
+      <td>${d.marca}</td>
+      <td>${d.produto}</td>
+      <td>${d.telefone}</td>
+    `;
+    tabela.appendChild(tr);
+  });
 }
 
+// Carregar inicialmente
 document.addEventListener("DOMContentLoaded", () => {
-  carregarDadosLocais();
+  // Verificar se há dados locais válidos
+  const dadosLocais = localStorage.getItem(`dadosPromotores_${window.PLANILHA_URL}`);
+  if (dadosLocais) {
+    const { data, dados } = JSON.parse(dadosLocais);
+    if (new Date().getTime() - data < 3600000) {
+      dadosPublicos = dados;
+      filtrarDadosPublico();
+    }
+  }
   atualizarPlanilha();
-  setInterval(atualizarPlanilha, 300000);
 });

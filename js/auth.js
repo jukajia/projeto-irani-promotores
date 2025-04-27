@@ -1,4 +1,3 @@
-// auth.js (sem alterações)
 function login() {
   const usuario = document.getElementById("usuario").value;
   const senha = document.getElementById("senha").value;
@@ -28,12 +27,8 @@ function login() {
 }
 
 // Permitir login com Enter
-const senhaInput = document.getElementById("senha");
-if (senhaInput) {
-senhaInput.addEventListener("keypress", function(event) {
+document.getElementById("senha").addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     login();
   }
 });
-}
-
