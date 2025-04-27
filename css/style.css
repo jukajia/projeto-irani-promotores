@@ -344,3 +344,23 @@ tr.destacado {
     white-space: nowrap;
   }
 }
+/* Estilo do botão de voltar para login */
+.btn-voltar-login {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  background-color: #EF5350;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+}
+
+.btn-voltar-login:hover {
+  background-color: #D32F2F;
+}
