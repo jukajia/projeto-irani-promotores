@@ -9,41 +9,72 @@ const COLUNAS = {
 
 let dadosPublicos = [];
 let diaSelecionado = "Todos";
-
+function parseGoogleSheetsResponse(text) {
+  try {
+    const startMarker = "/*O_o*/";
+    const jsonStart = text.indexOf('{');
+    const jsonEnd = text.lastIndexOf('}') + 1;
+    
+    if (!text.includes(startMarker) || jsonStart === -1) {
+      throw new Error("Resposta não é do Google Sheets");
+    }
+    
+    return JSON.parse(text.substring(jsonStart, jsonEnd));
+  } catch (e) {
+    console.error("Falha no parse:", { 
+      error: e, 
+      responseSample: text.substring(0, 100) 
+    });
+    throw e;
+  }
+}
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
 
   fetch(window.PLANILHA_URL)
-    .then(res => {
-      if (!res.ok) throw new Error("Erro na rede");
+    .then(async res => {
+      if (!res.ok) {
+        const errorBody = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} - ${errorBody || 'Sem detalhes'}`);
+      }
       return res.text();
     })
     .then(text => {
-      try {
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        dadosPublicos = json.table.rows.map(row => ({
-          diaSemana: row.c[COLUNAS.DIA_SEMANA]?.v || "",
-          nome: row.c[COLUNAS.NOME]?.v || "",
-          marca: row.c[COLUNAS.MARCA]?.v || "",
-          produto: row.c[COLUNAS.PRODUTO]?.v || "",
-          telefone: row.c[COLUNAS.TELEFONE]?.v || ""
-        }));
+      const json = parseGoogleSheetsResponse(text);
+      
+      // Debug: Mostra a estrutura recebida
+      console.log("Estrutura recebida:", {
+        cols: json.table.cols.map(c => c.label),
+        firstRow: json.table.rows[0]?.c?.map(c => c?.v)
+      });
 
-        localStorage.setItem(`dadosPromotores_${window.PLANILHA_URL}`, JSON.stringify({
-          data: new Date().getTime(),
-          dados: dadosPublicos
-        }));
+      dadosPublicos = json.table.rows.map(row => ({
+        diaSemana: row.c[COLUNAS.DIA_SEMANA]?.v || "",
+        nome: row.c[COLUNAS.NOME]?.v || "",
+        marca: row.c[COLUNAS.MARCA]?.v || "",
+        produto: row.c[COLUNAS.PRODUTO]?.v || "",
+        telefone: row.c[COLUNAS.TELEFONE]?.v || "",
+        _raw: row.c // Mantém os dados brutos para debug
+      }));
 
-        filtrarDadosPublico();
-        status.textContent = "✅ Atualizado!";
-      } catch (e) {
-        throw new Error("Erro ao processar dados");
-      }
+      localStorage.setItem(`dadosPromotores_${window.PLANILHA_URL}`, JSON.stringify({
+        data: new Date().getTime(),
+        dados: dadosPublicos
+      }));
+
+      filtrarDadosPublico();
+      status.textContent = "✅ Atualizado!";
     })
     .catch(err => {
-      console.error("Erro:", err);
+      console.error("Erro completo:", {
+        error: err,
+        url: window.PLANILHA_URL,
+        timestamp: new Date().toISOString()
+      });
+      
       status.textContent = "❌ Erro ao carregar";
+      status.title = err.message;
       carregarDadosLocais();
     });
 }
