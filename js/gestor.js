@@ -57,6 +57,8 @@ async function atualizarPlanilha() {
 }
 
 // Rest of the file remains the same...
+
+// Rest of the file remains the same...
 // Fallback para dados em localStorage
 function usarDadosLocais() {
   const raw = localStorage.getItem("dadosGestor");
