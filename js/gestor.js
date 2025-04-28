@@ -1,9 +1,11 @@
-// aponta para a URL já definida em config.js
+// js/gestor.js
+
+// Usa a URL definida em config.js
 const PLANILHA_URL = window.PLANILHA_URL;
 
-let dadosGestor   = [];
-let cabecalhos    = [];
-let lojaAtual     = "Todos";
+let dadosGestor = [];
+let cabecalhos = [];
+let lojaAtual = "Todos";
 let chartLoja, chartDia, chartPromotor;
 
 // Carrega e processa a planilha
@@ -17,26 +19,26 @@ async function atualizarPlanilha() {
     if (!res.ok) throw new Error(`Erro HTTP: ${res.status} ${res.statusText}`);
 
     const text = await res.text();
+    // Regex que captura até o ); (incluindo quebras de linha)
     const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/);
     if (!match) throw new Error("Formato de resposta inválido");
 
     const json = JSON.parse(match[1]);
-    if (!json.table?.cols || !json.table?.rows) throw new Error("Estrutura de dados incompleta");
+    if (!json.table || !json.table.cols || !json.table.rows)
+      throw new Error("Estrutura de dados incompleta");
 
-    // Extrai cabeçalhos e linhas
+    // Extrai cabeçalhos e dados
     cabecalhos = json.table.cols.map(c => c.label);
-    dadosGestor = json.table.rows.map(r =>
-      r.c.map(cell => cell?.f ?? cell?.v ?? "")
-    );
+    dadosGestor = json.table.rows.map(r => r.c.map(cell => cell?.f ?? cell?.v ?? ""));
 
     // Salva no localStorage
-    localStorage.setItem('dadosGestor', JSON.stringify({
+    localStorage.setItem("dadosGestor", JSON.stringify({
       data: Date.now(),
       cabecalhos,
       dados: dadosGestor
     }));
 
-    // Atualiza a tela
+    // Renderiza tudo
     renderCabecalho();
     renderTabela(dadosGestor);
     gerarGraficos(dadosGestor);
@@ -52,15 +54,30 @@ async function atualizarPlanilha() {
   }
 }
 
-// Usa fallback do localStorage
+// Fallback para dados em localStorage
 function usarDadosLocais() {
-  const raw = localStorage.getItem('dadosGestor');
+  const raw = localStorage.getItem("dadosGestor");
   if (!raw) return;
 
   try {
     const { data, cabecalhos: h, dados } = JSON.parse(raw);
     cabecalhos = h;
     dadosGestor = dados;
+
+    renderCabecalho();
+    renderTabela(dadosGestor);
+    gerarGraficos(dadosGestor);
+    gerarRanking(dadosGestor);
+
+    document.getElementById("statusAtualiza").textContent =
+      `⚠️ Usando dados locais (última atualização: ${new Date(data).toLocaleString()})`;
+  } catch (e) {
+    console.error("Erro ao carregar dados locais:", e);
+  }
+}
+
+// (Aqui entram suas funções renderTabela, renderCabecalho, formatarData, filtros,
+// gerarGráficos, gerarRanking, exportarExcel/CSV/PDF, etc.)
 
     renderCabecalho();
     renderTabela(dadosGestor);
@@ -351,19 +368,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Carrega dados locais primeiro para exibição rápida
   usarDadosLocais();
   
-  // Atualiza com dados da planilha
-  atualizarPlanilha();
-  
-  // Atualização automática periódica
-  setInterval(atualizarPlanilha, 300000); // 5 minutos
-});
-
-// Limpeza ao sair da página
-window.addEventListener('beforeunload', () => {
-  [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
-});
+// Inicialização única
 document.addEventListener("DOMContentLoaded", () => {
   usarDadosLocais();
   atualizarPlanilha();
   setInterval(atualizarPlanilha, 300_000);
+});
+
+// Limpeza ao sair da página
+window.addEventListener("beforeunload", () => {
+  [chartLoja, chartDia, chartPromotor].forEach(c => c?.destroy());
 });
