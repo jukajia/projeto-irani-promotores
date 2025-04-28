@@ -9,20 +9,22 @@ async function atualizarPlanilha() {
   status.textContent = "⏳ Carregando...";
 
   try {
-    // Adiciona timestamp para evitar cache
-    const response = await fetch(`${window.PLANILHA_URL}&t=${Date.now()}`);
-    
-    if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status} ${response.statusText}`);
-    }
+    if (!window.PLANILHA_URL) throw new Error("URL da planilha não configurada");
+    const res = await fetch(`${window.PLANILHA_URL}&t=${Date.now()}`);
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 
-    const text = await response.text();
-    
-    // Extrai os dados JSON da resposta
-    const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
-    if (!jsonMatch) {
-      throw new Error("Formato de resposta inválido da planilha");
-    }
+    const text = await res.text();
+    const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/);
+    if (!match) throw new Error("Formato de resposta inválido");
+
+    const json = JSON.parse(match[1]);
+    // ... restante igual (processamento de cols, rows, localStorage, render)
+  } catch (error) {
+    console.error(error);
+    status.textContent = `❌ Erro: ${error.message}`;
+    usarDadosLocais();
+  }
+}
 
     const json = JSON.parse(jsonMatch[1]);
     
