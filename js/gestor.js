@@ -1,93 +1,78 @@
-let dadosGestor = [];
-let cabecalhos = [];
-let lojaAtual = "Todos";
+// aponta para a URL já definida em config.js
+const PLANILHA_URL = window.PLANILHA_URL;
+
+let dadosGestor   = [];
+let cabecalhos    = [];
+let lojaAtual     = "Todos";
 let chartLoja, chartDia, chartPromotor;
 
-// Função para carregar dados da planilha
+// Carrega e processa a planilha
 async function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
-  status.textContent = "⏳ Carregando...";
+  status.textContent = "⏳ Carregando…";
 
   try {
-    if (!window.PLANILHA_URL) throw new Error("URL da planilha não configurada");
-    const res = await fetch(`${window.PLANILHA_URL}&t=${Date.now()}`);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    if (!PLANILHA_URL) throw new Error("URL da planilha não configurada");
+    const res = await fetch(`${PLANILHA_URL}&t=${Date.now()}`);
+    if (!res.ok) throw new Error(`Erro HTTP: ${res.status} ${res.statusText}`);
 
     const text = await res.text();
     const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/);
     if (!match) throw new Error("Formato de resposta inválido");
 
     const json = JSON.parse(match[1]);
-    // ... restante igual (processamento de cols, rows, localStorage, render)
-  } catch (error) {
-    console.error(error);
-    status.textContent = `❌ Erro: ${error.message}`;
-    usarDadosLocais();
-  }
-}
+    if (!json.table?.cols || !json.table?.rows) throw new Error("Estrutura de dados incompleta");
 
-    const json = JSON.parse(jsonMatch[1]);
-    
-    // Verifica estrutura dos dados
-    if (!json?.table?.cols || !json?.table?.rows) {
-      throw new Error("Estrutura de dados incompleta");
-    }
+    // Extrai cabeçalhos e linhas
+    cabecalhos = json.table.cols.map(c => c.label);
+    dadosGestor = json.table.rows.map(r =>
+      r.c.map(cell => cell?.f ?? cell?.v ?? "")
+    );
 
-    // Processa os dados
-    cabecalhos = json.table.cols.map(col => col.label);
-    dadosGestor = json.table.rows.map(row => {
-      return row.c.map(cell => {
-        // Prioriza valores formatados (f) quando disponíveis
-        return cell?.f || cell?.v || "";
-      });
-    });
-
-    // Armazena localmente
+    // Salva no localStorage
     localStorage.setItem('dadosGestor', JSON.stringify({
       data: Date.now(),
-      cabecalhos: cabecalhos,
+      cabecalhos,
       dados: dadosGestor
     }));
 
-    // Atualiza a interface
+    // Atualiza a tela
     renderCabecalho();
     renderTabela(dadosGestor);
     gerarGraficos(dadosGestor);
     gerarRanking(dadosGestor);
-    
+
     status.textContent = "✅ Atualizado!";
     setTimeout(() => status.textContent = "", 2000);
 
   } catch (error) {
     console.error("Erro ao carregar planilha:", error);
     status.textContent = `❌ Erro: ${error.message}`;
-    
-    // Tenta usar dados locais como fallback
     usarDadosLocais();
   }
 }
 
-// Função para usar dados armazenados localmente
+// Usa fallback do localStorage
 function usarDadosLocais() {
-  const dadosLocais = localStorage.getItem('dadosGestor');
-  if (!dadosLocais) return;
+  const raw = localStorage.getItem('dadosGestor');
+  if (!raw) return;
 
   try {
-    const { data, cabecalhos: cab, dados } = JSON.parse(dadosLocais);
-    cabecalhos = cab;
+    const { data, cabecalhos: h, dados } = JSON.parse(raw);
+    cabecalhos = h;
     dadosGestor = dados;
+
     renderCabecalho();
     renderTabela(dadosGestor);
     gerarGraficos(dadosGestor);
     gerarRanking(dadosGestor);
-    
-    document.getElementById("statusAtualiza").textContent = 
-      "⚠️ Usando dados locais (última atualização: " + new Date(data).toLocaleString() + ")";
+
+    document.getElementById("statusAtualiza").textContent =
+      `⚠️ Usando dados locais (última atualização: ${new Date(data).toLocaleString()})`;
   } catch (e) {
     console.error("Erro ao carregar dados locais:", e);
   }
 }
-
 // Renderiza o cabeçalho da tabela
 function renderCabecalho() {
   const head = document.getElementById("cabecalhoGestor");
@@ -376,4 +361,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // Limpeza ao sair da página
 window.addEventListener('beforeunload', () => {
   [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
+});
+document.addEventListener("DOMContentLoaded", () => {
+  usarDadosLocais();
+  atualizarPlanilha();
+  setInterval(atualizarPlanilha, 300_000);
 });
