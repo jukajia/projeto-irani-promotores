@@ -1,4 +1,3 @@
-// js/gestor.js
 const PLANILHA_URL = window.PLANILHA_URL;
 
 let dadosGestor = [];
