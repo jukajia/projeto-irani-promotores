@@ -3,101 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://docs.google.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net">
   <title>Painel do Gestor | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
+  
+  <!-- Pré-conexão para CDNs -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  
   <!-- SheetJS (para Excel e CSV) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <!-- jsPDF + html2canvas (para PDF) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 </head>
 <body>
   <header>
-    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo">
+    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" loading="lazy">
     <h1>Painel do Gestor</h1>
   </header>
 
-  <!-- Filtros -->
-  <div class="filtros">
-    <div class="lojas">
-      <button onclick="filtrarLoja('Todos')">Todas</button>
-      <button onclick="filtrarLoja('001')">Brasil (001)</button>
-      <button onclick="filtrarLoja('002')">Parque Verde (002)</button>
-      <button onclick="filtrarLoja('003')">Floresta (003)</button>
-      <button onclick="filtrarLoja('004')">Tancredo (004)</button>
-      <button onclick="filtrarLoja('005')">Gourmet (005)</button>
-      <button onclick="filtrarLoja('201')">Portí 1 (201)</button>
-      <button onclick="filtrarLoja('202')">Portí 2 (202)</button>
-      <button onclick="filtrarLoja('203')">Portí 3 (203)</button>
-      <button onclick="filtrarLoja('204')">Portí 4 (204)</button>
-    </div>
-
-    <input type="text" id="buscaGestor" oninput="filtrarDadosGestor()" placeholder="Buscar em qualquer campo...">
-  </div>
-
-  <!-- Botões de Exportação -->
-  <div class="exportacoes">
-    <button onclick="exportarExcel()">📥 Exportar Excel</button>
-    <button onclick="exportarCSV()">🧾 Exportar CSV</button>
-    <button onclick="exportarPDF()">📄 Exportar PDF</button>
-    <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
-    <span id="statusAtualiza"></span>
-  </div>
-
-  <section class="graficos">
-    <div class="grafico-card">
-      <canvas id="graficoLoja"></canvas>
-    </div>
-    <div class="grafico-card">
-      <canvas id="graficoDia"></canvas>
-    </div>
-    <div class="grafico-card">
-      <canvas id="graficoPromotor"></canvas>
-    </div>
-  </section>
-  
-  <section class="ranking-section">
-    <h2>🏆 Ranking de Promotores</h2>
-    <div class="ranking-cards">
-      <div class="ranking-card">
-        <h3>Top Marcas Atendidas</h3>
-        <ol id="topMarcas"></ol>
+  <main>
+    <!-- Filtros -->
+    <section class="filtros" aria-label="Filtros de dados">
+      <div class="lojas">
+        <button onclick="filtrarLoja('Todos')" aria-label="Mostrar todas as lojas">Todas</button>
+        <button onclick="filtrarLoja('001')" aria-label="Filtrar loja Brasil">Brasil (001)</button>
+        <button onclick="filtrarLoja('002')" aria-label="Filtrar loja Parque Verde">Parque Verde (002)</button>
+        <button onclick="filtrarLoja('003')" aria-label="Filtrar loja Floresta">Floresta (003)</button>
+        <button onclick="filtrarLoja('004')" aria-label="Filtrar loja Tancredo">Tancredo (004)</button>
+        <button onclick="filtrarLoja('005')" aria-label="Filtrar loja Gourmet">Gourmet (005)</button>
+        <button onclick="filtrarLoja('201')" aria-label="Filtrar loja Portí 1">Portí 1 (201)</button>
+        <button onclick="filtrarLoja('202')" aria-label="Filtrar loja Portí 2">Portí 2 (202)</button>
+        <button onclick="filtrarLoja('203')" aria-label="Filtrar loja Portí 3">Portí 3 (203)</button>
+        <button onclick="filtrarLoja('204')" aria-label="Filtrar loja Portí 4">Portí 4 (204)</button>
       </div>
-      <div class="ranking-card">
-        <h3>Maior Cobertura</h3>
-        <ol id="topCobertura"></ol>
-      </div>
-    </div>
-  </section>
 
-  <!-- Tabela -->
-  <table id="tabelaGestor">
-    <thead><tr id="cabecalhoGestor"></tr></thead>
-    <tbody></tbody>
-  </table>
+      <div class="search-container">
+        <label for="buscaGestor" class="sr-only">Buscar em qualquer campo</label>
+        <input type="text" id="buscaGestor" oninput="filtrarDadosGestor()" 
+               placeholder="Buscar em qualquer campo..." aria-label="Campo de busca">
+      </div>
+    </section>
+
+    <!-- Botões de Exportação -->
+    <section class="exportacoes" aria-label="Opções de exportação">
+      <button onclick="exportarExcel()" aria-label="Exportar para Excel">
+        <span aria-hidden="true">📥</span> Exportar Excel
+      </button>
+      <button onclick="exportarCSV()" aria-label="Exportar para CSV">
+        <span aria-hidden="true">🧾</span> Exportar CSV
+      </button>
+      <button onclick="exportarPDF()" aria-label="Exportar para PDF">
+        <span aria-hidden="true">📄</span> Exportar PDF
+      </button>
+      <button onclick="atualizarPlanilha()" aria-label="Atualizar dados">
+        <span aria-hidden="true">🔄</span> Atualizar Dados
+      </button>
+      <span id="statusAtualiza" role="status" aria-live="polite"></span>
+    </section>
+
+    <!-- Gráficos -->
+    <section class="graficos" aria-label="Visualizações gráficas">
+      <div class="grafico-card" aria-label="Gráfico de atendimentos por loja">
+        <canvas id="graficoLoja" role="img" aria-label="Gráfico de barras mostrando atendimentos por loja"></canvas>
+      </div>
+      <div class="grafico-card" aria-label="Gráfico de atendimentos por dia">
+        <canvas id="graficoDia" role="img" aria-label="Gráfico de linhas mostrando atendimentos por dia"></canvas>
+      </div>
+      <div class="grafico-card" aria-label="Gráfico de atendimentos por promotor">
+        <canvas id="graficoPromotor" role="img" aria-label="Gráfico de pizza mostrando atendimentos por promotor"></canvas>
+      </div>
+    </section>
+    
+    <!-- Ranking -->
+    <section class="ranking-section" aria-label="Ranking de promotores">
+      <h2><span aria-hidden="true">🏆</span> Ranking de Promotores</h2>
+      <div class="ranking-cards">
+        <div class="ranking-card" aria-label="Top marcas atendidas">
+          <h3>Top Marcas Atendidas</h3>
+          <ol id="topMarcas" aria-label="Lista das marcas mais atendidas"></ol>
+        </div>
+        <div class="ranking-card" aria-label="Maior cobertura de lojas">
+          <h3>Maior Cobertura</h3>
+          <ol id="topCobertura" aria-label="Lista de promotores com maior cobertura de lojas"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabela -->
+    <section aria-label="Tabela de dados">
+      <div class="table-responsive">
+        <table id="tabelaGestor" aria-label="Dados completos dos promotores">
+          <thead><tr id="cabecalhoGestor"></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
   <script>
-    // URL da planilha mestra do gestor
+    // Configurações globais
     window.PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrPYK0tixO-Ri8vEuchgH1nLv2uI1kISzupeWTOU2B_nLFE8kCmwUul4taiRfaxacnR3mVWMqOonTI/gviz/tq?tqx=out:json";
+    
+    // Verificação inicial
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.PLANILHA_URL) {
+        console.error("URL da planilha não definida");
+        const status = document.getElementById("statusAtualiza");
+        status.textContent = "⚠️ Erro: URL da planilha não configurada";
+        status.style.color = "#EF5350";
+      }
+      
+      // Evento para recarregamento
+      document.getElementById("statusAtualiza").addEventListener("click", ({target}) => {
+        if (target.textContent.includes("Erro")) {
+          localStorage.removeItem('dadosGestor');
+          location.reload();
+        }
+      });
+    });
   </script>
-  <script src="js/gestor.js"></script>
-  <script>
-  // Verificação de URL da planilha
-  if (!window.PLANILHA_URL) {
-    console.error("URL da planilha não definida");
-    document.getElementById("statusAtualiza").textContent = 
-      "⚠️ Configure a URL da planilha em gestor.js";
-  }
   
-  // Forçar recarregamento se houver erro persistente
-  document.querySelector("#statusAtualiza").addEventListener("click", () => {
-    if (document.getElementById("statusAtualiza").textContent.includes("Erro")) {
-      localStorage.removeItem('dadosGestor');
-      location.reload();
-    }
-  });
-</script>
+  <script src="js/gestor.js" defer></script>
 </body>
 </html>
