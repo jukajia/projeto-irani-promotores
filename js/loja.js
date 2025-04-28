@@ -10,6 +10,10 @@ const PLANILHAS_LOJAS = {
   '203': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsy0shwB9gbG1fsQGVXU77eL94dkzZsow1TXPyVmjYeWRYKR-WC_2ipsFAo2kAgmsOUS0LeoWAOpJ9/gviz/tq?tqx=out:json',
   '204': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvfd8rATUR6BQ0ENsWUrqOU7YXkNQPqe9IaJm0a32jnAWswQ-PdszJV2WJvoZmwLRdCQjtTTAhwxp9/gviz/tq?tqx=out:json'
 };
+const response = await fetch(link);
+const text = await response.text();
+const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
+const json = match ? JSON.parse(match[1]) : null;
 
 async function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
