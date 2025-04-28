@@ -1,7 +1,6 @@
 // js/config.js
-
-// Aqui você centraliza todas as URLs das planilhas (JSON endpoints)
 window.PLANILHAS = {
+  'gestor': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQU9GiNO40jd-ZQkU_vzLRfxYhf5kdpZL_BoLmbok9DjLzqYAqHfObnp4MPs2V_HN9ZbWBb4kCHQKfh/gviz/tq?tqx=out:json',
   '001': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVQpJV736U_gkzIGzbIdRk4sObA4so3fdj-Emr8WYvd5X20PXr4re_OtEP866H4_LbdJ1p9TJrsRqc/gviz/tq?tqx=out:json',
   '002': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSeMQGffph4J2g3_Bdi20QGGrxvsJlR3i3X1otdlzN2mm7-MyRjHEimz756K8b99id_h2xHZMLMnM6D/gviz/tq?tqx=out:json',
   '003': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSXrPKpL-DdlabNMiX3LRhDIixxspH0QhVcV_btrBgD2NlSpUPaBn0RTlQdby2QZr1Eq_-YhE-v_dPt/gviz/tq?tqx=out:json',
@@ -13,5 +12,5 @@ window.PLANILHAS = {
   '204': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvfd8rATUR6BQ0ENsWUrqOU7YXkNQPqe9IaJm0a32jnAWswQ-PdszJV2WJvoZmwLRdCQjtTTAhwxp9/gviz/tq?tqx=out:json'
 };
 
-// Defina o ID da loja que o gestor vai usar por padrão (ex: '001')
-window.PLANILHA_URL = window.PLANILHAS['001'];
+// Use the gestor spreadsheet by default
+window.PLANILHA_URL = window.PLANILHAS['gestor'];
