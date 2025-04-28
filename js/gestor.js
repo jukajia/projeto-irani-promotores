@@ -69,7 +69,7 @@ async function atualizarPlanilha() {
 
     document.getElementById("statusAtualiza").textContent =
       `⚠️ Usando dados locais (última atualização: ${new Date(data).toLocaleString()})`;
-  } catch (e) {
+ catch (e) {
     console.error("Erro ao carregar dados locais:", e);
   }
 }
