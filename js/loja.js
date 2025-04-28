@@ -136,3 +136,21 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarDadosLocais();
   atualizarPlanilha();
 });
+async function atualizarPlanilha() {
+  const status = document.getElementById("statusAtualiza");
+  status.textContent = "⏳ Carregando...";
+  try {
+    const url = `${window.PLANILHA_URL}&t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
+    const text = await res.text();
+    const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/);
+    if (!match) throw new Error("Formato de resposta inválido");
+    const json = JSON.parse(match[1]);
+    // ... processar rows como antes
+  } catch(err) {
+    console.error(err);
+    status.textContent = `❌ ${err.message}`;
+    carregarDadosLocais();
+  }
+}
