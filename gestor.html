@@ -83,5 +83,21 @@
     window.PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrPYK0tixO-Ri8vEuchgH1nLv2uI1kISzupeWTOU2B_nLFE8kCmwUul4taiRfaxacnR3mVWMqOonTI/gviz/tq?tqx=out:json";
   </script>
   <script src="js/gestor.js"></script>
+  <script>
+  // Verificação de URL da planilha
+  if (!window.PLANILHA_URL) {
+    console.error("URL da planilha não definida");
+    document.getElementById("statusAtualiza").textContent = 
+      "⚠️ Configure a URL da planilha em gestor.js";
+  }
+  
+  // Forçar recarregamento se houver erro persistente
+  document.querySelector("#statusAtualiza").addEventListener("click", () => {
+    if (document.getElementById("statusAtualiza").textContent.includes("Erro")) {
+      localStorage.removeItem('dadosGestor');
+      location.reload();
+    }
+  });
+</script>
 </body>
 </html>
