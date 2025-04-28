@@ -61,7 +61,18 @@
     // Obter parâmetro da loja da URL
     const urlParams = new URLSearchParams(window.location.search);
     const codigoLoja = urlParams.get('loja');
-    
+    <script>
+  const planilhas = {
+    '001': 'https://docs.google.com/spreadsheets/d/e/.../gviz/tq?tqx=out:json',
+    // demais IDs...
+  };
+  const codigoLoja = new URLSearchParams(window.location.search).get('loja');
+  if (codigoLoja) {
+    window.PLANILHA_URL = planilhas[codigoLoja];
+    document.getElementById('tituloLoja').textContent =
+      `Relatório de Promotores - ${codigoLoja}`;
+  }
+</script>
     // Configurar título da página
     if (codigoLoja) {
       const nomesLojas = {
