@@ -1,7 +1,4 @@
-let dadosPublicos = [];
-let diaSelecionado = "Todos";
-
-// Mapeamento das URLs (IDs de cada loja)
+// js/loja.js
 const PLANILHAS_LOJAS = {
   '001': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVQpJV736U_gkzIGzbIdRk4sObA4so3fdj-Emr8WYvd5X20PXr4re_OtEP866H4_LbdJ1p9TJrsRqc/gviz/tq?tqx=out:json',
   '002': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSeMQGffph4J2g3_Bdi20QGGrxvsJlR3i3X1otdlzN2mm7-MyRjHEimz756K8b99id_h2xHZMLMnM6D/gviz/tq?tqx=out:json',
@@ -14,10 +11,10 @@ const PLANILHAS_LOJAS = {
   '204': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvfd8rATUR6BQ0ENsWUrqOU7YXkNQPqe9IaJm0a32jnAWswQ-PdszJV2WJvoZmwLRdCQjtTTAhwxp9/gviz/tq?tqx=out:json'
 };
 
-// Função principal para carregar dados da planilha
 async function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
+  status.style.color = "#FFC107";
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -53,14 +50,18 @@ async function atualizarPlanilha() {
 
     filtrarDadosPublico();
     status.textContent = "✅ Atualizado!";
+    status.style.color = "#00C853";
     setTimeout(() => status.textContent = "", 2000);
 
   } catch (error) {
     console.error("Erro:", error);
     status.textContent = `❌ Erro: ${error.message}`;
+    status.style.color = "#EF5350";
     carregarDadosLocais();
   }
 }
+
+// Rest of the file remains the same...
 
 // Formata o telefone para padrão (xx) xxxxx-xxxx
 function formatarTelefone(tel) {
