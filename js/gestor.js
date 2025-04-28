@@ -58,28 +58,6 @@ async function atualizarPlanilha() {
 
 // Rest of the file remains the same...
 
-// Rest of the file remains the same...
-// Fallback para dados em localStorage
-function usarDadosLocais() {
-  const raw = localStorage.getItem("dadosGestor");
-  if (!raw) return;
-
-  try {
-    const { data, cabecalhos: h, dados } = JSON.parse(raw);
-    cabecalhos = h;
-    dadosGestor = dados;
-
-    renderCabecalho();
-    renderTabela(dadosGestor);
-    gerarGraficos(dadosGestor);
-    gerarRanking(dadosGestor);
-
-    document.getElementById("statusAtualiza").textContent =
-      `⚠️ Usando dados locais (última atualização: ${new Date(data).toLocaleString()})`;
-  } catch (e) {
-    console.error("Erro ao carregar dados locais:", e);
-  }
-}
 
 // (Aqui entram suas funções renderTabela, renderCabecalho, formatarData, filtros,
 // gerarGráficos, gerarRanking, exportarExcel/CSV/PDF, etc.)
