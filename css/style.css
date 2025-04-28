@@ -364,3 +364,24 @@ tr.destacado {
 .btn-voltar-login:hover {
   background-color: #D32F2F;
 }
+/* Adicione ao seu style.css */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+[aria-live="polite"] {
+  padding: 0.5rem;
+}
