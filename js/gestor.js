@@ -3,67 +3,115 @@ let cabecalhos = [];
 let lojaAtual = "Todos";
 let chartLoja, chartDia, chartPromotor;
 
-// Carregar os dados da planilha
-function atualizarPlanilha() {
+// Função para carregar dados da planilha
+async function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando...";
 
-  fetch(window.PLANILHA_URL)
-    .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(text.substring(47).slice(0, -2));
-      const cols = json.table.cols;
-      const rows = json.table.rows;
+  try {
+    // Adiciona timestamp para evitar cache
+    const response = await fetch(`${window.PLANILHA_URL}&t=${Date.now()}`);
+    
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status} ${response.statusText}`);
+    }
 
-      cabecalhos = cols.map(col => col.label);
-      dadosGestor = rows.map(r => r.c.map(c => c?.v || ""));
+    const text = await response.text();
+    
+    // Extrai os dados JSON da resposta
+    const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
+    if (!jsonMatch) {
+      throw new Error("Formato de resposta inválido da planilha");
+    }
 
-      // Armazenar localmente com timestamp
-      localStorage.setItem('dadosGestor', JSON.stringify({
-        data: new Date().getTime(),
-        cabecalhos: cabecalhos,
-        dados: dadosGestor
-      }));
+    const json = JSON.parse(jsonMatch[1]);
+    
+    // Verifica estrutura dos dados
+    if (!json?.table?.cols || !json?.table?.rows) {
+      throw new Error("Estrutura de dados incompleta");
+    }
 
-      renderCabecalho();
-      renderTabela(dadosGestor);
-      gerarGraficos(dadosGestor);
-      gerarRanking(dadosGestor);
-      status.textContent = "✅ Atualizado!";
-      setTimeout(() => status.textContent = "", 2000);
-    })
-    .catch(() => {
-      status.textContent = "❌ Erro ao carregar";
-      // Tentar usar dados locais se houver
-      const dadosLocais = localStorage.getItem('dadosGestor');
-      if (dadosLocais) {
-        const { data, cabecalhos: cab, dados } = JSON.parse(dadosLocais);
-        cabecalhos = cab;
-        dadosGestor = dados;
-        renderCabecalho();
-        renderTabela(dadosGestor);
-        gerarGraficos(dadosGestor);
-        gerarRanking(dadosGestor);
-      }
+    // Processa os dados
+    cabecalhos = json.table.cols.map(col => col.label);
+    dadosGestor = json.table.rows.map(row => {
+      return row.c.map(cell => {
+        // Prioriza valores formatados (f) quando disponíveis
+        return cell?.f || cell?.v || "";
+      });
     });
+
+    // Armazena localmente
+    localStorage.setItem('dadosGestor', JSON.stringify({
+      data: Date.now(),
+      cabecalhos: cabecalhos,
+      dados: dadosGestor
+    }));
+
+    // Atualiza a interface
+    renderCabecalho();
+    renderTabela(dadosGestor);
+    gerarGraficos(dadosGestor);
+    gerarRanking(dadosGestor);
+    
+    status.textContent = "✅ Atualizado!";
+    setTimeout(() => status.textContent = "", 2000);
+
+  } catch (error) {
+    console.error("Erro ao carregar planilha:", error);
+    status.textContent = `❌ Erro: ${error.message}`;
+    
+    // Tenta usar dados locais como fallback
+    usarDadosLocais();
+  }
 }
 
-// Renderizar o cabeçalho da tabela
+// Função para usar dados armazenados localmente
+function usarDadosLocais() {
+  const dadosLocais = localStorage.getItem('dadosGestor');
+  if (!dadosLocais) return;
+
+  try {
+    const { data, cabecalhos: cab, dados } = JSON.parse(dadosLocais);
+    cabecalhos = cab;
+    dadosGestor = dados;
+    renderCabecalho();
+    renderTabela(dadosGestor);
+    gerarGraficos(dadosGestor);
+    gerarRanking(dadosGestor);
+    
+    document.getElementById("statusAtualiza").textContent = 
+      "⚠️ Usando dados locais (última atualização: " + new Date(data).toLocaleString() + ")";
+  } catch (e) {
+    console.error("Erro ao carregar dados locais:", e);
+  }
+}
+
+// Renderiza o cabeçalho da tabela
 function renderCabecalho() {
   const head = document.getElementById("cabecalhoGestor");
-  head.innerHTML = cabecalhos.map(c => `<th>${c}</th>`).join("");
+  head.innerHTML = cabecalhos.map(c => 
+    `<th>${c.replace(/([A-Z])/g, ' $1').trim()}</th>`
+  ).join("");
 }
 
-// Renderizar as linhas da tabela
+// Renderiza as linhas da tabela
 function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
 
   dados.forEach(linha => {
     const tr = document.createElement("tr");
-    linha.forEach(cel => {
+    
+    linha.forEach((cel, index) => {
       const td = document.createElement("td");
-      td.textContent = cel;
+      // Formatação especial para colunas específicas
+      if (cabecalhos[index].toLowerCase().includes("data") && cel) {
+        td.textContent = formatarData(cel);
+      } else if (cabecalhos[index].toLowerCase().includes("hora") && cel) {
+        td.textContent = formatarHora(cel);
+      } else {
+        td.textContent = cel;
+      }
       tr.appendChild(td);
     });
 
@@ -76,13 +124,34 @@ function renderTabela(dados) {
   });
 }
 
+// Funções auxiliares de formatação
+function formatarData(valor) {
+  try {
+    if (typeof valor === 'string' && valor.includes('/')) return valor;
+    const date = new Date(valor);
+    return isNaN(date) ? valor : date.toLocaleDateString('pt-BR');
+  } catch {
+    return valor;
+  }
+}
+
+function formatarHora(valor) {
+  try {
+    if (typeof valor === 'string' && valor.includes(':')) return valor;
+    const date = new Date(valor);
+    return isNaN(date) ? valor : date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return valor;
+  }
+}
+
 // Filtro por loja
 function filtrarLoja(loja) {
   lojaAtual = loja;
   filtrarDadosGestor();
 }
 
-// Filtro geral (loja + busca texto)
+// Filtro geral (loja + busca textual)
 function filtrarDadosGestor() {
   const termo = document.getElementById("buscaGestor").value.toLowerCase();
   const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
@@ -90,7 +159,8 @@ function filtrarDadosGestor() {
   const filtrado = dadosGestor.filter(linha => {
     const textoLinha = linha.join(" ").toLowerCase();
     const condTexto = textoLinha.includes(termo);
-    const condLoja = lojaAtual === "Todos" || (linha[colLoja]?.includes(lojaAtual));
+    const condLoja = lojaAtual === "Todos" || 
+                     (colLoja >= 0 && linha[colLoja]?.toString().includes(lojaAtual));
     return condTexto && condLoja;
   });
 
@@ -101,201 +171,155 @@ function filtrarDadosGestor() {
 
 // Gerar gráficos dinâmicos
 function gerarGraficos(dados) {
-  const contagemLoja = {};
-  const contagemDia = {};
-  const contagemPromotor = {};
+  // Limpa gráficos existentes
+  [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
 
+  // Obtém índices das colunas
   const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
   const colDia = cabecalhos.findIndex(c => c.toLowerCase().includes("dia"));
   const colPromotor = cabecalhos.findIndex(c => c.toLowerCase().includes("nome"));
 
+  // Contagens para os gráficos
+  const contagens = {
+    loja: contarOcorrencias(dados, colLoja),
+    dia: contarOcorrencias(dados, colDia),
+    promotor: contarOcorrencias(dados, colPromotor)
+  };
+
+  // Cria os gráficos
+  chartLoja = criarGraficoBarras('graficoLoja', 'Atendimentos por Loja', contagens.loja);
+  chartDia = criarGraficoLinhas('graficoDia', 'Atendimentos por Dia', contagens.dia);
+  chartPromotor = criarGraficoPizza('graficoPromotor', 'Atendimentos por Promotor', contagens.promotor);
+}
+
+// Função auxiliar para contar ocorrências
+function contarOcorrencias(dados, colunaIndex) {
+  const contagem = {};
   dados.forEach(linha => {
-    const loja = linha[colLoja] || "";
-    const dia = linha[colDia] || "";
-    const promotor = linha[colPromotor] || "";
-
-    contagemLoja[loja] = (contagemLoja[loja] || 0) + 1;
-    contagemDia[dia] = (contagemDia[dia] || 0) + 1;
-    contagemPromotor[promotor] = (contagemPromotor[promotor] || 0) + 1;
+    const valor = colunaIndex >= 0 ? linha[colunaIndex] : "";
+    const chave = valor || "Não informado";
+    contagem[chave] = (contagem[chave] || 0) + 1;
   });
+  return contagem;
+}
 
-  // Destruir gráficos existentes
-  if (chartLoja) chartLoja.destroy();
-  if (chartDia) chartDia.destroy();
-  if (chartPromotor) chartPromotor.destroy();
-
-  // Gráfico de atendimentos por loja
-  chartLoja = new Chart(document.getElementById('graficoLoja'), {
+// Funções para criação de gráficos
+function criarGraficoBarras(elementId, label, dados) {
+  return new Chart(document.getElementById(elementId), {
     type: 'bar',
     data: {
-      labels: Object.keys(contagemLoja),
+      labels: Object.keys(dados),
       datasets: [{
-        label: 'Atendimentos por Loja',
-        data: Object.values(contagemLoja),
+        label: label,
+        data: Object.values(dados),
         backgroundColor: '#00C853'
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { 
-        legend: { 
-          labels: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        } 
-      },
-      scales: { 
-        x: { 
-          ticks: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        }, 
-        y: { 
-          ticks: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        } 
-      }
-    }
+    options: getChartOptions()
   });
+}
 
-  // Gráfico de atendimentos por dia
-  chartDia = new Chart(document.getElementById('graficoDia'), {
+function criarGraficoLinhas(elementId, label, dados) {
+  return new Chart(document.getElementById(elementId), {
     type: 'line',
     data: {
-      labels: Object.keys(contagemDia),
+      labels: Object.keys(dados),
       datasets: [{
-        label: 'Atendimentos por Dia',
-        data: Object.values(contagemDia),
+        label: label,
+        data: Object.values(dados),
         borderColor: '#EF5350',
         backgroundColor: '#EF5350',
         fill: false
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { 
-        legend: { 
-          labels: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        } 
-      },
-      scales: { 
-        x: { 
-          ticks: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        }, 
-        y: { 
-          ticks: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        } 
-      }
-    }
+    options: getChartOptions()
   });
+}
 
-  // Gráfico de atendimentos por promotor
-  chartPromotor = new Chart(document.getElementById('graficoPromotor'), {
+function criarGraficoPizza(elementId, label, dados) {
+  return new Chart(document.getElementById(elementId), {
     type: 'pie',
     data: {
-      labels: Object.keys(contagemPromotor),
+      labels: Object.keys(dados),
       datasets: [{
-        label: 'Atendimentos por Promotor',
-        data: Object.values(contagemPromotor),
+        label: label,
+        data: Object.values(dados),
         backgroundColor: [
           '#00C853', '#EF5350', '#FFC107', '#29B6F6', 
           '#AB47BC', '#FF7043', '#26A69A', '#EC407A'
         ]
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { 
-        legend: { 
-          labels: { 
-            color: '#fff',
-            font: {
-              family: "'Ubuntu', sans-serif"
-            }
-          } 
-        } 
-      }
-    }
+    options: getChartOptions()
   });
+}
+
+// Configurações comuns dos gráficos
+function getChartOptions() {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { 
+      legend: { 
+        labels: { 
+          color: '#fff',
+          font: { family: "'Ubuntu', sans-serif" }
+        } 
+      } 
+    },
+    scales: {
+      x: { ticks: { color: '#fff', font: { family: "'Ubuntu', sans-serif" } } },
+      y: { ticks: { color: '#fff', font: { family: "'Ubuntu', sans-serif" } } }
+    }
+  };
 }
 
 // Gerar ranking de promotores
 function gerarRanking(dados) {
-  const contagemMarca = {};
-  const contagemLojas = {};
-  const promotores = {};
-
   const colPromotor = cabecalhos.findIndex(c => c.toLowerCase().includes("nome"));
   const colMarca = cabecalhos.findIndex(c => c.toLowerCase().includes("marca"));
   const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
 
-  dados.forEach(linha => {
-    const promotor = linha[colPromotor] || "Desconhecido";
-    const marca = linha[colMarca] || "Desconhecida";
-    const loja = linha[colLoja] || "Desconhecida";
-
+  const { marcas, cobertura } = dados.reduce((acc, linha) => {
     // Contagem por marca
-    if (!contagemMarca[marca]) contagemMarca[marca] = 0;
-    contagemMarca[marca]++;
+    const marca = linha[colMarca] || "Desconhecida";
+    acc.marcas[marca] = (acc.marcas[marca] || 0) + 1;
 
     // Contagem por promotor (cobertura de lojas)
-    if (!promotores[promotor]) promotores[promotor] = new Set();
-    promotores[promotor].add(loja);
-  });
+    const promotor = linha[colPromotor] || "Desconhecido";
+    const loja = linha[colLoja] || "";
+    if (loja) {
+      if (!acc.cobertura[promotor]) acc.cobertura[promotor] = new Set();
+      acc.cobertura[promotor].add(loja);
+    }
+
+    return acc;
+  }, { marcas: {}, cobertura: {} });
 
   // Converter Set para contagem
-  Object.keys(promotores).forEach(promotor => {
-    contagemLojas[promotor] = promotores[promotor].size;
-  });
+  const contagemCobertura = Object.fromEntries(
+    Object.entries(cobertura).map(([promotor, lojas]) => [promotor, lojas.size])
+  );
 
-  // Top marcas
-  const topMarcas = Object.entries(contagemMarca)
+  // Atualizar HTML com os rankings
+  atualizarRankingHTML("topMarcas", ordenarRanking(marcas), "atendimentos");
+  atualizarRankingHTML("topCobertura", ordenarRanking(contagemCobertura), "lojas");
+}
+
+function ordenarRanking(dados) {
+  return Object.entries(dados)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
+}
 
-  // Top cobertura
-  const topCobertura = Object.entries(contagemLojas)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-
-  // Atualizar HTML
-  const listaMarcas = document.getElementById("topMarcas");
-  listaMarcas.innerHTML = topMarcas.map(([marca, qtd], i) => 
-    `<li>${i+1}º ${marca} - ${qtd} atendimentos</li>`
-  ).join("");
-
-  const listaCobertura = document.getElementById("topCobertura");
-  listaCobertura.innerHTML = topCobertura.map(([promotor, qtd], i) => 
-    `<li>${i+1}º ${promotor} - ${qtd} lojas</li>`
+function atualizarRankingHTML(elementId, ranking, unidade) {
+  const lista = document.getElementById(elementId);
+  lista.innerHTML = ranking.map(([item, qtd], i) => 
+    `<li>${i+1}º ${item} - ${qtd} ${unidade}</li>`
   ).join("");
 }
 
-// Botões de exportação
+// Exportação de dados
 function exportarExcel() {
   const tabela = document.getElementById('tabelaGestor');
   const wb = XLSX.utils.table_to_book(tabela, { sheet: "Relatório" });
@@ -312,35 +336,42 @@ async function exportarPDF() {
   const { jsPDF } = window.jspdf;
   const tabela = document.getElementById('tabelaGestor');
 
-  const canvas = await html2canvas(tabela, { scale: 2 });
-  const imgData = canvas.toDataURL('image/png');
+  const canvas = await html2canvas(tabela, { 
+    scale: 2,
+    logging: true,
+    useCORS: true
+  });
+
   const pdf = new jsPDF('l', 'pt', 'a4');
-
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-
-  const imgWidth = pageWidth - 40;
-  const imgHeight = canvas.height * imgWidth / canvas.width;
+  const imgData = canvas.toDataURL('image/png');
+  const imgWidth = pdf.internal.pageSize.getWidth() - 40;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
   pdf.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
   pdf.save("Relatorio_Gestor.pdf");
 }
 
-// Carregar inicialmente
+// Inicialização
 document.addEventListener("DOMContentLoaded", () => {
-  // Verificar se há dados locais válidos
-  const dadosLocais = localStorage.getItem('dadosGestor');
-  if (dadosLocais) {
-    const { data, cabecalhos: cab, dados } = JSON.parse(dadosLocais);
-    cabecalhos = cab;
-    dadosGestor = dados;
-    renderCabecalho();
-    renderTabela(dadosGestor);
-    gerarGraficos(dadosGestor);
-    gerarRanking(dadosGestor);
+  // Configuração inicial
+  if (!window.PLANILHA_URL) {
+    console.error("PLANILHA_URL não definida");
+    document.getElementById("statusAtualiza").textContent = 
+      "❌ Erro: URL da planilha não configurada";
+    return;
   }
+
+  // Carrega dados locais primeiro para exibição rápida
+  usarDadosLocais();
+  
+  // Atualiza com dados da planilha
   atualizarPlanilha();
   
-  // Atualizar automaticamente a cada 5 minutos
-  setInterval(atualizarPlanilha, 300000);
+  // Atualização automática periódica
+  setInterval(atualizarPlanilha, 300000); // 5 minutos
+});
+
+// Limpeza ao sair da página
+window.addEventListener('beforeunload', () => {
+  [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
 });
