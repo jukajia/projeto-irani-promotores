@@ -36,43 +36,6 @@
   <script src="js/gestor.js" defer></script>
 </head>
 <body>
-  <!-- Pré-conexões -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-  <!-- Bibliotecas (com defer) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-<div class="filtro-group">
-  <h3>Filtrar por Dia:</h3>
-  <div class="dias">
-    <button onclick="filtrarDiaGestor('Todos')">Todos</button>
-    <button onclick="filtrarDiaGestor('Segunda-feira')">Seg</button>
-    <button onclick="filtrarDiaGestor('Terça-feira')">Ter</button>
-    <button onclick="filtrarDiaGestor('Quarta-feira')">Qua</button>
-    <button onclick="filtrarDiaGestor('Quinta-feira')">Qui</button>
-    <button onclick="filtrarDiaGestor('Sexta-feira')">Sex</button>
-    <button onclick="filtrarDiaGestor('Sábado')">Sáb</button>
-  </div>
-</div>
-  <!-- Configuração das planilhas -->
-  <script>
-    window.PLANILHAS = {
-      '001': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVQpJV736U_gkzIGzbIdRk4sObA4so3fdj-Emr8WYvd5X20PXr4re_OtEP866H4_LbdJ1p9TJrsRqc/gviz/tq?tqx=out:json',
-      '002': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSeMQGffph4J2g3_Bdi20QGGrxvsJlR3i3X1otdlzN2mm7-MyRjHEimz756K8b99id_h2xHZMLMnM6D/gviz/tq?tqx=out:json',
-      '003': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSXrPKpL-DdlabNMiX3LRhDIixxspH0QhVcV_btrBgD2NlSpUPaBn0RTlQdby2QZr1Eq_-YhE-v_dPt/gviz/tq?tqx=out:json',
-      '004': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSO9jBMI5xgbxgV9-ovOzpm8hiwMrfPLrTj91Pv-qPPANAzi9I3WpCPRAJ98sXCG02q4uKrxDjxlzFp/gviz/tq?tqx=out:json',
-      '005': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgE9gnhIcb2lTWJxIP2VAsDPpdOXUcjGAK6s5YFIXdW-QGkvjm593zkYGBip9S5xIHUBjRCrp-5du5/gviz/tq?tqx=out:json',
-      '201': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSxtoIApsl8rwlz9_yRDIGk5vBofv14Y8jsQyINGhDIEqebTllfx2XNkfv1QtKHkMYN3fwTI6n96h3/gviz/tq?tqx=out:json',
-      '202': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTn070Oncl75qOTtDk0V2sd5tsQTc6O7YK4EhmaRpUMjI6G9eyH7G-OqxHE3008zXvo0SuzF4EoyHPg/gviz/tq?tqx=out:json',
-      '203': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsy0shwB9gbG1fsQGVXU77eL94dkzZsow1TXPyVmjYeWRYKR-WC_2ipsFAo2kAgmsOUS0LeoWAOpJ9/gviz/tq?tqx=out:json',
-      '204': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvfd8rATUR6BQ0ENsWUrqOU7YXkNQPqe9IaJm0a32jnAWswQ-PdszJV2WJvoZmwLRdCQjtTTAhwxp9/gviz/tq?tqx=out:json'
-    };
-  </script>
-</head>
-<body>
   <header>
     <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" loading="lazy">
     <h1>Painel do Gestor</h1>
@@ -98,6 +61,19 @@
       </div>
 
       <div class="filtro-group">
+        <h3>Filtrar por Dia:</h3>
+        <div class="dias">
+          <button onclick="filtrarDiaGestor('Todos')">Todos</button>
+          <button onclick="filtrarDiaGestor('Segunda-feira')">Seg</button>
+          <button onclick="filtrarDiaGestor('Terça-feira')">Ter</button>
+          <button onclick="filtrarDiaGestor('Quarta-feira')">Qua</button>
+          <button onclick="filtrarDiaGestor('Quinta-feira')">Qui</button>
+          <button onclick="filtrarDiaGestor('Sexta-feira')">Sex</button>
+          <button onclick="filtrarDiaGestor('Sábado')">Sáb</button>
+        </div>
+      </div>
+
+      <div class="filtro-group">
         <h3>Busca:</h3>
         <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()">
       </div>
@@ -107,7 +83,7 @@
     <div class="exportacoes">
       <button onclick="exportarExcel()">📥 Exportar Excel</button>
       <button onclick="exportarPDF()">📄 Exportar PDF</button>
-      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+      <button onclick="carregarDadosGestor()">🔄 Atualizar Dados</button>
       <span id="statusAtualiza" role="status" aria-live="polite"></span>
     </div>
 
@@ -154,17 +130,5 @@
       ← Voltar para Login
     </button>
   </main>
-
-  <!-- Script principal -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!window.PLANILHAS || Object.keys(window.PLANILHAS).length === 0) {
-        const status = document.getElementById("statusAtualiza");
-        status.textContent = "⚠️ Erro: URLs das planilhas não configuradas";
-        status.style.color = "#EF5350";
-      }
-    });
-  </script>
-  <script src="js/gestor.js" defer></script>
 </body>
 </html>
