@@ -4,6 +4,7 @@ let lojaAtual = "Todos";
 let diaSelecionado = "Todos";
 let chartLoja, chartDia, chartPromotor;
 
+// Função principal para carregar dados
 async function carregarDadosGestor() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando dados...";
@@ -31,7 +32,7 @@ async function carregarDadosGestor() {
       dados: dadosGestor
     }));
 
-    renderizarTudo();
+    renderizarTudo(dadosGestor);
     status.textContent = "✅ Dados carregados!";
     status.style.color = "#00C853";
     setTimeout(() => status.textContent = "", 2000);
@@ -44,28 +45,7 @@ async function carregarDadosGestor() {
   }
 }
 
-function renderizarTudo() {
-  renderCabecalho();
-  filtrarDadosGestor();
-  gerarGraficos();
-  gerarRanking();
-}
-
-    renderizarTudo(dadosGestor);
-
-    status.textContent = "✅ Atualizado!";
-    status.style.color = "#00C853";
-    setTimeout(() => status.textContent = "", 2000);
-
-  } catch (error) {
-    console.error("Erro ao carregar planilha:", error);
-    status.textContent = `❌ Erro: ${error.message}`;
-    status.style.color = "#EF5350";
-    usarDadosLocais();
-  }
-}
-
-// Usa dados do localStorage caso falhe a atualização
+// Função para usar dados locais em caso de falha
 function usarDadosLocais() {
   try {
     const dados = JSON.parse(localStorage.getItem("dadosGestor"));
@@ -75,16 +55,18 @@ function usarDadosLocais() {
     dadosGestor = dados.dados;
 
     renderizarTudo(dadosGestor);
-
     document.getElementById("statusAtualiza").textContent =
       `⚠️ Usando dados locais (última atualização: ${new Date(dados.data).toLocaleString()})`;
 
   } catch (e) {
     console.error("Erro ao carregar dados locais:", e);
+    document.getElementById("statusAtualiza").textContent =
+      "❌ Erro ao carregar dados locais";
+    document.getElementById("statusAtualiza").style.color = "#EF5350";
   }
 }
 
-// Centraliza renderização após carregar dados
+// Função principal de renderização
 function renderizarTudo(dados) {
   renderCabecalho();
   renderTabela(dados);
@@ -92,7 +74,7 @@ function renderizarTudo(dados) {
   gerarRanking(dados);
 }
 
-// Renderiza o cabeçalho
+// Renderiza o cabeçalho da tabela
 function renderCabecalho() {
   const head = document.getElementById("cabecalhoGestor");
   head.innerHTML = cabecalhos.map(c =>
@@ -100,7 +82,7 @@ function renderCabecalho() {
   ).join("");
 }
 
-// Renderiza a tabela de dados
+// Renderiza os dados na tabela
 function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
@@ -129,7 +111,7 @@ function renderTabela(dados) {
   });
 }
 
-// Formata datas
+// Funções de formatação
 function formatarData(valor) {
   try {
     if (typeof valor === 'string' && valor.includes('/')) return valor;
@@ -140,7 +122,6 @@ function formatarData(valor) {
   }
 }
 
-// Formata horas
 function formatarHora(valor) {
   try {
     if (typeof valor === 'string' && valor.includes(':')) return valor;
@@ -151,14 +132,17 @@ function formatarHora(valor) {
   }
 }
 
-// Filtra por loja
+// Funções de filtro
 function filtrarLoja(loja) {
   lojaAtual = loja;
   filtrarDadosGestor();
 }
 
+function filtrarDiaGestor(dia) {
+  diaSelecionado = dia;
+  filtrarDadosGestor();
+}
 
-// Atualize a função filtrarDadosGestor para incluir filtro por dia
 function filtrarDadosGestor() {
   const termo = document.getElementById("buscaGestor").value.toLowerCase();
   const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
@@ -180,13 +164,7 @@ function filtrarDadosGestor() {
   gerarRanking(filtrado);
 }
 
-// Adicione esta função para filtrar por dia
-function filtrarDiaGestor(dia) {
-  diaSelecionado = dia;
-  filtrarDadosGestor();
-}
-
-// Geração de gráficos
+// Funções para gráficos
 function gerarGraficos(dados) {
   [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
 
@@ -205,7 +183,6 @@ function gerarGraficos(dados) {
   chartPromotor = criarGraficoPizza('graficoPromotor', 'Atendimentos por Promotor', contagens.promotor);
 }
 
-// Conta ocorrências
 function contarOcorrencias(dados, colunaIndex) {
   const contagem = {};
   dados.forEach(linha => {
@@ -216,7 +193,6 @@ function contarOcorrencias(dados, colunaIndex) {
   return contagem;
 }
 
-// Criação dos gráficos
 function criarGraficoBarras(elementId, label, dados) {
   return new Chart(document.getElementById(elementId), {
     type: 'bar',
@@ -267,7 +243,6 @@ function criarGraficoPizza(elementId, label, dados) {
   });
 }
 
-// Configurações dos gráficos
 function getChartOptions() {
   return {
     responsive: true,
@@ -287,7 +262,7 @@ function getChartOptions() {
   };
 }
 
-// Ranking
+// Funções para ranking
 function gerarRanking(dados) {
   const colPromotor = cabecalhos.findIndex(c => c.toLowerCase().includes("nome"));
   const colMarca = cabecalhos.findIndex(c => c.toLowerCase().includes("marca"));
@@ -300,7 +275,7 @@ function gerarRanking(dados) {
     const promotor = linha[colPromotor] || "Desconhecido";
     const loja = linha[colLoja] || "";
     if (loja) {
-      acc.cobertura[promotor] ??= new Set();
+      acc.cobertura[promotor] = acc.cobertura[promotor] || new Set();
       acc.cobertura[promotor].add(loja);
     }
 
@@ -315,7 +290,6 @@ function gerarRanking(dados) {
   atualizarRankingHTML("topCobertura", ordenarRanking(contagemCobertura), "lojas");
 }
 
-// Auxiliar de ranking
 function ordenarRanking(dados) {
   return Object.entries(dados)
     .sort((a, b) => b[1] - a[1])
@@ -329,7 +303,7 @@ function atualizarRankingHTML(elementId, ranking, unidade) {
   ).join("");
 }
 
-// Exportação
+// Funções de exportação
 function exportarExcel() {
   const tabela = document.getElementById('tabelaGestor');
   const wb = XLSX.utils.table_to_book(tabela, { sheet: "Relatório" });
@@ -363,7 +337,7 @@ async function exportarPDF() {
 
 // Inicialização
 document.addEventListener("DOMContentLoaded", () => {
-  if (!PLANILHA_URL) {
+  if (!window.PLANILHA_URL) {
     console.error("PLANILHA_URL não definida");
     document.getElementById("statusAtualiza").textContent = 
       "❌ Erro: URL da planilha não configurada";
@@ -371,11 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   usarDadosLocais();
-  atualizarPlanilha();
-  setInterval(atualizarPlanilha, 300_000); // Atualiza a cada 5 minutos
+  carregarDadosGestor();
+  setInterval(carregarDadosGestor, 300000); // Atualiza a cada 5 minutos
 });
 
 // Limpeza
 window.addEventListener("beforeunload", () => {
-  [chartLoja, chartDia, chartPromotor].forEach(c => c?.destroy());
+  [chartLoja, chartDia, chartPromotor].forEach(chart => chart?.destroy());
 });
