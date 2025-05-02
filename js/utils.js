@@ -1,1 +1,4 @@
-// melhorias que podem serem feitas no app
+// utils.js
+function exemploUtil() {
+  return "Utilitário pronto!";
+}
