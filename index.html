@@ -1,3 +1,4 @@
+<!-- Vou começar reestruturando o index.html (login) -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,41 +7,33 @@
   <title>Login | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
+  <script src="js/auth.js" defer></script>
 </head>
 <body class="login-body">
-  <div class="cloud-container">
-    <div class="login-container">
-      <div class="cloud-header">
-        <img src="imagens/logo-irani.png" alt="Logo Irani" class="login-logo">
-        <h1>Área de Acesso</h1>
-      </div>
-      
-      <div class="cloud-content">
-        <label for="usuario">Selecione sua loja:</label>
-        <select id="usuario">
-          <option value="">-- Escolha a Loja --</option>
-          <option value="gestor">Gestor</option>
-          <option value="brasil">Brasil (001)</option>
-          <option value="parqueverde">Parque Verde (002)</option>
-          <option value="floresta">Floresta (003)</option>
-          <option value="tancredo">Tancredo (004)</option>
-          <option value="gourmet">Gourmet (005)</option>
-          <option value="porti1">Portí 1 (201)</option>
-          <option value="porti2">Portí 2 (202)</option>
-          <option value="porti3">Portí 3 (203)</option>
-          <option value="porti4">Portí 4 (204)</option>
-        </select>
+  <div class="login-container">
+    <img src="imagens/logo-irani.png" alt="Logo Irani" class="login-logo">
+    <h1>Área de Acesso</h1>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" placeholder="Digite sua senha">
+    <label for="usuario">Selecione sua loja:</label>
+    <select id="usuario">
+      <option value="">-- Escolha a Loja --</option>
+      <option value="gestor">Gestor</option>
+      <option value="brasil">Brasil (001)</option>
+      <option value="parqueverde">Parque Verde (002)</option>
+      <option value="floresta">Floresta (003)</option>
+      <option value="tancredo">Tancredo (004)</option>
+      <option value="gourmet">Gourmet (005)</option>
+      <option value="porti1">Portí 1 (201)</option>
+      <option value="porti2">Portí 2 (202)</option>
+      <option value="porti3">Portí 3 (203)</option>
+      <option value="porti4">Portí 4 (204)</option>
+    </select>
 
-        <button onclick="login()">Entrar</button>
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" placeholder="Digite sua senha">
 
-        <div id="erroLogin" class="erro-msg" style="display:none;">Usuário ou senha incorretos.</div>
-      </div>
-    </div>
+    <button onclick="login()">Entrar</button>
+    <div id="erroLogin" class="erro-msg" style="display:none;"></div>
   </div>
-
-  <script src="js/auth.js" defer></script>
 </body>
 </html>
