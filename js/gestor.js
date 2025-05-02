@@ -1,39 +1,55 @@
-const PLANILHA_URL = window.PLANILHA_URL;
-
 let dadosGestor = [];
 let cabecalhos = [];
 let lojaAtual = "Todos";
+let diaSelecionado = "Todos";
 let chartLoja, chartDia, chartPromotor;
 
-// Atualiza os dados a partir da planilha
-async function atualizarPlanilha() {
+async function carregarDadosGestor() {
   const status = document.getElementById("statusAtualiza");
-  status.textContent = "⏳ Carregando…";
+  status.textContent = "⏳ Carregando dados...";
   status.style.color = "#FFC107";
 
   try {
-    if (!PLANILHA_URL) throw new Error("URL da planilha não configurada");
+    const response = await fetch(`${window.PLANILHA_URL}&sheet=${window.ABAS_PLANILHA.GESTOR}&t=${Date.now()}`);
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+    
+    const text = await response.text();
+    const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
+    if (!jsonMatch) throw new Error("Formato de resposta inválido");
+    
+    const json = JSON.parse(jsonMatch[1]);
+    if (!json?.table?.rows) throw new Error("Estrutura de dados incompleta");
 
-    const res = await fetch(`${PLANILHA_URL}&t=${Date.now()}`);
-    if (!res.ok) throw new Error(`Erro HTTP: ${res.status} ${res.statusText}`);
+    cabecalhos = json.table.cols.map(col => col.label);
+    dadosGestor = json.table.rows.map(row => {
+      return row.c.map(cell => cell?.f || cell?.v || "");
+    });
 
-    const text = await res.text();
-    const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/);
-    if (!match) throw new Error("Formato de resposta inválido");
-
-    const json = JSON.parse(match[1]);
-    if (!json.table?.cols || !json.table?.rows) {
-      throw new Error("Estrutura de dados incompleta");
-    }
-
-    cabecalhos = json.table.cols.map(c => c.label);
-    dadosGestor = json.table.rows.map(r => r.c.map(cell => cell?.f ?? cell?.v ?? ""));
-
-    localStorage.setItem("dadosGestor", JSON.stringify({
+    localStorage.setItem('dadosGestor', JSON.stringify({
       data: Date.now(),
       cabecalhos,
       dados: dadosGestor
     }));
+
+    renderizarTudo();
+    status.textContent = "✅ Dados carregados!";
+    status.style.color = "#00C853";
+    setTimeout(() => status.textContent = "", 2000);
+
+  } catch (error) {
+    console.error("Erro ao carregar dados:", error);
+    status.textContent = `❌ Erro: ${error.message}`;
+    status.style.color = "#EF5350";
+    usarDadosLocais();
+  }
+}
+
+function renderizarTudo() {
+  renderCabecalho();
+  filtrarDadosGestor();
+  gerarGraficos();
+  gerarRanking();
+}
 
     renderizarTudo(dadosGestor);
 
@@ -141,22 +157,33 @@ function filtrarLoja(loja) {
   filtrarDadosGestor();
 }
 
-// Filtra por texto e loja
+
+// Atualize a função filtrarDadosGestor para incluir filtro por dia
 function filtrarDadosGestor() {
   const termo = document.getElementById("buscaGestor").value.toLowerCase();
   const colLoja = cabecalhos.findIndex(c => c.toLowerCase().includes("loja"));
+  const colDia = cabecalhos.findIndex(c => c.toLowerCase().includes("dia"));
 
   const filtrado = dadosGestor.filter(linha => {
     const textoLinha = linha.join(" ").toLowerCase();
     const condTexto = textoLinha.includes(termo);
     const condLoja = lojaAtual === "Todos" || 
-                     (colLoja >= 0 && linha[colLoja]?.toString().includes(lojaAtual));
-    return condTexto && condLoja;
+                    (colLoja >= 0 && linha[colLoja]?.toString().includes(lojaAtual));
+    const condDia = diaSelecionado === "Todos" ||
+                   (colDia >= 0 && linha[colDia]?.toString().includes(diaSelecionado));
+    
+    return condTexto && condLoja && condDia;
   });
 
   renderTabela(filtrado);
   gerarGraficos(filtrado);
   gerarRanking(filtrado);
+}
+
+// Adicione esta função para filtrar por dia
+function filtrarDiaGestor(dia) {
+  diaSelecionado = dia;
+  filtrarDadosGestor();
 }
 
 // Geração de gráficos
