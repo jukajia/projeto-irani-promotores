@@ -3,45 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- CSP ajustada para permitir Google Fonts, CDN e inline (se realmente precisar) -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src  'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
-          style-src   'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
-          font-src    'self' https://fonts.gstatic.com;
-          connect-src 'self' https://docs.google.com;
-        ">
-
   <title>Painel do Gestor | Supermercado Irani</title>
-
-  <!-- Pré-conexões para fontes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Google Fonts e CSS -->
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
-
-  <!-- Bibliotecas JS (defer) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-
-  <!-- Config externo e lógica principal -->
-  <script src="js/config.js" defer></script>
+  <script src="js/gestor.js" defer></script>
 </head>
 <body>
   <header>
-    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" loading="lazy">
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo">
     <h1>Painel do Gestor</h1>
   </header>
 
   <main>
-    <!-- Filtros -->
     <div class="filtros">
       <div class="filtro-group">
         <h3>Filtrar por Loja:</h3>
@@ -60,33 +37,18 @@
       </div>
 
       <div class="filtro-group">
-        <h3>Filtrar por Dia:</h3>
-        <div class="dias">
-          <button onclick="filtrarDiaGestor('Todos')">Todos</button>
-          <button onclick="filtrarDiaGestor('Segunda-feira')">Seg</button>
-          <button onclick="filtrarDiaGestor('Terça-feira')">Ter</button>
-          <button onclick="filtrarDiaGestor('Quarta-feira')">Qua</button>
-          <button onclick="filtrarDiaGestor('Quinta-feira')">Qui</button>
-          <button onclick="filtrarDiaGestor('Sexta-feira')">Sex</button>
-          <button onclick="filtrarDiaGestor('Sábado')">Sáb</button>
-        </div>
-      </div>
-
-      <div class="filtro-group">
         <h3>Busca:</h3>
         <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()">
       </div>
     </div>
 
-    <!-- Ações -->
     <div class="exportacoes">
       <button onclick="exportarExcel()">📥 Exportar Excel</button>
       <button onclick="exportarPDF()">📄 Exportar PDF</button>
-      <button onclick="carregarDadosGestor()">🔄 Atualizar Dados</button>
+      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
       <span id="statusAtualiza" role="status" aria-live="polite"></span>
     </div>
 
-    <!-- Gráficos -->
     <section class="graficos">
       <div class="grafico-card">
         <canvas id="graficoLoja"></canvas>
@@ -99,7 +61,6 @@
       </div>
     </section>
 
-    <!-- Rankings -->
     <section class="ranking-section">
       <h2>🏆 Ranking de Promotores</h2>
       <div class="ranking-cards">
@@ -114,7 +75,6 @@
       </div>
     </section>
 
-    <!-- Tabela -->
     <div class="table-responsive">
       <table id="tabelaGestor">
         <thead>
@@ -124,7 +84,6 @@
       </table>
     </div>
 
-    <!-- Botão Voltar -->
     <button class="btn-voltar" onclick="window.location.href='index.html'">
       ← Voltar para Login
     </button>
