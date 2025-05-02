@@ -16,8 +16,8 @@ async function carregarDadosLoja() {
       throw new Error("Loja não configurada");
     }
 
-    // Carrega dados da aba "Todas as Lojas"
-    const response = await fetch(`${window.PLANILHA_URL}&sheet=${window.ABAS_PLANILHA.LOJAS}&t=${Date.now()}`);
+  // Carrega dados da aba "Todas as Lojas" usando a configuração central
+    const response = await fetch(`${window.PLANILHA_URL}&sheet=${window.ABAS_PLANILHA.LOJAS.nome}&t=${Date.now()}`);
     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
     
     const text = await response.text();
@@ -27,17 +27,19 @@ async function carregarDadosLoja() {
     const json = JSON.parse(jsonMatch[1]);
     if (!json?.table?.rows) throw new Error("Estrutura de dados incompleta");
 
-    // Filtra os dados para mostrar apenas a loja atual (coluna 6 = Loja)
-    const colunaLoja = 5; // Ajuste este índice conforme sua planilha
+    // Obtém os índices das colunas da configuração
+    const cols = window.ABAS_PLANILHA.LOJAS.colunas;
+    
+    // Filtra os dados para mostrar apenas a loja atual
     dadosPublicos = json.table.rows
-      .filter(row => row.c[colunaLoja]?.v === codigoLoja)
+      .filter(row => row.c[cols.LOJA]?.v === codigoLoja)
       .map(row => ({
-        dataHora: row.c[0]?.f || row.c[0]?.v || "", // Coluna 1 = Data/Hora
-        nome: row.c[1]?.v || "",                   // Coluna 2 = Nome
-        marca: row.c[2]?.v || "",                  // Coluna 3 = Marca
-        produto: row.c[3]?.v || "",                // Coluna 4 = Produto
-        telefone: formatarTelefone(row.c[4]?.v),   // Coluna 5 = Telefone
-        diaSemana: row.c[6]?.v || ""               // Coluna 7 = Dia da Semana
+        dataHora: row.c[cols.DATA]?.f || row.c[cols.DATA]?.v || "",
+        nome: row.c[cols.NOME]?.v || "",
+        marca: row.c[cols.MARCA]?.v || "",
+        produto: row.c[cols.PRODUTO]?.v || "",
+        telefone: formatarTelefone(row.c[cols.TELEFONE]?.v),
+        diaSemana: row.c[cols.DIA_SEMANA]?.v || ""
       }));
 
     localStorage.setItem(`dadosLoja_${codigoLoja}`, JSON.stringify({
@@ -56,7 +58,6 @@ async function carregarDadosLoja() {
     status.style.color = "#EF5350";
     carregarDadosLocais();
   }
-}
 
 // Função para filtrar por dia
 function filtrarDia(dia) {
@@ -106,7 +107,8 @@ function carregarDadosLocais() {
   if (dadosLocais) {
     try {
       const { data, dados } = JSON.parse(dadosLocais);
-      if (Date.now() - data < 3600000) { // 1 hora de cache
+      // Usa o tempo de cache da configuração central
+      if (Date.now() - data < window.CACHE_EXPIRATION) {
         dadosPublicos = dados;
         filtrarDadosPublico();
         document.getElementById("statusAtualiza").textContent =
@@ -117,7 +119,6 @@ function carregarDadosLocais() {
     }
   }
 }
-
 // Inicialização
 document.addEventListener("DOMContentLoaded", function() {
   // A configuração inicial é feita no HTML
