@@ -6,10 +6,15 @@
   <title>Relatório de Promotores | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
+  <script>
+    // Define uma única planilha para o sistema inteiro (gestor e lojas)
+    window.PLANILHA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQU9GiNO40jd-ZQkU_vzLRfxYhf5kdpZL_BoLmbok9DjLzqYAqHfObnp4MPs2V_HN9ZbWBb4kCHQKfh/gviz/tq?tqx=out:json';
+  </script>
+  <script src="js/loja.js" defer></script>
 </head>
 <body>
   <header>
-    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo">
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo">
     <h1 id="tituloLoja">Relatório de Promotores</h1>
   </header>
 
@@ -26,7 +31,7 @@
     </div>
     <input type="text" id="buscaPublica" oninput="filtrarDadosPublico()" placeholder="Buscar promotor, marca ou produto...">
     <div style="text-align: center; margin-top: 10px;">
-      <button onclick="carregarDadosLoja()">🔄 Atualizar Dados</button>
+      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
       <span id="statusAtualiza"></span>
     </div>
   </div>
@@ -44,28 +49,6 @@
     <tbody></tbody>
   </table>
 
-  <!-- Scripts devem ficar no final do body para melhor performance -->
-  <script src="js/config.js"></script>
-  <script>
-    // Configuração inicial da página
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const codigoLoja = urlParams.get('loja');
-
-      if (codigoLoja && window.LOJAS[codigoLoja]) {
-        document.getElementById('tituloLoja').textContent = 
-          `Relatório de Promotores - ${window.LOJAS[codigoLoja]} (${codigoLoja})`;
-        
-        // Carrega os dados da loja
-        carregarDadosLoja();
-      } else {
-        console.error('Código de loja inválido ou não encontrado.');
-        document.getElementById('tituloLoja').textContent = 
-          'Relatório de Promotores - Loja não encontrada';
-      }
-    });
-  </script>
-  <script src="js/loja.js"></script>
   <button class="btn-voltar-login" onclick="window.location.href='index.html'">← Voltar para Login</button>
 </body>
 </html>
