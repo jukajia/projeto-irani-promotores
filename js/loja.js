@@ -1,6 +1,8 @@
+// Variáveis globais
 let dadosPublicos = [];
 let diaSelecionado = "Todos";
 
+// Função principal para carregar dados
 async function carregarDadosLoja() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando dados...";
@@ -14,6 +16,7 @@ async function carregarDadosLoja() {
       throw new Error("Loja não configurada");
     }
 
+    // Carrega dados da aba "Todas as Lojas"
     const response = await fetch(`${window.PLANILHA_URL}&sheet=${window.ABAS_PLANILHA.LOJAS}&t=${Date.now()}`);
     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
     
@@ -24,17 +27,17 @@ async function carregarDadosLoja() {
     const json = JSON.parse(jsonMatch[1]);
     if (!json?.table?.rows) throw new Error("Estrutura de dados incompleta");
 
-    // Filtra os dados para mostrar apenas a loja atual
-    const colunaLoja = 5; // Ajuste conforme a posição da coluna "Loja" na planilha
+    // Filtra os dados para mostrar apenas a loja atual (coluna 6 = Loja)
+    const colunaLoja = 5; // Ajuste este índice conforme sua planilha
     dadosPublicos = json.table.rows
       .filter(row => row.c[colunaLoja]?.v === codigoLoja)
       .map(row => ({
-        dataHora: row.c[0]?.f || row.c[0]?.v || "",
-        nome: row.c[1]?.v || "",
-        marca: row.c[2]?.v || "",
-        produto: row.c[3]?.v || "",
-        telefone: formatarTelefone(row.c[4]?.v),
-        diaSemana: row.c[6]?.v || ""
+        dataHora: row.c[0]?.f || row.c[0]?.v || "", // Coluna 1 = Data/Hora
+        nome: row.c[1]?.v || "",                   // Coluna 2 = Nome
+        marca: row.c[2]?.v || "",                  // Coluna 3 = Marca
+        produto: row.c[3]?.v || "",                // Coluna 4 = Produto
+        telefone: formatarTelefone(row.c[4]?.v),   // Coluna 5 = Telefone
+        diaSemana: row.c[6]?.v || ""               // Coluna 7 = Dia da Semana
       }));
 
     localStorage.setItem(`dadosLoja_${codigoLoja}`, JSON.stringify({
@@ -55,6 +58,13 @@ async function carregarDadosLoja() {
   }
 }
 
+// Função para filtrar por dia
+function filtrarDia(dia) {
+  diaSelecionado = dia;
+  filtrarDadosPublico();
+}
+
+// Função para filtrar dados
 function filtrarDadosPublico() {
   const termo = document.getElementById("buscaPublica").value.toLowerCase();
   const tabela = document.querySelector("#tabelaPublica tbody");
@@ -80,24 +90,35 @@ function filtrarDadosPublico() {
   `).join("");
 }
 
-// ... (mantenha as outras funções como formatarTelefone, carregarDadosLocais, etc.)
-
-// Atualize o event listener para usar a nova função
-
-function formatarTelefone(telefone) {
-  const nums = telefone.replace(/\D/g, '');
-  if (nums.length < 11) return telefone; // Se não tiver 11 dígitos, retorna original
+// Função para formatar telefone
+function formatarTelefone(tel) {
+  if (!tel) return "";
+  const nums = tel.toString().replace(/\D/g, '');
   return nums.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
 }
 
-// Função adaptada para aceitar dados passados ou buscar padrão
-function filtrarDadosPublico(dados = null) {
-  if (!dados) {
-    console.warn("Nenhum dado fornecido para filtro. A função deve buscar no cache ou lidar com fallback.");
-    return;
-  }
+// Função para carregar dados locais
+function carregarDadosLocais() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const codigoLoja = urlParams.get('loja');
+  const dadosLocais = localStorage.getItem(`dadosLoja_${codigoLoja}`);
 
-  // Exemplo de tratamento dos dados — adapte conforme seu frontend espera
-  console.log("Dados filtrados:", dados);
+  if (dadosLocais) {
+    try {
+      const { data, dados } = JSON.parse(dadosLocais);
+      if (Date.now() - data < 3600000) { // 1 hora de cache
+        dadosPublicos = dados;
+        filtrarDadosPublico();
+        document.getElementById("statusAtualiza").textContent =
+          `⚠️ Dados locais (última atualização: ${new Date(data).toLocaleTimeString()})`;
+      }
+    } catch (e) {
+      console.error("Erro ao carregar dados locais:", e);
+    }
+  }
 }
-document.addEventListener("DOMContentLoaded", carregarDadosLoja);
+
+// Inicialização
+document.addEventListener("DOMContentLoaded", function() {
+  // A configuração inicial é feita no HTML
+});
