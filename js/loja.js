@@ -27,21 +27,27 @@ async function atualizarPlanilha() {
     if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
 
     const text = await response.text();
-    const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
+    const parseGoogleSheetsResponse = (text) => {
+      const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
+      if (!match) throw new Error("Resposta do Google Sheets fora do formato esperado.");
+      return JSON.parse(match[1]);
+    };
 
-    if (!jsonMatch) throw new Error("Formato de resposta inesperado. Tente novamente mais tarde.");
-
-    const json = JSON.parse(jsonMatch[1]);
+    const json = parseGoogleSheetsResponse(text);
     if (!json?.table?.rows) throw new Error("Dados da planilha indisponíveis no momento.");
 
-    const dadosPublicos = json.table.rows.map(row => ({
-      dataHora: row?.c?.[0]?.f || row?.c?.[0]?.v || "",
-      nome: row?.c?.[2]?.v || "",
-      marca: row?.c?.[6]?.v || "",
-      produto: row?.c?.[7]?.v || "",
-      telefone: formatarTelefone(row?.c?.[5]?.v || ""),
-      diaSemana: row?.c?.[8]?.v || ""
-    }));
+    const campos = [0, 2, 6, 7, 5, 8]; // Índices usados
+    const dadosPublicos = json.table.rows.map(row => {
+      const [dataHora, nome, marca, produto, telefone, diaSemana] = campos.map(i => row?.c?.[i]?.v || row?.c?.[i]?.f || "");
+      return {
+        dataHora,
+        nome,
+        marca,
+        produto,
+        telefone: formatarTelefone(telefone),
+        diaSemana
+      };
+    });
 
     localStorage.setItem(`dadosLoja_${codigoLoja}`, JSON.stringify({
       data: Date.now(),
@@ -56,6 +62,15 @@ async function atualizarPlanilha() {
 
   } catch (error) {
     console.error("Erro ao atualizar planilha:", error);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const codigoLoja = urlParams.get('loja');
+
+    localStorage.setItem('erroAtualizacaoPlanilha', JSON.stringify({
+      codigoLoja,
+      error: error.message,
+      data: Date.now()
+    }));
 
     status.textContent = "❌ Não foi possível atualizar. Verifique sua conexão ou tente mais tarde.";
     status.style.color = "#EF5350";
