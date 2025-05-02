@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <!-- Mantenha a estrutura existente, apenas garanta que está carregando config.js -->
-<script src="js/config.js"></script>
-<script src="js/loja.js"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +26,7 @@
     </div>
     <input type="text" id="buscaPublica" oninput="filtrarDadosPublico()" placeholder="Buscar promotor, marca ou produto...">
     <div style="text-align: center; margin-top: 10px;">
-      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+      <button onclick="carregarDadosLoja()">🔄 Atualizar Dados</button>
       <span id="statusAtualiza"></span>
     </div>
   </div>
@@ -47,46 +44,28 @@
     <tbody></tbody>
   </table>
 
+  <!-- Scripts devem ficar no final do body para melhor performance -->
+  <script src="js/config.js"></script>
   <script>
-    // Mapeamento de URLs das planilhas por loja
-    const planilhas = {
-      '001': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVQpJV736U_gkzIGzbIdRk4sObA4so3fdj-Emr8WYvd5X20PXr4re_OtEP866H4_LbdJ1p9TJrsRqc/gviz/tq?tqx=out:json',
-      '002': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSeMQGffph4J2g3_Bdi20QGGrxvsJlR3i3X1otdlzN2mm7-MyRjHEimz756K8b99id_h2xHZMLMnM6D/gviz/tq?tqx=out:json',
-      '003': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSXrPKpL-DdlabNMiX3LRhDIixxspH0QhVcV_btrBgD2NlSpUPaBn0RTlQdby2QZr1Eq_-YhE-v_dPt/gviz/tq?tqx=out:json',
-      '004': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSO9jBMI5xgbxgV9-ovOzpm8hiwMrfPLrTj91Pv-qPPANAzi9I3WpCPRAJ98sXCG02q4uKrxDjxlzFp/gviz/tq?tqx=out:json',
-      '005': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgE9gnhIcb2lTWJxIP2VAsDPpdOXUcjGAK6s5YFIXdW-QGkvjm593zkYGBip9S5xIHUBjRCrp-5du5/gviz/tq?tqx=out:json',
-      '201': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSSxtoIApsl8rwlz9_yRDIGk5vBofv14Y8jsQyINGhDIEqebTllfx2XNkfv1QtKHkMYN3fwTI6n96h3/gviz/tq?tqx=out:json',
-      '202': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTn070Oncl75qOTtDk0V2sd5tsQTc6O7YK4EhmaRpUMjI6G9eyH7G-OqxHE3008zXvo0SuzF4EoyHPg/gviz/tq?tqx=out:json',
-      '203': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsy0shwB9gbG1fsQGVXU77eL94dkzZsow1TXPyVmjYeWRYKR-WC_2ipsFAo2kAgmsOUS0LeoWAOpJ9/gviz/tq?tqx=out:json',
-      '204': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvfd8rATUR6BQ0ENsWUrqOU7YXkNQPqe9IaJm0a32jnAWswQ-PdszJV2WJvoZmwLRdCQjtTTAhwxp9/gviz/tq?tqx=out:json'
-    };
+    // Configuração inicial da página
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const codigoLoja = urlParams.get('loja');
 
-    // Obter parâmetro da loja da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const codigoLoja = urlParams.get('loja');
-
-    // Validar código de loja
-    if (codigoLoja && planilhas[codigoLoja]) {
-      const nomesLojas = {
-        '001': 'Brasil', '002': 'Parque Verde', '003': 'Floresta',
-        '004': 'Tancredo', '005': 'Gourmet', '201': 'Portí 1',
-        '202': 'Portí 2', '203': 'Portí 3', '204': 'Portí 4'
-      };
-
-      // Configurar título da página
-      document.getElementById('tituloLoja').textContent =
-        `Relatório de Promotores - ${nomesLojas[codigoLoja]} (${codigoLoja})`;
-
-      // Definir a URL da planilha como variável global
-      window.PLANILHA_URL = planilhas[codigoLoja];
-    } else {
-      console.error('Código de loja inválido ou não encontrado.');
-      document.getElementById('tituloLoja').textContent = 
-        'Relatório de Promotores - Loja não encontrada';
-    }
+      if (codigoLoja && window.LOJAS[codigoLoja]) {
+        document.getElementById('tituloLoja').textContent = 
+          `Relatório de Promotores - ${window.LOJAS[codigoLoja]} (${codigoLoja})`;
+        
+        // Carrega os dados da loja
+        carregarDadosLoja();
+      } else {
+        console.error('Código de loja inválido ou não encontrado.');
+        document.getElementById('tituloLoja').textContent = 
+          'Relatório de Promotores - Loja não encontrada';
+      }
+    });
   </script>
   <script src="js/loja.js"></script>
   <button class="btn-voltar-login" onclick="window.location.href='index.html'">← Voltar para Login</button>
-
 </body>
 </html>
