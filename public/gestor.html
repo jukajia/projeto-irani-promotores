@@ -1,1 +1,7 @@
+<script>
+  const auth = JSON.parse(localStorage.getItem("auth"));
+  if (!auth || auth.tipo !== "gestor") {
+    window.location.href = "index.html";
+  }
+</script>
 
