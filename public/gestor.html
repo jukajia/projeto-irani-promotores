@@ -1,3 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Gestor - Irani</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/gestor.js" defer></script>
+</head>
+<body class="dark-mode">
+  <header>
+    <h1>Painel do Gestor - Irani</h1>
+    <button onclick="voltarInicio()">Voltar ao Início</button>
+  </header>
+
+  <main>
+    <section class="filtros">
+      <label for="diaSemana">Filtrar por Dia da Semana:</label>
+      <select id="diaSemana">
+        <option value="">Todos</option>
+        <option value="segunda">Segunda</option>
+        <option value="terça">Terça</option>
+        <option value="quarta">Quarta</option>
+        <option value="quinta">Quinta</option>
+        <option value="sexta">Sexta</option>
+        <option value="sábado">Sábado</option>
+        <option value="domingo">Domingo</option>
+      </select>
+
+      <label for="lojaFiltro">Filtrar por Loja:</label>
+      <select id="lojaFiltro">
+        <option value="">Todas</option>
+        <option value="001">Irani Brasil</option>
+        <option value="002">Parque Verde</option>
+        <option value="003">Floresta</option>
+        <option value="004">Tancredo</option>
+        <option value="005">Gourmet</option>
+        <option value="201">Portí 1 Cascavel</option>
+        <option value="202">Portí 2 Foz</option>
+        <option value="203">Portí 3 Cascavel</option>
+        <option value="204">Portí 4 Cascavel</option>
+      </select>
+
+      <input type="text" id="buscaAvancada" placeholder="Buscar por texto..." />
+      <button onclick="filtrarDados()">Filtrar</button>
+      <button onclick="exportarTabela()">Exportar Excel</button>
+    </section>
+
+    <section class="dashboard">
+      <h2>Resumo Geral</h2>
+      <div id="indicadores" class="cards"></div>
+      <div id="graficos" class="graficos"></div>
+    </section>
+
+    <section class="tabela">
+      <h2>Dados Consolidados</h2>
+      <div id="tabelaResultados">Carregando...</div>
+    </section>
+  </main>
+</body>
+
 <script>
   const auth = JSON.parse(localStorage.getItem("auth"));
   if (!auth || auth.tipo !== "gestor") {
@@ -5,4 +67,4 @@
   }
 </script>
 <button onclick="voltarInicio()">Voltar ao Início</button>
-
+</html>
