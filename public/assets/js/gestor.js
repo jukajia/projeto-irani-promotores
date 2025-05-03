@@ -68,4 +68,20 @@ function renderTable(data) {
 
 // Inicializa a API ao carregar a página
 document.addEventListener('DOMContentLoaded', handleClientLoad);
+function exportarTabela() {
+  const tabela = document.querySelector('#tabelaResultados table');
+  if (!tabela) {
+    alert('Nenhuma tabela disponível para exportar.');
+    return;
+  }
+
+  let html = tabela.outerHTML;
+  let blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url;
+  a.download = 'dados.xlsx';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
