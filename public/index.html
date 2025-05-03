@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Irani Promotores</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="libs/lottie.min.js"></script>
+</head>
+<body class="dark-theme">
+  <div class="login-container">
+    <div id="cloud-animation" class="animation-box"></div>
+    <img src="assets/img/irani-preta.png" alt="Irani Supermercados" class="logo">
+
+    <select id="lojaSelect" class="select-loja">
+      <option value="" disabled selected>Selecione a loja</option>
+      <option value="001">Irani Brasil</option>
+      <option value="002">Irani Parque Verde</option>
+      <option value="003">Irani Floresta</option>
+      <option value="004">Irani Tancredo</option>
+      <option value="005">Irani Gourmet</option>
+      <option value="201">Portí 1 Cascavel</option>
+      <option value="202">Portí 2 Foz do Iguaçu</option>
+      <option value="203">Portí 3 Cascavel</option>
+      <option value="204">Portí 4 Cascavel</option>
+    </select>
+
+    <input type="password" id="senha" placeholder="Senha (se necessário)">
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <script>
+    lottie.loadAnimation({
+      container: document.getElementById('cloud-animation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'assets/animations/loading-cloud.json'
+    });
+  </script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>
 
