@@ -1,4 +1,4 @@
-// Substitua pelos seus valores
+/*/ Substitua pelos seus valores
 const CLIENT_ID = '';
 const API_KEY = '';
 const DISCOVERY_DOCS = ["https://docs.google.com/spreadsheets/d/12gGbuVZ47KiUZpzY4c6cO3j4usigBtgUpuL_dgRBkS8/edit?usp=sharing"];
@@ -84,4 +84,4 @@ function exportarTabela() {
   a.click();
   URL.revokeObjectURL(url);
 }
-
+*/
