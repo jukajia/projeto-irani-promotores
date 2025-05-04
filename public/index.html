@@ -1,44 +1,92 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Irani Promotores</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="libs/lottie.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Em Construção - Jarvis Style</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #00ffe7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 40px;
+      animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7, 0 0 30px #00ffe7;
+      }
+      to {
+        text-shadow: 0 0 20px #00c2a7, 0 0 30px #00c2a7, 0 0 40px #00c2a7;
+      }
+    }
+
+    .loader {
+      position: relative;
+      width: 300px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #00ffe7;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .loader::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 85%;
+      height: 100%;
+      background: linear-gradient(90deg, #00ffe7, #00c2a7);
+      animation: progress-glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes progress-glow {
+      from {
+        box-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7;
+      }
+      to {
+        box-shadow: 0 0 20px #00c2a7, 0 0 30px #00c2a7;
+      }
+    }
+
+    .label {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: #ffffffcc;
+    }
+
+    .jarvis {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #00ffe799;
+    }
+
+    .jarvis::before {
+      content: "JARVIS v1.0 • IA Superior Ativa";
+    }
+  </style>
 </head>
-<body class="dark-theme">
-  <div class="login-container">
-    <div id="cloud-animation" class="animation-box"></div>
-    <img src="assets/img/irani-preta.png" alt="Irani Supermercados" class="logo">
-
-    <select id="lojaSelect" class="select-loja">
-      <option value="" disabled selected>Selecione a loja</option>
-      <option value="001">Irani Brasil</option>
-      <option value="002">Irani Parque Verde</option>
-      <option value="003">Irani Floresta</option>
-      <option value="004">Irani Tancredo</option>
-      <option value="005">Irani Gourmet</option>
-      <option value="201">Portí 1 Cascavel</option>
-      <option value="202">Portí 2 Foz do Iguaçu</option>
-      <option value="203">Portí 3 Cascavel</option>
-      <option value="204">Portí 4 Cascavel</option>
-    </select>
-
-    <input type="password" id="senha" placeholder="Senha (se necessário)">
-    <button onclick="login()">Entrar</button>
-  </div>
-
-  <script>
-    lottie.loadAnimation({
-      container: document.getElementById('cloud-animation'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'assets/animations/loading-cloud.json'
-    });
-  </script>
-  <script src="assets/js/auth.js"></script>
+<body>
+  <h1>🚧 Esta página está em construção...</h1>
+  <div class="loader"></div>
+  <div class="label">85% concluído</div>
+  <div class="jarvis"></div>
 </body>
 </html>
-
