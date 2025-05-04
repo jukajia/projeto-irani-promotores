@@ -1,4 +1,4 @@
-function login() {
+/*function login() {
   const loja = document.getElementById('lojaSelect').value;
   const senha = document.getElementById('senha').value.trim();
 
@@ -26,3 +26,4 @@ function login() {
   }
 }
 
+*/
