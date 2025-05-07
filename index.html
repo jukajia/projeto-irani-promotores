@@ -56,7 +56,10 @@
       position: absolute;
       top: -10px;
       left: 0%;
-      width: 50px;
+      width: 64px;
+      height: 64px;
+      background: rgba(0,255,231,0.1);
+      border-radius: 50%;
       animation: moveRobot 4s linear infinite;
     }
 
@@ -104,15 +107,31 @@
     .jia::before {
       content: "J.I.A v1.12 • IA Superior criando";
     }
+
+    .sound-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #00ffe733;
+      border: 1px solid #00ffe7;
+      color: #00ffe7;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
+  <button class="sound-btn" onclick="enableSound()">🔊 Ativar Som</button>
+
   <div class="typing-container" id="typing"></div>
 
   <div class="loader-container">
     <div class="rope-line"></div>
-    <!-- Robô em SVG -->
-    <svg class="robot-svg" viewBox="0 0 64 64">
+
+    <!-- Robô SVG corrige o tamanho -->
+    <svg class="robot-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
       <circle cx="32" cy="32" r="30" stroke="#00ffe7" stroke-width="4" fill="none"/>
       <circle cx="24" cy="24" r="4" fill="#00ffe7"/>
       <circle cx="40" cy="24" r="4" fill="#00ffe7"/>
@@ -137,12 +156,20 @@
 
     let index = 0;
     let isDeleting = false;
+    let soundEnabled = false;
+
+    function enableSound() {
+      soundEnabled = true;
+      typeSound.play().catch(() => {}); // tentar forçar liberação de áudio
+    }
 
     function type() {
       if (!isDeleting) {
         typingContainer.textContent = text.slice(0, index + 1);
-        typeSound.currentTime = 0;
-        typeSound.play();
+        if (soundEnabled && typeSound.readyState >= 2) {
+          typeSound.currentTime = 0;
+          typeSound.play().catch(() => {});
+        }
         index++;
         if (index < text.length) {
           setTimeout(type, 100);
