@@ -1,0 +1,125 @@
+body.dark-theme {
+  background-color: #111;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-container {
+  text-align: center;
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #0f0;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 20px;
+}
+
+.select-loja,
+input[type="password"],
+button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 6px;
+}
+
+.select-loja,
+input[type="password"] {
+  background: #222;
+  color: white;
+}
+
+button {
+  background: #00ff90;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.animation-box {
+  width: 120px;
+  height: 120px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+/* Estilo para a grid de botões de loja */
+.loja-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.loja-button {
+  padding: 12px 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2a2a2a;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.loja-button:hover {
+  background-color: #00C853;
+  color: #121212;
+}
+
+.loja-button.selected {
+  background-color: #00C853;
+  color: #121212;
+  box-shadow: 0 0 0 2px #00e676;
+}
+
+.gestor-button {
+  background-color: #29B6F6;
+  color: #121212;
+  grid-column: 1 / -1;
+}
+
+.gestor-button:hover {
+  background-color: #4fc3f7;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #00C853;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #00e676;
+}
+
+@media (max-width: 768px) {
+  .loja-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .loja-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+}
