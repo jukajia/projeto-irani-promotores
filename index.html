@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Em Construção - Jarvis Style</title>
   <style>
+    :root {
+      --typing-text: "🚧 Esta página está em construção...";
+      --typing-length: 37; /* Total de caracteres da frase acima */
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -19,23 +24,33 @@
       overflow: hidden;
     }
 
-    h1 {
-      font-size: 2.5rem;
+    .typing-container {
+      font-size: 1.8rem;
       text-align: center;
       margin-bottom: 40px;
       white-space: nowrap;
       overflow: hidden;
       border-right: 2px solid #00ffe7;
-      width: 0;
-      animation: typing 3s steps(40, end) forwards, blink 0.7s step-end infinite;
+      width: 0ch;
+      animation: typingLoop 8s steps(var(--typing-length)) infinite;
     }
 
-    @keyframes typing {
-      to { width: 100%; }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent; }
+    @keyframes typingLoop {
+      0% {
+        width: 0ch;
+      }
+      25% {
+        width: var(--typing-length)ch;
+      }
+      50% {
+        width: var(--typing-length)ch;
+      }
+      75% {
+        width: 0ch;
+      }
+      100% {
+        width: 0ch;
+      }
     }
 
     .loader-container {
@@ -88,7 +103,7 @@
 
     @keyframes moveRobot {
       0% { left: 0%; }
-      100% { left: 80%; }
+      100% { left: 100%; }
     }
 
     .label {
@@ -104,12 +119,12 @@
     }
 
     .jarvis::before {
-      content: "JARVIS v1.0 • IA Superior Criando";
+      content: "J.I.A v1.12 • IA Superior criando";
     }
   </style>
 </head>
 <body>
-  <h1>🚧 Esta página está em construção...</h1>
+  <div class="typing-container">🚧 Esta página está em construção...</div>
 
   <div class="loader-container">
     <div class="rope"></div>
@@ -120,6 +135,6 @@
   </div>
 
   <div class="label">Carregando módulos...</div>
-  <div class="jarvis"></div>
+  <div class="J.I.A"></div>
 </body>
 </html>
