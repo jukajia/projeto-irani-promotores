@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -123,7 +123,7 @@
     <div class="loader">
       <div class="loader-fill">
         <div class="loader-label">85%</div>
-        <!-- Penas -->
+        <--Penas>
         <div class="feather" style="left: 10%; animation-delay: 0s;"></div>
         <div class="feather" style="left: 30%; animation-delay: 0.5s;"></div>
         <div class="feather" style="left: 50%; animation-delay: 1s;"></div>
@@ -174,5 +174,64 @@
       loaderContainer.classList.add("fade-out");
     }, 5000000);
   </script>
+</body>
+</html-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Supermercado Irani</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <img src="imagens/logo-irani.png" alt="Logo Irani" class="login-logo">
+    <h1>Área de Acesso</h1>
+
+    <div class="loja-buttons-grid">
+      <button onclick="selecionarLoja('gestor')" class="loja-button gestor-button">
+        Gestor
+      </button>
+      <button onclick="selecionarLoja('001')" class="loja-button">
+        Brasil (001)
+      </button>
+      <button onclick="selecionarLoja('002')" class="loja-button">
+        Parque Verde (002)
+      </button>
+      <button onclick="selecionarLoja('003')" class="loja-button">
+        Floresta (003)
+      </button>
+      <button onclick="selecionarLoja('004')" class="loja-button">
+        Tancredo (004)
+      </button>
+      <button onclick="selecionarLoja('005')" class="loja-button">
+        Gourmet (005)
+      </button>
+      <button onclick="selecionarLoja('201')" class="loja-button">
+        Portí 1 (201)
+      </button>
+      <button onclick="selecionarLoja('202')" class="loja-button">
+        Portí 2 (202)
+      </button>
+      <button onclick="selecionarLoja('203')" class="loja-button">
+        Portí 3 (203)
+      </button>
+      <button onclick="selecionarLoja('204')" class="loja-button">
+        Portí 4 (204)
+      </button>
+    </div>
+
+    <div id="senhaContainer" style="display: none;">
+      <label for="senha">Senha do Gestor:</label>
+      <input type="password" id="senha" placeholder="Digite a senha do gestor">
+      <button onclick="login()" class="login-button">Entrar</button>
+    </div>
+
+    <div id="erroLogin" class="erro-msg" style="display:none;"></div>
+  </div>
+
+  <script src="js/auth.js"></script>
 </body>
 </html>
