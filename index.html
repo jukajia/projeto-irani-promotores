@@ -3,13 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Em Construção - Jarvis Style</title>
+  <title>Em Construção - J.I.A</title>
   <style>
-    :root {
-      --typing-text: "🚧 Esta página está em construção...";
-      --typing-length: 37; /* Total de caracteres da frase acima */
-    }
-
     body {
       margin: 0;
       padding: 0;
@@ -31,55 +26,48 @@
       white-space: nowrap;
       overflow: hidden;
       border-right: 2px solid #00ffe7;
-      width: 0ch;
-      animation: typingLoop 8s steps(var(--typing-length)) infinite;
-    }
-
-    @keyframes typingLoop {
-      0% {
-        width: 0ch;
-      }
-      25% {
-        width: var(--typing-length)ch;
-      }
-      50% {
-        width: var(--typing-length)ch;
-      }
-      75% {
-        width: 0ch;
-      }
-      100% {
-        width: 0ch;
-      }
+      width: max-content;
+      min-height: 2.5rem;
     }
 
     .loader-container {
       position: relative;
       width: 300px;
-      height: 60px;
+      height: 100px;
       margin-bottom: 10px;
     }
 
-    .rope {
+    .rope-line {
       position: absolute;
-      top: 5px;
-      left: 10px;
+      top: 20px;
+      left: 0;
       height: 2px;
       width: 100%;
       background: #00ffe7;
+      animation: ropeShake 0.6s infinite alternate ease-in-out;
     }
 
-    .robot {
+    @keyframes ropeShake {
+      from { transform: translateY(0); }
+      to { transform: translateY(3px); }
+    }
+
+    .robot-svg {
       position: absolute;
+      top: -10px;
       left: 0%;
-      top: -20px;
-      font-size: 1.8rem;
+      width: 50px;
       animation: moveRobot 4s linear infinite;
+    }
+
+    @keyframes moveRobot {
+      0% { left: 0%; }
+      100% { left: 100%; }
     }
 
     .loader {
       position: absolute;
-      top: 20px;
+      top: 40px;
       left: 0;
       width: 100%;
       height: 30px;
@@ -101,17 +89,12 @@
       100% { transform: translateX(400%); }
     }
 
-    @keyframes moveRobot {
-      0% { left: 0%; }
-      100% { left: 100%; }
-    }
-
     .label {
       font-size: 1.2rem;
       color: #ffffffcc;
     }
 
-    .jarvis {
+    .jia {
       position: absolute;
       bottom: 20px;
       font-size: 0.9rem;
@@ -120,22 +103,68 @@
 
     .jia::before {
       content: "J.I.A v1.12 • IA Superior criando";
-
     }
   </style>
 </head>
 <body>
-  <div class="typing-container">🚧 Esta página está em construção...</div>
+  <div class="typing-container" id="typing"></div>
 
   <div class="loader-container">
-    <div class="rope"></div>
-    <div class="robot">🤖</div>
+    <div class="rope-line"></div>
+    <!-- Robô em SVG -->
+    <svg class="robot-svg" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" stroke="#00ffe7" stroke-width="4" fill="none"/>
+      <circle cx="24" cy="24" r="4" fill="#00ffe7"/>
+      <circle cx="40" cy="24" r="4" fill="#00ffe7"/>
+      <rect x="22" y="40" width="20" height="8" rx="2" fill="#00ffe7"/>
+    </svg>
+
     <div class="loader">
       <div class="loader-fill"></div>
     </div>
   </div>
 
   <div class="label">Carregando módulos...</div>
-  <div class="JIA"></div>
+  <div class="jia"></div>
+
+  <!-- Som de digitação -->
+  <audio id="typeSound" src="https://www.soundjay.com/mechanical/sounds/keyboard-1.mp3" preload="auto"></audio>
+
+  <script>
+    const text = "🚧 Esta página está em construção...";
+    const typingContainer = document.getElementById("typing");
+    const typeSound = document.getElementById("typeSound");
+
+    let index = 0;
+    let isDeleting = false;
+
+    function type() {
+      if (!isDeleting) {
+        typingContainer.textContent = text.slice(0, index + 1);
+        typeSound.currentTime = 0;
+        typeSound.play();
+        index++;
+        if (index < text.length) {
+          setTimeout(type, 100);
+        } else {
+          setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, 1200);
+        }
+      } else {
+        typingContainer.textContent = text.slice(0, index - 1);
+        index--;
+        if (index > 0) {
+          setTimeout(type, 50);
+        } else {
+          isDeleting = false;
+          setTimeout(type, 500);
+        }
+      }
+    }
+
+    type();
+  </script>
 </body>
 </html>
