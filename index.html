@@ -181,57 +181,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema de gestão de promotores - Supermercado Irani">
   <title>Login | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
 </head>
 <body class="login-body">
   <div class="login-container">
-    <img src="imagens/logo-irani.png" alt="Logo Irani" class="login-logo">
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo">
     <h1>Área de Acesso</h1>
 
     <div class="loja-buttons-grid">
-      <button onclick="selecionarLoja('gestor')" class="loja-button gestor-button">
+      <button type="button" onclick="selecionarLoja('gestor')" class="loja-button gestor-button" aria-label="Acessar painel do gestor">
         Gestor
       </button>
-      <button onclick="selecionarLoja('001')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('001')" class="loja-button" aria-label="Acessar loja Brasil">
         Brasil (001)
       </button>
-      <button onclick="selecionarLoja('002')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('002')" class="loja-button" aria-label="Acessar loja Parque Verde">
         Parque Verde (002)
       </button>
-      <button onclick="selecionarLoja('003')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('003')" class="loja-button" aria-label="Acessar loja Floresta">
         Floresta (003)
       </button>
-      <button onclick="selecionarLoja('004')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('004')" class="loja-button" aria-label="Acessar loja Tancredo">
         Tancredo (004)
       </button>
-      <button onclick="selecionarLoja('005')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('005')" class="loja-button" aria-label="Acessar loja Gourmet">
         Gourmet (005)
       </button>
-      <button onclick="selecionarLoja('201')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('201')" class="loja-button" aria-label="Acessar loja Portí 1">
         Portí 1 (201)
       </button>
-      <button onclick="selecionarLoja('202')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('202')" class="loja-button" aria-label="Acessar loja Portí 2">
         Portí 2 (202)
       </button>
-      <button onclick="selecionarLoja('203')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('203')" class="loja-button" aria-label="Acessar loja Portí 3">
         Portí 3 (203)
       </button>
-      <button onclick="selecionarLoja('204')" class="loja-button">
+      <button type="button" onclick="selecionarLoja('204')" class="loja-button" aria-label="Acessar loja Portí 4">
         Portí 4 (204)
       </button>
     </div>
 
-    <div id="senhaContainer" style="display: none;">
+    <div id="senhaContainer" class="senha-container" style="display: none;">
       <label for="senha">Senha do Gestor:</label>
-      <input type="password" id="senha" placeholder="Digite a senha do gestor">
-      <button onclick="login()" class="login-button">Entrar</button>
+      <input type="password" id="senha" placeholder="Digite a senha do gestor" aria-required="true">
+      <button type="button" onclick="login()" class="login-button">Entrar</button>
     </div>
 
-    <div id="erroLogin" class="erro-msg" style="display:none;"></div>
+    <div id="erroLogin" class="erro-msg" style="display:none;" aria-live="assertive"></div>
   </div>
 
-  <script src="js/auth.js"></script>
+  <script src="js/auth.js" defer></script>
 </body>
 </html>
