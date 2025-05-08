@@ -123,3 +123,46 @@ button {
     grid-template-columns: 1fr;
   }
 }
+/* Adicione estas regras ao seu CSS existente */
+
+[data-theme="dark"] {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.dark-label {
+  color: var(--dark-text);
+}
+
+.dark-input {
+  background-color: var(--dark-surface);
+  color: var(--dark-text);
+  border: 1px solid var(--dark-text-secondary);
+}
+
+.dark-button {
+  background-color: var(--dark-surface);
+  color: var(--dark-text);
+  border: 1px solid var(--dark-primary);
+}
+
+.dark-error {
+  color: var(--dark-error);
+  background-color: rgba(239, 83, 80, 0.1);
+}
+
+/* Mantenha as classes existentes com adaptações para dark mode */
+.login-container {
+  background-color: var(--dark-surface);
+  box-shadow: 0 0 10px rgba(0, 200, 83, 0.3);
+}
+
+.loja-button {
+  background-color: var(--dark-surface);
+  color: var(--dark-text);
+}
+
+.loja-button:hover {
+  background-color: var(--dark-primary);
+  color: var(--dark-bg);
+}
