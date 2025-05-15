@@ -25,6 +25,8 @@ function carregarLoja() {
     const dataTable = response.getDataTable();
     cabecalhos = [];
     dadosLoja = [];
+    console.log("dadosLoja preenchidos:", dadosLoja.length);
+
 
     for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
       cabecalhos.push(dataTable.getColumnLabel(c));
