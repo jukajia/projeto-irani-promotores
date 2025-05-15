@@ -1,72 +1,57 @@
-const PLANILHA_URL = window.PLANILHAS.lojas;
-let dadosFiltrados = [];
+google.charts.load('current', { packages: ['corechart', 'table'] });
+google.charts.setOnLoadCallback(carregarLoja);
 
-document.addEventListener("DOMContentLoaded", () => {
+let dadosLoja = [];
+let cabecalhos = [];
+
+function carregarLoja() {
   const params = new URLSearchParams(window.location.search);
   const codigoLoja = params.get("loja");
-
   if (!codigoLoja) return;
 
   document.getElementById("tituloLoja").textContent += ` - Loja ${codigoLoja}`;
-  atualizarPlanilha();
-});
 
-async function atualizarPlanilha() {
-  const status = document.getElementById("statusAtualiza");
-  status.textContent = "⏳ Carregando...";
+  const query = new google.visualization.Query(window.PLANILHAS.lojas);
+  query.send(response => {
+    if (response.isError()) {
+      console.error("Erro ao carregar loja: ", response.getMessage());
+      return;
+    }
+    const dataTable = response.getDataTable();
 
-  try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const codigoLoja = urlParams.get('loja');
-    if (!codigoLoja) throw new Error("Código da loja não definido");
+    cabecalhos = [];
+    dadosLoja = [];
 
-    const response = await fetch(`${PLANILHA_URL}&t=${Date.now()}`);
-    const text = await response.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
+    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+      cabecalhos.push(dataTable.getColumnLabel(c));
+    }
 
-    const dados = json.table.rows
-      .filter(row => row.c[4]?.v === codigoLoja)
-      .map(row => ({
-        dataHora: row.c[0]?.f ?? row.c[0]?.v ?? "",
-        nome: row.c[2]?.v ?? "",
-        marca: row.c[6]?.v ?? "",
-        produto: row.c[7]?.v ?? "",
-        telefone: formatarTelefone(row.c[5]?.v ?? "")
-      }));
+    for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
+      const loja = dataTable.getValue(r, cabecalhos.findIndex(h => h.toLowerCase() === "loja"));
+      if (loja !== codigoLoja) continue;
 
-    localStorage.setItem(`dadosLoja_${codigoLoja}`, JSON.stringify(dados));
-    dadosFiltrados = dados;
-    renderTabela(dados);
+      const linha = [];
+      for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+        linha.push(dataTable.getValue(r, c));
+      }
+      dadosLoja.push(linha);
+    }
 
-    status.textContent = "✅ Atualizado!";
-  } catch (error) {
-    console.error("Erro ao atualizar planilha:", error);
-    status.textContent = "❌ Erro ao atualizar!";
-  }
+    renderTabelaLoja(dadosLoja);
+  });
 }
 
-function renderTabela(dados) {
+function renderTabelaLoja(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
-  tbody.innerHTML = dados.map(item => `
-    <tr>
-      <td>${item.dataHora}</td>
-      <td>${item.nome}</td>
-      <td>${item.marca}</td>
-      <td>${item.produto}</td>
-      <td>${item.telefone}</td>
-    </tr>
-  `).join("");
-}
+  tbody.innerHTML = "";
 
-function filtrarDadosPublicoLocal() {
-  const termo = document.getElementById("buscaPublica").value.toLowerCase();
-  const filtrado = dadosFiltrados.filter(item =>
-    Object.values(item).join(" ").toLowerCase().includes(termo)
-  );
-  renderTabela(filtrado);
-}
-
-function formatarTelefone(valor) {
-  const nums = valor.replace(/\D/g, '');
-  return nums.length === 11 ? nums.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3") : valor;
+  dados.forEach(linha => {
+    const tr = document.createElement("tr");
+    linha.forEach(cel => {
+      const td = document.createElement("td");
+      td.textContent = cel ?? "";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
 }
