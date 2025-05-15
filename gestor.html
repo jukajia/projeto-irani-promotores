@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel do Gestor | Supermercado Irani</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
-  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
+
   <!-- Bibliotecas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 
-  <!-- Configuração -->
-  <script src="js/config.js" defer></script>
+  <!-- Configuração + Lógica -->
+  <script src="config.js"></script>
   <script src="js/gestor.js" defer></script>
 </head>
-<body>
+<body data-theme="dark">
   <header>
-    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo">
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
     <h1>Painel do Gestor</h1>
   </header>
 
   <main>
-    <!-- Filtro simplificado -->
+    <!-- Filtro -->
     <div class="filtros">
-      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()">
+      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
     </div>
 
     <!-- Ações -->
@@ -57,9 +57,7 @@
       </table>
     </div>
 
-    <button class="btn-voltar" onclick="window.location.href='index.html'">
-      ← Voltar para Login
-    </button>
+    <button class="btn-voltar" onclick="window.location.href='index.html'">← Voltar para Login</button>
   </main>
 </body>
 </html>
