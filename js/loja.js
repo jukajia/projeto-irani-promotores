@@ -38,7 +38,7 @@ function carregarLoja() {
       const loja = dataTable.getValue(r, idxLoja);
       console.log(`Linha ${r} Loja:`, loja);
 
-      if (String(loja) !== codigoLoja) continue;
+      //if (String(loja) !== codigoLoja) continue;
 
       const linha = [];
       for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
