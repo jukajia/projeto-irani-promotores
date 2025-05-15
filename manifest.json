@@ -1,0 +1,21 @@
+{
+  "name": "Painel Irani",
+  "short_name": "Irani",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "description": "Painel de controle e relatório de promotores do Supermercado Irani.",
+  "icons": [
+    {
+      "src": "imagens/favicon-juka.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "imagens/favicon-juka.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
