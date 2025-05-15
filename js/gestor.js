@@ -54,7 +54,7 @@ function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
 
-  // Índices das colunas telefone (calcule aqui para garantir que estão atualizados)
+  // Índices das colunas telefone (calcule para garantir atualização)
   const idxTelefoneSupervisor = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone supervisor"));
   const idxTelefoneEmpresa = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone empresa"));
 
@@ -83,22 +83,19 @@ function filtrarPorLoja(codigo) {
   if (botaoSelecionado) botaoSelecionado.classList.add("selected");
 
   // Filtrar dados
-  if (codigo === "TODAS") {
+  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
+  if (codigo === "TODAS" || idxLoja === -1) {
     renderizarTudo(dadosGestor);
     return;
   }
 
-  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
   const dadosFiltrados = dadosGestor.filter(linha => (linha[idxLoja] + "").includes(codigo));
-
   renderizarTudo(dadosFiltrados);
 }
 
 function gerarGraficos(dados) {
-  // Exemplo: gráfico simples de quantidade por "Dias da Semana" e "Loja"
-  // Encontre índice das colunas que interessam
-  const idxDia = cabecalhos.findIndex(h => h.toLowerCase().includes("dias da semana"));
-  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
+  const idxDia = cabecalhos.findIndex(h => h && h.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
 
   if (window.chartDia) window.chartDia.destroy();
   if (window.chartLoja) window.chartLoja.destroy();
@@ -118,7 +115,6 @@ function contar(dados, idx) {
   });
   return res;
 }
-
 
 function criarGraficoBarra(id, label, dados) {
   const ctx = document.getElementById(id);
