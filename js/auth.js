@@ -1,53 +1,43 @@
-let lojaSelecionada = null;
-
-function selecionarLoja(codigoLoja) {
-  lojaSelecionada = codigoLoja;
-  const senhaContainer = document.getElementById("senhaContainer");
-  const erroElement = document.getElementById("erroLogin");
-  
-  // Resetar estado
-  document.querySelectorAll('.loja-button').forEach(btn => {
-    btn.classList.remove('selected');
-  });
-  document.getElementById("senha").value = "";
-  erroElement.style.display = "none";
-  
-  // Adicionar classe selected ao botão clicado
-  event.currentTarget.classList.add('selected');
-  
-  // Mostrar campo de senha apenas para gestor
-  if (codigoLoja === 'gestor') {
-    senhaContainer.style.display = "block";
-  } else {
-    senhaContainer.style.display = "none";
-    acessarLoja(codigoLoja);
-  }
-}
-
 function login() {
+  const usuarioInput = document.getElementById("usuario");
   const senhaInput = document.getElementById("senha");
   const erroElement = document.getElementById("erroLogin");
+
+  const usuario = usuarioInput.value.trim();
   const senha = senhaInput.value.trim();
 
-  if (!senha) {
-    mostrarErroLogin("Digite a senha do gestor", erroElement);
+  if (!usuario) {
+    mostrarErroLogin("Selecione uma loja", erroElement);
     return;
   }
 
-  // Senha do gestor (pode ser alterada conforme necessidade)
-  const SENHA_GESTOR = "Ira95101";
+  const logins = {
+    gestor: { senha: "Ira95101", pagina: "gestor.html" },
+    brasil: { senha: "001", pagina: "loja.html?loja=001" },
+    parqueverde: { senha: "002", pagina: "loja.html?loja=002" },
+    floresta: { senha: "003", pagina: "loja.html?loja=003" },
+    tancredo: { senha: "004", pagina: "loja.html?loja=004" },
+    gourmet: { senha: "005", pagina: "loja.html?loja=005" },
+    porti1: { senha: "201", pagina: "loja.html?loja=201" },
+    porti2: { senha: "202", pagina: "loja.html?loja=202" },
+    porti3: { senha: "203", pagina: "loja.html?loja=203" },
+    porti4: { senha: "204", pagina: "loja.html?loja=204" }
+  };
 
-  if (senha === SENHA_GESTOR) {
-    window.location.href = "gestor.html";
-  } else {
+  const loginConfig = logins[usuario];
+  if (!loginConfig) {
+    mostrarErroLogin("Loja não encontrada", erroElement);
+    return;
+  }
+
+  if (loginConfig.senha !== senha) {
     mostrarErroLogin("Senha incorreta", erroElement);
     senhaInput.focus();
     senhaInput.select();
+    return;
   }
-}
 
-function acessarLoja(codigoLoja) {
-  window.location.href = `loja.html?loja=${codigoLoja}`;
+  window.location.href = loginConfig.pagina;
 }
 
 function mostrarErroLogin(mensagem, erroElement) {
@@ -58,4 +48,8 @@ function mostrarErroLogin(mensagem, erroElement) {
 
 document.getElementById("senha").addEventListener("keypress", ({ key }) => {
   if (key === "Enter") login();
+});
+
+document.getElementById("usuario").addEventListener("change", function() {
+  if (this.value) document.getElementById("senha").focus();
 });
