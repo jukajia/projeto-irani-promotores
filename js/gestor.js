@@ -53,11 +53,21 @@ function renderCabecalho() {
 function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
+
+  // Índices das colunas telefone (calcule aqui para garantir que estão atualizados)
+  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone supervisor"));
+  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone empresa"));
+
   dados.forEach(linha => {
     const tr = document.createElement("tr");
-    linha.forEach(cel => {
+    linha.forEach((cel, i) => {
       const td = document.createElement("td");
-      td.textContent = cel ?? "";
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel) {
+        const telefoneLimpo = cel.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${cel}</a>`;
+      } else {
+        td.textContent = cel ?? "";
+      }
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
@@ -106,6 +116,7 @@ function contar(dados, idx) {
   });
   return res;
 }
+
 
 function criarGraficoBarra(id, label, dados) {
   const ctx = document.getElementById(id);
