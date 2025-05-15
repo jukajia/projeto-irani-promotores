@@ -1,92 +1,79 @@
-body.dark-theme {
-  background-color: #111;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 }
 
-.login-container {
+/* Cabeçalhos e logos */
+.logo-topo {
+  max-width: 180px;
+  margin: 20px auto;
+  display: block;
+}
+
+header, main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+header h1 {
   text-align: center;
-  background-color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Login Container */
+.login-container {
+  background-color: #1e1e1e;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 20px #0f0;
+  box-shadow: 0 0 20px #00c853aa;
+  max-width: 400px;
+  margin: 80px auto;
+  text-align: center;
 }
 
-.logo {
-  width: 180px;
-  margin-bottom: 20px;
+.login-logo {
+  max-width: 150px;
+  margin-bottom: 24px;
 }
 
-.select-loja,
-input[type="password"],
-button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 12px 0;
-  border: none;
-  border-radius: 6px;
-}
-
-.select-loja,
-input[type="password"] {
-  background: #222;
-  color: white;
-}
-
-button {
-  background: #00ff90;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.animation-box {
-  width: 120px;
-  height: 120px;
-  margin: auto;
-  margin-bottom: 20px;
-}
-/* Estilo para a grid de botões de loja */
+/* Grid dos botões de loja */
 .loja-buttons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 20px 0;
-  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .loja-button {
-  padding: 12px 8px;
-  border: none;
-  border-radius: 5px;
   background-color: #2a2a2a;
-  color: #FFFFFF;
+  color: #e0e0e0;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
-.loja-button:hover {
-  background-color: #00C853;
-  color: #121212;
-}
-
+.loja-button:hover,
 .loja-button.selected {
-  background-color: #00C853;
+  background-color: #00c853;
   color: #121212;
-  box-shadow: 0 0 0 2px #00e676;
+  box-shadow: 0 0 8px #00e676;
 }
 
 .gestor-button {
-  background-color: #29B6F6;
+  background-color: #29b6f6;
   color: #121212;
   grid-column: 1 / -1;
 }
@@ -95,26 +82,188 @@ button {
   background-color: #4fc3f7;
 }
 
-.login-button {
+/* Inputs e botões */
+.dark-input,
+input[type="password"] {
   width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  background-color: #00C853;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #222;
+  color: #e0e0e0;
+  font-size: 1rem;
 }
 
-.login-button:hover {
+.dark-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
+}
+
+.login-button,
+.dark-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #00c853;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover,
+.dark-button:hover {
   background-color: #00e676;
 }
 
+/* Mensagens de erro */
+.erro-msg {
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+  display: none;
+}
+
+/* Filtros e exportações */
+.filtros {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.filtros input[type="text"] {
+  width: 100%;
+  max-width: 480px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.exportacoes {
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.exportacoes button {
+  background-color: #00c853;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exportacoes button:hover {
+  background-color: #00e676;
+}
+
+#statusAtualiza {
+  color: #eee;
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Tabelas */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 32px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #eee;
+  font-size: 0.95rem;
+}
+
+thead th {
+  background-color: #1b5e20;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #00c853;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #222;
+}
+
+tbody tr:hover {
+  background-color: #004d40;
+  cursor: pointer;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+}
+
+tbody tr.destacado {
+  background-color: #00c853;
+  color: #121212;
+}
+
+/* Botão voltar */
+.btn-voltar,
+.btn-voltar-login {
+  background-color: transparent;
+  border: none;
+  color: #00c853;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+  margin: 0 auto 40px;
+  transition: color 0.3s ease;
+}
+
+.btn-voltar:hover,
+.btn-voltar-login:hover {
+  color: #00e676;
+}
+
+/* Gráficos */
+.graficos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.grafico-card {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1 1 400px;
+  max-width: 480px;
+  height: 320px;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
   .loja-buttons-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .graficos {
+    flex-direction: column;
+    gap: 16px;
   }
 }
 
@@ -122,47 +271,8 @@ button {
   .loja-buttons-grid {
     grid-template-columns: 1fr;
   }
-}
-/* Adicione estas regras ao seu CSS existente */
 
-[data-theme="dark"] {
-  background-color: var(--dark-bg);
-  color: var(--dark-text);
-}
-
-.dark-label {
-  color: var(--dark-text);
-}
-
-.dark-input {
-  background-color: var(--dark-surface);
-  color: var(--dark-text);
-  border: 1px solid var(--dark-text-secondary);
-}
-
-.dark-button {
-  background-color: var(--dark-surface);
-  color: var(--dark-text);
-  border: 1px solid var(--dark-primary);
-}
-
-.dark-error {
-  color: var(--dark-error);
-  background-color: rgba(239, 83, 80, 0.1);
-}
-
-/* Mantenha as classes existentes com adaptações para dark mode */
-.login-container {
-  background-color: var(--dark-surface);
-  box-shadow: 0 0 10px rgba(0, 200, 83, 0.3);
-}
-
-.loja-button {
-  background-color: var(--dark-surface);
-  color: var(--dark-text);
-}
-
-.loja-button:hover {
-  background-color: var(--dark-primary);
-  color: var(--dark-bg);
+  .graficos {
+    height: auto;
+  }
 }
