@@ -285,3 +285,39 @@ a[href^="https://wa.me"]:hover {
   overflow-x: auto;
   margin-bottom: 32px;
 }
+/* Container e animação da nuvem pulsante verde ao redor do logo */
+.login-container {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00c853aa;
+  max-width: 400px;
+  margin: 80px auto;
+  text-align: center;
+  position: relative;
+}
+
+.pulse-glow {
+  display: inline-block;
+  border-radius: 50%;
+  padding: 20px;
+  animation: pulseGreen 2.5s infinite;
+}
+
+.pulse-glow img.login-logo {
+  max-width: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 200, 83, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+  }
+}
