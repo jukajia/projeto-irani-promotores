@@ -5,32 +5,35 @@
   padding: 0;
 }
 
+/* Estrutura geral */
 body[data-theme="dark"] {
   background-color: #121212;
   color: #e0e0e0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Cabeçalho */
+header,
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Logo */
 .logo-topo {
   max-width: 180px;
   margin: 20px auto;
   display: block;
 }
 
-header, main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
+/* Títulos */
 header h1 {
   text-align: center;
   margin-bottom: 20px;
   font-weight: 700;
 }
 
-/* Botões de loja */
+/* Botões de lojas */
 .loja-buttons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -66,56 +69,6 @@ header h1 {
   background-color: #4fc3f7;
 }
 
-/* Campos de input */
-.dark-input,
-input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border: 1px solid #555;
-  border-radius: 6px;
-  background-color: #222;
-  color: #e0e0e0;
-  font-size: 1rem;
-}
-
-.dark-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #ccc;
-}
-
-/* Botões gerais */
-.login-button,
-.dark-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #00c853;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  color: #121212;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover,
-.dark-button:hover {
-  background-color: #00e676;
-}
-
-/* Mensagens de erro */
-.erro-msg {
-  color: #ef5350;
-  background-color: rgba(239, 83, 80, 0.1);
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 8px;
-  font-weight: 600;
-  display: none;
-}
-
 /* Filtros */
 .filtros {
   margin-bottom: 16px;
@@ -133,7 +86,7 @@ input[type="password"] {
   font-size: 1rem;
 }
 
-/* Exportações */
+/* Botões de ação */
 .exportacoes {
   margin-bottom: 24px;
   display: flex;
@@ -165,13 +118,17 @@ input[type="password"] {
   text-align: center;
 }
 
-/* Tabela */
+/* Tabelas */
 .table-responsive {
   overflow-x: auto;
   margin-bottom: 32px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #tabelaGestor {
+  min-width: 1000px;
   width: 100%;
   border-collapse: collapse;
   color: #eee;
@@ -186,12 +143,6 @@ input[type="password"] {
   white-space: nowrap;
 }
 
-#tabelaGestor tbody td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #333;
-  white-space: nowrap;
-}
-
 #tabelaGestor tbody tr:nth-child(even) {
   background-color: #222;
 }
@@ -201,9 +152,10 @@ input[type="password"] {
   cursor: pointer;
 }
 
-#tabelaGestor tbody tr.destacado {
-  background-color: #00c853;
-  color: #121212;
+#tabelaGestor tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
 }
 
 /* Gráficos */
@@ -224,7 +176,7 @@ input[type="password"] {
   height: 320px;
 }
 
-/* Botões de navegação */
+/* Botões utilitários */
 .btn-voltar,
 .btn-voltar-login {
   background-color: transparent;
@@ -243,26 +195,6 @@ input[type="password"] {
   color: #00e676;
 }
 
-/* Botão flutuante fixo no topo */
-.btn-topo {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 1000;
-  background-color: #00c853;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-weight: 600;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-topo:hover {
-  background-color: #009624;
-}
-
-/* Botão fixo no topo direito (link) */
 .btn-cadastrar-promotor {
   position: fixed;
   top: 16px;
@@ -272,7 +204,7 @@ input[type="password"] {
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-decoration: none;
   z-index: 999;
   transition: background-color 0.3s ease;
@@ -282,7 +214,7 @@ input[type="password"] {
   background-color: #009624;
 }
 
-/* WhatsApp links */
+/* Links do WhatsApp */
 a[href^="https://wa.me"] {
   color: #25D366;
   text-decoration: none;
@@ -294,7 +226,7 @@ a[href^="https://wa.me"]:hover {
   text-decoration: underline;
 }
 
-/* Responsividade */
+/* Responsivo */
 @media (max-width: 768px) {
   .loja-buttons-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -309,9 +241,5 @@ a[href^="https://wa.me"]:hover {
 @media (max-width: 480px) {
   .loja-buttons-grid {
     grid-template-columns: 1fr;
-  }
-
-  .graficos {
-    height: auto;
   }
 }
