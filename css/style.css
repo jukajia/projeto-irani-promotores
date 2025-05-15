@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
+/* RESET & BASE */
 * {
   margin: 0;
   padding: 0;
@@ -7,368 +8,23 @@
   font-family: 'Ubuntu', sans-serif;
 }
 
-body {
+body, body[data-theme="dark"] {
   background-color: #121212;
-  color: #FFFFFF;
+  color: #e0e0e0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Login */
+/* LOGIN PAGE */
 .login-body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #121212;
 }
 
-.login-container {
-  background-color: #1e1e1e;
-  padding: 40px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 0 10px #00C853;
-  width: 90%;
-  max-width: 400px;
-}
-
-.login-logo {
-  width: 120px;
-  margin-bottom: 20px;
-}
-
-.login-container h1 {
-  margin-bottom: 20px;
-  color: #00C853;
-}
-
-.login-container label {
-  display: block;
-  text-align: left;
-  margin: 15px 0 5px;
-  color: #f0f0f0;
-}
-
-.login-container select,
-.login-container input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2a2a2a;
-  color: white;
-}
-
-.login-container button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #00C853;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.login-container button:hover {
-  background-color: #00e676;
-}
-
-.erro-msg {
-  color: #EF5350;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* Header */
-header {
-  text-align: center;
-  padding: 20px 0;
-  background-color: #1e1e1e;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.logo-topo {
-  width: 80px;
-  margin-bottom: 10px;
-}
-
-header h1 {
-  color: #00C853;
-  font-size: 1.5rem;
-}
-
-/* Filtros */
-.filtros {
-  background-color: #1e1e1e;
-  padding: 15px;
-  margin: 20px auto;
-  border-radius: 8px;
-  max-width: 95%;
-  box-shadow: 0 0 10px rgba(0, 200, 83, 0.3);
-  display: flex;
-  justify-content: center;
-}
-
-#buscaPublica, #buscaGestor {
-  width: 100%;
-  max-width: 500px;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2a2a2a;
-  color: white;
-}
-
-/* Botões de lojas */
-.loja-buttons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.loja-button {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.loja-button:hover,
-.loja-button.selected {
-  background-color: #00C853;
-  color: #121212;
-  box-shadow: 0 0 8px #00e676;
-}
-
-/* Exportação */
-.exportacoes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px auto;
-  max-width: 95%;
-}
-
-.exportacoes button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #29B6F6;
-  color: #121212;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.exportacoes button:hover {
-  background-color: #4fc3f7;
-}
-
-#statusAtualiza {
-  margin-left: 10px;
-  color: #FFC107;
-  align-self: center;
-}
-
-/* Tabela */
-.table-responsive {
-  overflow-x: auto;
-  width: 100%;
-}
-
-table {
-  width: 95%;
-  margin: 20px auto;
-  border-collapse: collapse;
-  background-color: #1e1e1e;
-  box-shadow: 0 0 10px rgba(0, 200, 83, 0.2);
-}
-
-th, td {
-  padding: 12px;
-  border: 1px solid #333;
-  text-align: left;
-}
-
-th {
-  background-color: #00C853;
-  color: #121212;
-  font-weight: bold;
-}
-
-td {
-  color: #f0f0f0;
-}
-
-tr:nth-child(even) {
-  background-color: #2a2a2a;
-}
-
-tr:hover {
-  background-color: #333;
-}
-
-tr.destacado {
-  background-color: #004d40;
-}
-
-/* Gráficos */
-.graficos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px auto;
-  max-width: 95%;
-}
-
-.grafico-card {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 0 10px rgba(0, 200, 83, 0.3);
-}
-
-/* Botões fixos */
-.btn-voltar, .btn-voltar-login {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 15px;
-  background-color: #EF5350;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background-color 0.3s;
-}
-
-.btn-voltar:hover, .btn-voltar-login:hover {
-  background-color: #D32F2F;
-}
-
-/* Link WhatsApp */
-a[href^="https://wa.me"] {
-  color: #25D366;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a[href^="https://wa.me"]:hover {
-  color: #128C7E;
-  text-decoration: underline;
-}
-
-/* Botão cadastrar promotor fixo */
-.btn-cadastrar-promotor {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background-color: #00c853;
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  text-decoration: none;
-  z-index: 999;
-  transition: background-color 0.3s ease;
-}
-.btn-cadastrar-promotor:hover {
-  background-color: #009624;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .graficos {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .grafico-card {
-    max-width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .loja-buttons-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .exportacoes {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .exportacoes button {
-    width: 100%;
-    max-width: 250px;
-  }
-}
-
-@media (max-width: 480px) {
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-}
-/* Posicionamento fixo do botão "Cadastrar Promotor", com espaçamento da logo */
-.btn-cadastrar-promotor {
-  position: fixed;
-  top: 100px; /* ↓ ajustado para não sobrepor a logo */
-  right: 20px;
-  background-color: #00C853;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  text-decoration: none;
-  z-index: 999;
-  transition: background-color 0.3s ease;
-}
-.btn-cadastrar-promotor:hover {
-  background-color: #009624;
-}
-
-/* Centraliza vertical e horizontal o login */
-body.login-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-/* Reset básico */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Body com flex para centralizar conteúdo */
-body[data-theme="dark"] {
-  background-color: #121212;
-  color: #e0e0e0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Container principal centralizado */
 .login-container {
   background-color: #1e1e1e;
   padding: 40px;
@@ -383,59 +39,31 @@ body[data-theme="dark"] {
 .pulse-glow {
   display: inline-block;
   padding: 12px;
-  border-radius: 12px; /* Cantos suaves */
+  border-radius: 12px;
   background-color: #1e1e1e;
   box-shadow: 0 0 15px rgba(0, 200, 83, 0.5);
   animation: pulse-glow 2s infinite ease-in-out;
 }
 
 @keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 18px rgba(0, 255, 100, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
-  }
+  0% { box-shadow: 0 0 8px rgba(0, 200, 83, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(0, 255, 100, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(0, 200, 83, 0.4); }
 }
 
-
-@keyframes pulse {
-  0% {
-    box-shadow:
-      0 0 8px #00c853,
-      0 0 16px #00c853,
-      0 0 32px #00c853aa;
-  }
-  50% {
-    box-shadow:
-      0 0 12px #00e676,
-      0 0 24px #00e676,
-      0 0 48px #00e676bb;
-  }
-  100% {
-    box-shadow:
-      0 0 8px #00c853,
-      0 0 16px #00c853,
-      0 0 32px #00c853aa;
-  }
-}
-
-/* Logo dentro da nuvem */
 .login-logo {
   max-width: 150px;
   display: block;
+  margin-bottom: 24px;
 }
 
-/* Título */
-h1 {
+.login-container h1 {
   margin-bottom: 24px;
   font-weight: 700;
+  color: #00c853;
 }
 
-/* Botões das lojas */
+/* LOJA BOTÕES */
 .loja-buttons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -461,7 +89,7 @@ h1 {
   box-shadow: 0 0 8px #00e676;
 }
 
-/* Input senha */
+/* SENHA */
 .dark-input {
   width: 100%;
   padding: 12px;
@@ -474,7 +102,6 @@ h1 {
   font-size: 1rem;
 }
 
-/* Label senha */
 .dark-label {
   display: block;
   margin-bottom: 8px;
@@ -483,7 +110,7 @@ h1 {
   text-align: left;
 }
 
-/* Botão login */
+/* LOGIN BUTTON */
 .login-button {
   width: 100%;
   padding: 12px;
@@ -500,7 +127,7 @@ h1 {
   background-color: #00e676;
 }
 
-/* Mensagem de erro */
+/* ERRO */
 .erro-msg {
   color: #ef5350;
   background-color: rgba(239, 83, 80, 0.1);
@@ -511,13 +138,13 @@ h1 {
   display: none;
 }
 
-/* Botão "Cadastrar Promotor" fixo */
+/* BOTÃO FIXO - Cadastrar Promotor */
 .btn-cadastrar-promotor {
   position: fixed;
   top: 16px;
   right: 16px;
   background-color: #00c853;
-  color: #fff;
+  color: white;
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -529,4 +156,60 @@ h1 {
 
 .btn-cadastrar-promotor:hover {
   background-color: #009624;
+}
+
+/* BOTÃO FIXO VOLTAR */
+.btn-voltar, .btn-voltar-login {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  background-color: #ef5350;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+}
+
+.btn-voltar:hover, .btn-voltar-login:hover {
+  background-color: #d32f2f;
+}
+
+/* LINKS WHATSAPP */
+a[href^="https://wa.me"] {
+  color: #25d366;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a[href^="https://wa.me"]:hover {
+  color: #128c7e;
+  text-decoration: underline;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .loja-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-cadastrar-promotor {
+    top: 12px;
+    right: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 20px;
+  }
+
+  .login-logo {
+    max-width: 100px;
+  }
 }
