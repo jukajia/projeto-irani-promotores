@@ -380,18 +380,27 @@ body[data-theme="dark"] {
   position: relative;
 }
 
-/* Nuvem pulsante verde ao redor do logo */
 .pulse-glow {
-  margin: 0 auto 24px auto;
-  width: fit-content;
-  padding: 20px;
-  border-radius: 50%;
-  box-shadow:
-    0 0 8px #00c853,
-    0 0 16px #00c853,
-    0 0 32px #00c853aa;
-  animation: pulse 2.5s infinite;
+  display: inline-block;
+  padding: 12px;
+  border-radius: 12px; /* Cantos suaves */
+  background-color: #1e1e1e;
+  box-shadow: 0 0 15px rgba(0, 200, 83, 0.5);
+  animation: pulse-glow 2s infinite ease-in-out;
 }
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(0, 255, 100, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
+  }
+}
+
 
 @keyframes pulse {
   0% {
