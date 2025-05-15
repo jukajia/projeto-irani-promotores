@@ -38,5 +38,12 @@
 
   <script src="js/config.js"></script>
   <script src="js/auth.js" defer></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('✅ Service Worker registrado com sucesso.'))
+      .catch(err => console.error('❌ Erro ao registrar SW:', err));
+  }
+  </script>
 </body>
 </html>
