@@ -3,247 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Em Construção - J.I.A</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #00ffe7;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .typing-container {
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 40px;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid #00ffe7;
-      width: max-content;
-      min-height: 2.5rem;
-    }
-
-    .loader-container {
-      position: relative;
-      width: 300px;
-      height: 100px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .robot-gif {
-      width: 64px;
-      height: 64px;
-      margin-right: 10px;
-    }
-
-    .loader {
-      position: relative;
-      width: 100%;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid #00ffe7;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .loader-fill {
-      height: 100%;
-      width: 85%;
-      background: linear-gradient(90deg, #00ffe7, #00c2a7);
-      position: relative;
-    }
-
-    .loader-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1rem;
-      color: #ffffffcc;
-    }
-
-    .feather {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #ffffff;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: fall 3s linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(50px) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    .jia {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9rem;
-      color: #00ffe799;
-    }
-
-    .jia::before {
-      content: "J.I.A v1.12 • IA Superior criando";
-    }
-
-    .fade-out {
-      animation: fadeOut 2s forwards;
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="typing-container" id="typing"></div>
-
-  <div class="loader-container" id="loaderContainer">
-    <img src="https://i.makeagif.com/media/4-02-2016/wtOhaP.gif" alt="Frank puxando corda" class="robot-gif">
-    <div class="loader">
-      <div class="loader-fill">
-        <div class="loader-label">85%</div>
-        <--Penas>
-        <div class="feather" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="feather" style="left: 30%; animation-delay: 0.5s;"></div>
-        <div class="feather" style="left: 50%; animation-delay: 1s;"></div>
-        <div class="feather" style="left: 70%; animation-delay: 1.5s;"></div>
-        <div class="feather" style="left: 90%; animation-delay: 2s;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="jia"></div>
-
-  <script>
-    const text = "🚧 Esta página está em construção...";
-    const typingContainer = document.getElementById("typing");
-
-    let index = 0;
-    let isDeleting = false;
-
-    function type() {
-      if (!isDeleting) {
-        typingContainer.textContent = text.slice(0, index + 1);
-        index++;
-        if (index < text.length) {
-          setTimeout(type, 100);
-        } else {
-          setTimeout(() => {
-            isDeleting = true;
-            type();
-          }, 1200);
-        }
-      } else {
-        typingContainer.textContent = text.slice(0, index - 1);
-        index--;
-        if (index > 0) {
-          setTimeout(type, 50);
-        } else {
-          isDeleting = false;
-          setTimeout(type, 500);
-        }
-      }
-    }
-
-    type();
-
-    // Fade out da barra após 5 segundos
-    setTimeout(() => {
-      const loaderContainer = document.getElementById("loaderContainer");
-      loaderContainer.classList.add("fade-out");
-    }, 5000000);
-  </script>
-</body>
-</html>
-<!--!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sistema de gestão de promotores - Supermercado Irani">
   <title>Login | Supermercado Irani</title>
-  <style>
-    :root {
-      --dark-bg: #121212;
-      --dark-surface: #1e1e1e;
-      --dark-primary: #00C853;
-      --dark-secondary: #29B6F6;
-      --dark-error: #EF5350;
-      --dark-text: #e0e0e0;
-      --dark-text-secondary: #a0a0a0;
-    }
-  </style>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
 </head>
-<body class="login-body" data-theme="dark">
+<body data-theme="dark">
   <div class="login-container">
     <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo">
     <h1>Área de Acesso</h1>
 
     <div class="loja-buttons-grid">
-      <button type="button" onclick="selecionarLoja('gestor')" class="loja-button gestor-button" aria-label="Acessar painel do gestor">
-        Gestor
-      </button>
-      <button type="button" onclick="selecionarLoja('001')" class="loja-button" aria-label="Acessar loja Brasil">
-        Brasil (001)
-      </button>
-      <button type="button" onclick="selecionarLoja('002')" class="loja-button" aria-label="Acessar loja Parque Verde">
-        Parque Verde (002)
-      </button>
-      <button type="button" onclick="selecionarLoja('003')" class="loja-button" aria-label="Acessar loja Floresta">
-        Floresta (003)
-      </button>
-      <button type="button" onclick="selecionarLoja('004')" class="loja-button" aria-label="Acessar loja Tancredo">
-        Tancredo (004)
-      </button>
-      <button type="button" onclick="selecionarLoja('005')" class="loja-button" aria-label="Acessar loja Gourmet">
-        Gourmet (005)
-      </button>
-      <button type="button" onclick="selecionarLoja('201')" class="loja-button" aria-label="Acessar loja Portí 1">
-        Portí 1 (201)
-      </button>
-      <button type="button" onclick="selecionarLoja('202')" class="loja-button" aria-label="Acessar loja Portí 2">
-        Portí 2 (202)
-      </button>
-      <button type="button" onclick="selecionarLoja('203')" class="loja-button" aria-label="Acessar loja Portí 3">
-        Portí 3 (203)
-      </button>
-      <button type="button" onclick="selecionarLoja('204')" class="loja-button" aria-label="Acessar loja Portí 4">
-        Portí 4 (204)
-      </button>
+      <button onclick="selecionarLoja('gestor')" class="loja-button gestor-button">Gestor</button>
+      <button onclick="selecionarLoja('001')" class="loja-button">Brasil (001)</button>
+      <button onclick="selecionarLoja('002')" class="loja-button">Parque Verde (002)</button>
+      <button onclick="selecionarLoja('003')" class="loja-button">Floresta (003)</button>
+      <button onclick="selecionarLoja('004')" class="loja-button">Tancredo (004)</button>
+      <button onclick="selecionarLoja('005')" class="loja-button">Gourmet (005)</button>
+      <button onclick="selecionarLoja('201')" class="loja-button">Portí 1 (201)</button>
+      <button onclick="selecionarLoja('202')" class="loja-button">Portí 2 (202)</button>
+      <button onclick="selecionarLoja('203')" class="loja-button">Portí 3 (203)</button>
+      <button onclick="selecionarLoja('204')" class="loja-button">Portí 4 (204)</button>
     </div>
 
     <div id="senhaContainer" class="senha-container" style="display: none;">
-      <label for="senha" class="dark-label">Senha do Gestor:</label>
-      <input type="password" id="senha" class="dark-input" placeholder="Digite a senha do gestor" aria-required="true">
-      <button type="button" onclick="login()" class="login-button dark-button">Entrar</button>
+      <label for="senha" class="dark-label">Senha:</label>
+      <input type="password" id="senha" class="dark-input" placeholder="Digite a senha">
+      <button onclick="login()" class="login-button dark-button">Entrar</button>
     </div>
 
-    <div id="erroLogin" class="erro-msg dark-error" style="display:none;" aria-live="assertive"></div>
+    <div id="erroLogin" class="erro-msg dark-error" style="display:none;"></div>
   </div>
 
+  <script src="config.js"></script>
   <script src="js/auth.js" defer></script>
 </body>
-</html-->
+</html>
