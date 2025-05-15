@@ -276,3 +276,42 @@ tbody tr.destacado {
     height: auto;
   }
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.table-scroll {
+  min-width: 1000px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #eee;
+  font-size: 0.95rem;
+}
+
+thead th {
+  background-color: #1b5e20;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #00c853;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background-color: #004d40;
+}
+
+tbody tr.destacado {
+  background-color: #00c853;
+  color: #121212;
+}
