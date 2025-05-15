@@ -4,16 +4,30 @@ google.charts.setOnLoadCallback(carregarLoja);
 let dadosLoja = [];
 let cabecalhos = [];
 
+// Dicionário de códigos → nomes reais da planilha
+const mapaLojas = {
+  "001": "Brasil 001",
+  "002": "Parque Verde 002",
+  "003": "Floresta 003",
+  "004": "Tancredo 004",
+  "005": "Gourmet 005",
+  "201": "Portí Cascavel 201",
+  "202": "Portí Foz do Iguaçu 202",
+  "203": "Portí Cascavel 203",
+  "204": "Portí Cascavel 204"
+};
+
 function carregarLoja() {
-  console.log("carregarLoja foi chamada");
   const params = new URLSearchParams(window.location.search);
   const codigoLoja = params.get("loja");
-  if (!codigoLoja) {
-    console.warn("Código da loja ausente na URL.");
+
+  if (!codigoLoja || !mapaLojas[codigoLoja]) {
+    console.warn("Código da loja ausente ou inválido na URL.");
     return;
   }
 
-  document.getElementById("tituloLoja").textContent = `Relatório de Promotores - Loja ${codigoLoja}`;
+  const nomeLoja = mapaLojas[codigoLoja];
+  document.getElementById("tituloLoja").textContent = `Relatório de Promotores - ${nomeLoja}`;
 
   const query = new google.visualization.Query(window.PLANILHAS.lojas);
   query.send(response => {
@@ -25,23 +39,20 @@ function carregarLoja() {
     const dataTable = response.getDataTable();
     cabecalhos = [];
     dadosLoja = [];
-    console.log("dadosLoja preenchidos:", dadosLoja.length);
-
 
     for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
       cabecalhos.push(dataTable.getColumnLabel(c));
     }
 
-    console.log("Cabeçalhos da planilha:", cabecalhos);
-
     const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase().includes("loja"));
-    console.log("Índice da coluna 'Loja':", idxLoja);
+    if (idxLoja === -1) {
+      console.error("Coluna 'Loja' não encontrada.");
+      return;
+    }
 
     for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
-      const loja = dataTable.getValue(r, idxLoja);
-      console.log(`Linha ${r} Loja:`, loja);
-
-//      if (String(loja) !== codigoLoja) continue;
+      const lojaNaLinha = dataTable.getValue(r, idxLoja);
+      if (String(lojaNaLinha).trim().toLowerCase() !== nomeLoja.trim().toLowerCase()) continue;
 
       const linha = [];
       for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
@@ -49,8 +60,6 @@ function carregarLoja() {
       }
       dadosLoja.push(linha);
     }
-
-    console.log("Linhas filtradas:", dadosLoja);
 
     renderTabelaLoja(dadosLoja);
   });
