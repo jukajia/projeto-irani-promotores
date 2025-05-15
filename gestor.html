@@ -1,75 +1,65 @@
-<!--!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Gestor | Supermercado Irani</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
   
-  <script src="https://apis.google.com/js/api.js"></script>
+  <!-- Bibliotecas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel do Gestor - Irani</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/auth.js" defer></script>
-  <script src="assets/js/gestor.js" defer></script>
+  <!-- Configuração -->
+  <script src="js/config.js" defer></script>
+  <script src="js/gestor.js" defer></script>
 </head>
-<body class="dark-mode">
+<body>
   <header>
-    <h1>Painel do Gestor - Irani</h1>
-    <button onclick="voltarInicio()">Voltar ao Início</button>
-    <button onclick="exportarTabela()">Exportar Excel</button>
-
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo">
+    <h1>Painel do Gestor</h1>
   </header>
 
   <main>
-    <section class="filtros">
-      <label for="diaSemana">Filtrar por Dia da Semana:</label>
-      <select id="diaSemana">
-        <option value="">Todos</option>
-        <option value="segunda">Segunda</option>
-        <option value="terça">Terça</option>
-        <option value="quarta">Quarta</option>
-        <option value="quinta">Quinta</option>
-        <option value="sexta">Sexta</option>
-        <option value="sábado">Sábado</option>
-        <option value="domingo">Domingo</option>
-      </select>
+    <!-- Filtro simplificado -->
+    <div class="filtros">
+      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()">
+    </div>
 
-      <label for="lojaFiltro">Filtrar por Loja:</label>
-      <select id="lojaFiltro">
-        <option value="">Todas</option>
-        <option value="001">Irani Brasil</option>
-        <option value="002">Parque Verde</option>
-        <option value="003">Floresta</option>
-        <option value="004">Tancredo</option>
-        <option value="005">Gourmet</option>
-        <option value="201">Portí 1 Cascavel</option>
-        <option value="202">Portí 2 Foz</option>
-        <option value="203">Portí 3 Cascavel</option>
-        <option value="204">Portí 4 Cascavel</option>
-      </select>
+    <!-- Ações -->
+    <div class="exportacoes">
+      <button onclick="exportarExcel()">📥 Exportar Excel</button>
+      <button onclick="exportarPDF()">📄 Exportar PDF</button>
+      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+      <span id="statusAtualiza"></span>
+    </div>
 
-      <input type="text" id="buscaAvancada" placeholder="Buscar por texto..." />
-      <button onclick="filtrarDados()">Filtrar</button>
-      <button onclick="exportarTabela()">Exportar Excel</button>
+    <!-- Gráficos -->
+    <section class="graficos">
+      <div class="grafico-card">
+        <canvas id="graficoDia"></canvas>
+      </div>
+      <div class="grafico-card">
+        <canvas id="graficoPromotor"></canvas>
+      </div>
     </section>
 
-    <section class="dashboard">
-      <h2>Resumo Geral</h2>
-      <div id="indicadores" class="cards"></div>
-      <div id="graficos" class="graficos"></div>
-    </section>
+    <!-- Tabela -->
+    <div class="table-responsive">
+      <table id="tabelaGestor">
+        <thead>
+          <tr id="cabecalhoGestor"></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-    <section class="tabela">
-      <h2>Dados Consolidados</h2>
-      <div id="tabelaResultados">Carregando...</div>
-    </section>
+    <button class="btn-voltar" onclick="window.location.href='index.html'">
+      ← Voltar para Login
+    </button>
   </main>
 </body>
-
-<script>
-  const auth = JSON.parse(localStorage.getItem("auth"));
-  if (!auth || auth.tipo !== "gestor") {
-    window.location.href = "index.html";
-  }
-</script>
-<button onclick="voltarInicio()">Voltar ao Início</button>
-</html-->
+</html>
