@@ -5,6 +5,7 @@ let dadosLoja = [];
 let cabecalhos = [];
 
 function carregarLoja() {
+  console.log("carregarLoja foi chamada");
   const params = new URLSearchParams(window.location.search);
   const codigoLoja = params.get("loja");
   if (!codigoLoja) {
