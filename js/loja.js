@@ -29,14 +29,15 @@ function carregarLoja() {
       cabecalhos.push(dataTable.getColumnLabel(c));
     }
 
-    const idxLoja = cabecalhos.findIndex(h => h.toLowerCase().includes("loja"));
-    if (idxLoja === -1) {
-      console.error("Coluna 'Loja' não encontrada na planilha.");
-      return;
-    }
+    console.log("Cabeçalhos da planilha:", cabecalhos);
+
+    const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase().includes("loja"));
+    console.log("Índice da coluna 'Loja':", idxLoja);
 
     for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
       const loja = dataTable.getValue(r, idxLoja);
+      console.log(`Linha ${r} Loja:`, loja);
+
       if (String(loja) !== codigoLoja) continue;
 
       const linha = [];
@@ -46,21 +47,8 @@ function carregarLoja() {
       dadosLoja.push(linha);
     }
 
+    console.log("Linhas filtradas:", dadosLoja);
+
     renderTabelaLoja(dadosLoja);
-  });
-}
-
-function renderTabelaLoja(dados) {
-  const tbody = document.querySelector("#tabelaPublica tbody");
-  tbody.innerHTML = "";
-
-  dados.forEach(linha => {
-    const tr = document.createElement("tr");
-    linha.forEach(cel => {
-      const td = document.createElement("td");
-      td.textContent = cel ?? "";
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
   });
 }
