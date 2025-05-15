@@ -14,7 +14,8 @@ const mapaLojas = {
   "201": "Portí Cascavel 201",
   "202": "Portí Foz do Iguaçu 202",
   "203": "Portí Cascavel 203",
-  "204": "Portí Cascavel 204"
+  "204": "Portí Cascavel 204",
+  "999": "Nova Loja Exemplo 999"
 };
 
 function carregarLoja() {
