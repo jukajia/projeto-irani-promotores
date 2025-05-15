@@ -16,7 +16,6 @@ Sistema web para gerenciamento e visualização dos atendimentos dos promotores 
 - Google Sheets como backend simples
 
 ## Estrutura do Projeto
-/
 ├── index.html # Página de login
 ├── gestor.html # Painel do gestor
 ├── loja.html # Visualização pública das lojas
