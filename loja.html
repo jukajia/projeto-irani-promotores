@@ -9,10 +9,8 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
-  <button class="btn-voltar-login" onclick="window.location.href='index.html'">
-      ← Voltar para Login
-    </button>
 <body data-theme="dark">
+  
   <header>
     <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
     <h1 id="tituloLoja">Relatório de Promotores</h1>
@@ -33,19 +31,21 @@
       />
     </div>
 
-    <table id="tabelaPublica">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Marca</th>
-          <th>Produtos</th>
-          <th>Dia da Semana</th>
-          <th>Telefone</th>
-          <th>Loja</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-responsive">
+      <table id="tabelaPublica">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Marca</th>
+            <th>Produtos</th>
+            <th>Dia da Semana</th>
+            <th>Telefone</th>
+            <th>Loja</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
     <button class="btn-voltar-login" onclick="window.location.href='index.html'">
       ← Voltar para Login
@@ -57,11 +57,11 @@
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="js/loja.js"></script>
   <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('✅ Service Worker registrado com sucesso.'))
-      .catch(err => console.error('❌ Erro ao registrar SW:', err));
-  }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker registrado com sucesso.'))
+        .catch(err => console.error('❌ Erro ao registrar SW:', err));
+    }
   </script>
 </body>
 </html>
