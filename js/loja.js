@@ -7,7 +7,10 @@ let cabecalhos = [];
 function carregarLoja() {
   const params = new URLSearchParams(window.location.search);
   const codigoLoja = params.get("loja");
-  if (!codigoLoja) return;
+  if (!codigoLoja) {
+    console.warn("Código da loja ausente na URL.");
+    return;
+  }
 
   document.getElementById("tituloLoja").textContent += ` - Loja ${codigoLoja}`;
 
@@ -17,8 +20,8 @@ function carregarLoja() {
       console.error("Erro ao carregar loja: ", response.getMessage());
       return;
     }
-    const dataTable = response.getDataTable();
 
+    const dataTable = response.getDataTable();
     cabecalhos = [];
     dadosLoja = [];
 
@@ -26,9 +29,15 @@ function carregarLoja() {
       cabecalhos.push(dataTable.getColumnLabel(c));
     }
 
+    const idxLoja = cabecalhos.findIndex(h => h.toLowerCase().includes("loja"));
+    if (idxLoja === -1) {
+      console.error("Coluna 'Loja' não encontrada na planilha.");
+      return;
+    }
+
     for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
-      const loja = dataTable.getValue(r, cabecalhos.findIndex(h => h.toLowerCase() === "loja"));
-      if (loja !== codigoLoja) continue;
+      const loja = dataTable.getValue(r, idxLoja);
+      if (String(loja) !== codigoLoja) continue;
 
       const linha = [];
       for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
