@@ -12,7 +12,7 @@ function carregarLoja() {
     return;
   }
 
-  document.getElementById("tituloLoja").textContent += ` - Loja ${codigoLoja}`;
+  document.getElementById("tituloLoja").textContent = `Relatório de Promotores - Loja ${codigoLoja}`;
 
   const query = new google.visualization.Query(window.PLANILHAS.lojas);
   query.send(response => {
@@ -51,6 +51,14 @@ function carregarLoja() {
 
     renderTabelaLoja(dadosLoja);
   });
+}
+
+function filtrarDadosPublicoLocal() {
+  const termo = document.getElementById("buscaPublica").value.toLowerCase();
+  const filtrado = dadosLoja.filter(item =>
+    item.some(cel => String(cel).toLowerCase().includes(termo))
+  );
+  renderTabelaLoja(filtrado);
 }
 
 function renderTabelaLoja(dados) {
