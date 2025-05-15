@@ -345,3 +345,24 @@ a[href^="https://wa.me"]:hover {
 .btn-cadastrar-promotor:hover {
   background-color: #009624;
 }
+/* Container que envolve a tabela, para controlar altura e overflow */
+.table-responsive {
+  width: 100%;
+  height: calc(100vh - 200px); /* ajuste o 200px conforme o espaço ocupado por header, filtros, botões */
+  overflow: auto;
+}
+
+/* Tabela ocupa 100% da largura do container */
+#tabelaGestor {
+  width: 100%;
+  border-collapse: collapse; /* opcional, para bordas unidas */
+}
+
+/* Opcional: estilize as células para melhor visual */
+#tabelaGestor th,
+#tabelaGestor td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  white-space: nowrap; /* evita quebra automática */
+}
