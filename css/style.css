@@ -320,3 +320,10 @@ tbody tr.destacado {
   color: #121212;
   box-shadow: 0 0 0 2px #00e676;
 }
+a[href^="https://wa.me"] {
+  transition: color 0.3s ease;
+}
+a[href^="https://wa.me"]:hover {
+  color: #128C7E;
+  text-decoration: underline;
+}
