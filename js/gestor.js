@@ -63,6 +63,24 @@ function renderTabela(dados) {
     tbody.appendChild(tr);
   });
 }
+function filtrarPorLoja(codigo) {
+  // Destacar botão
+  document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
+  const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
+    .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
+  if (botaoSelecionado) botaoSelecionado.classList.add("selected");
+
+  // Filtrar dados
+  if (codigo === "TODAS") {
+    renderizarTudo(dadosGestor);
+    return;
+  }
+
+  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
+  const dadosFiltrados = dadosGestor.filter(linha => (linha[idxLoja] + "").includes(codigo));
+
+  renderizarTudo(dadosFiltrados);
+}
 
 function gerarGraficos(dados) {
   // Exemplo: gráfico simples de quantidade por "Dias da Semana" e "Loja"
