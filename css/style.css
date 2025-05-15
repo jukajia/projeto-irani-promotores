@@ -315,3 +315,8 @@ tbody tr.destacado {
   background-color: #00c853;
   color: #121212;
 }
+.loja-button.selected {
+  background-color: #00C853;
+  color: #121212;
+  box-shadow: 0 0 0 2px #00e676;
+}
