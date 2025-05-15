@@ -327,3 +327,21 @@ a[href^="https://wa.me"]:hover {
   color: #128C7E;
   text-decoration: underline;
 }
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: #00c853;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: #009624;
+}
