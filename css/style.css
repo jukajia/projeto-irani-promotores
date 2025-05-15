@@ -243,3 +243,40 @@ a[href^="https://wa.me"]:hover {
     grid-template-columns: 1fr;
   }
 }
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch; /* suaviza scroll em iOS */
+}
+
+#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  color: #eee;
+  font-size: 0.95rem;
+  table-layout: auto; /* deixa colunas ajustarem ao conteúdo */
+}
+
+#tabelaPublica thead th {
+  background-color: #1b5e20;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #00c853;
+  white-space: nowrap; /* evita quebra de header */
+}
+
+#tabelaPublica tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  white-space: nowrap; /* evita quebra de célula */
+}
+
+#tabelaPublica tbody tr:nth-child(even) {
+  background-color: #222;
+}
+
+#tabelaPublica tbody tr:hover {
+  background-color: #004d40;
+  cursor: pointer;
+}
