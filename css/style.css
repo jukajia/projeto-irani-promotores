@@ -280,3 +280,8 @@ a[href^="https://wa.me"]:hover {
   background-color: #004d40;
   cursor: pointer;
 }
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 32px;
+}
