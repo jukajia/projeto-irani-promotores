@@ -7,13 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="imagens/favicon-juka.png" type="image/png">
+  <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
 <body data-theme="dark">
+
   <a href="https://jukajia.github.io/PromotoresFormulario/" target="_blank" class="btn-cadastrar-promotor">➕ Cadastrar Promotor</a>
 
+  <!-- Container com a nuvem pulsante verde -->
   <div class="login-container">
-    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo">
+    <div class="pulse-glow">
+      <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo" />
+    </div>
+
     <h1>Área de Acesso</h1>
 
     <div class="loja-buttons-grid">
@@ -25,13 +30,13 @@
       <!--button onclick="selecionarLoja('005')" class="loja-button">Gourmet (005)</button-->
       <button onclick="selecionarLoja('201')" class="loja-button">Portí 1 "Cvel" (201)</button>
       <button onclick="selecionarLoja('202')" class="loja-button">Portí 2 "Foz" (202)</button>
-      <!--button onclick="selecionarLoja('203')" class="loja-button">Portí 3 "Cvel" (203)</button>
-      <button onclick="selecionarLoja('204')" class="loja-button">Portí 4 "Cvel" (204)</button-->
+      <!--button onclick="selecionarLoja('203')" class="loja-button">Portí 3 "Cvel" (203)</button-->
+      <!--button onclick="selecionarLoja('204')" class="loja-button">Portí 4 "Cvel" (204)</button-->
     </div>
 
     <div id="senhaContainer" class="senha-container" style="display: none;">
       <label for="senha" class="dark-label">Senha:</label>
-      <input type="password" id="senha" class="dark-input" placeholder="Digite a senha">
+      <input type="password" id="senha" class="dark-input" placeholder="Digite a senha" />
       <button onclick="login()" class="login-button dark-button">Entrar</button>
     </div>
 
