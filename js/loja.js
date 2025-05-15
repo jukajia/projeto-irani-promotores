@@ -78,7 +78,7 @@ function renderTabelaLoja(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
   tbody.innerHTML = "";
 
-  // Aqui, calcule o índice da coluna Telefone
+  // Identifica índice da coluna Telefone
   const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
 
   dados.forEach(linha => {
@@ -86,8 +86,9 @@ function renderTabelaLoja(dados) {
     linha.forEach((cel, i) => {
       const td = document.createElement("td");
       if (i === idxTelefone && cel) {
-        const telefoneLimpo = cel.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${cel}</a>`;
+        const telefoneTexto = String(cel).trim();
+        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${telefoneTexto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
