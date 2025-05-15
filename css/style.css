@@ -324,3 +324,200 @@ a[href^="https://wa.me"]:hover {
     white-space: nowrap;
   }
 }
+/* Posicionamento fixo do botão "Cadastrar Promotor", com espaçamento da logo */
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 100px; /* ↓ ajustado para não sobrepor a logo */
+  right: 20px;
+  background-color: #00C853;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: background-color 0.3s ease;
+}
+.btn-cadastrar-promotor:hover {
+  background-color: #009624;
+}
+
+/* Centraliza vertical e horizontal o login */
+body.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body com flex para centralizar conteúdo */
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container principal centralizado */
+.login-container {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00c853aa;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+/* Nuvem pulsante verde ao redor do logo */
+.pulse-glow {
+  margin: 0 auto 24px auto;
+  width: fit-content;
+  padding: 20px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 8px #00c853,
+    0 0 16px #00c853,
+    0 0 32px #00c853aa;
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow:
+      0 0 8px #00c853,
+      0 0 16px #00c853,
+      0 0 32px #00c853aa;
+  }
+  50% {
+    box-shadow:
+      0 0 12px #00e676,
+      0 0 24px #00e676,
+      0 0 48px #00e676bb;
+  }
+  100% {
+    box-shadow:
+      0 0 8px #00c853,
+      0 0 16px #00c853,
+      0 0 32px #00c853aa;
+  }
+}
+
+/* Logo dentro da nuvem */
+.login-logo {
+  max-width: 150px;
+  display: block;
+}
+
+/* Título */
+h1 {
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+/* Botões das lojas */
+.loja-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.loja-button {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loja-button:hover,
+.loja-button.selected {
+  background-color: #00c853;
+  color: #121212;
+  box-shadow: 0 0 8px #00e676;
+}
+
+/* Input senha */
+.dark-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #222;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+/* Label senha */
+.dark-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
+  text-align: left;
+}
+
+/* Botão login */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #00c853;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #00e676;
+}
+
+/* Mensagem de erro */
+.erro-msg {
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+  display: none;
+}
+
+/* Botão "Cadastrar Promotor" fixo */
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: #00c853;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: #009624;
+}
