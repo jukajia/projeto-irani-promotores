@@ -62,9 +62,10 @@ function renderTabela(dados) {
     const tr = document.createElement("tr");
     linha.forEach((cel, i) => {
       const td = document.createElement("td");
-      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel) {
-        const telefoneLimpo = cel.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${cel}</a>`;
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel != null) {
+        const telefoneTexto = String(cel).trim();
+        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${telefoneTexto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
@@ -73,6 +74,7 @@ function renderTabela(dados) {
     tbody.appendChild(tr);
   });
 }
+
 function filtrarPorLoja(codigo) {
   // Destacar botão
   document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
