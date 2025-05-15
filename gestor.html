@@ -9,8 +9,11 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
-  <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
+
 <body data-theme="dark">
+  <!-- Botão fixo no topo -->
+  <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
+
   <header>
     <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
     <h1>Painel do Gestor</h1>
@@ -20,13 +23,12 @@
       <button class="loja-button" onclick="filtrarPorLoja('002')">Parque Verde (002)</button>
       <button class="loja-button" onclick="filtrarPorLoja('003')">Floresta (003)</button>
       <button class="loja-button" onclick="filtrarPorLoja('004')">Tancredo (004)</button>
-      <!--button class="loja-button" onclick="filtrarPorLoja('005')">Gourmet (005)</button-->
+      <!-- <button class="loja-button" onclick="filtrarPorLoja('005')">Gourmet (005)</button> -->
       <button class="loja-button" onclick="filtrarPorLoja('201')">Portí 1 (201)</button>
       <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2 (202)</button>
-      <!--button class="loja-button" onclick="filtrarPorLoja('203')">Portí 3 (203)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('204')">Portí 4 (204)</button-->
+      <!-- <button class="loja-button" onclick="filtrarPorLoja('203')">Portí 3 (203)</button>
+      <button class="loja-button" onclick="filtrarPorLoja('204')">Portí 4 (204)</button> -->
     </div>
-
   </header>
 
   <main>
@@ -71,11 +73,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="js/gestor.js"></script>
   <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('✅ Service Worker registrado com sucesso.'))
-      .catch(err => console.error('❌ Erro ao registrar SW:', err));
-  }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker registrado com sucesso.'))
+        .catch(err => console.error('❌ Erro ao registrar SW:', err));
+    }
   </script>
 </body>
 </html>
