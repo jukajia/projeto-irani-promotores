@@ -1,4 +1,4 @@
-/* RESET GERAL */
+/* Reset básico */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,7 +11,7 @@ body[data-theme="dark"] {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* LOGO E CABEÇALHO */
+/* Cabeçalho */
 .logo-topo {
   max-width: 180px;
   margin: 20px auto;
@@ -30,23 +30,7 @@ header h1 {
   font-weight: 700;
 }
 
-/* CONTAINER DE LOGIN */
-.login-container {
-  background-color: #1e1e1e;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #00c853aa;
-  max-width: 400px;
-  margin: 80px auto;
-  text-align: center;
-}
-
-.login-logo {
-  max-width: 150px;
-  margin-bottom: 24px;
-}
-
-/* BOTÕES DAS LOJAS */
+/* Botões de loja */
 .loja-buttons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -82,7 +66,7 @@ header h1 {
   background-color: #4fc3f7;
 }
 
-/* INPUTS E BOTÕES */
+/* Campos de input */
 .dark-input,
 input[type="password"] {
   width: 100%;
@@ -102,6 +86,7 @@ input[type="password"] {
   color: #ccc;
 }
 
+/* Botões gerais */
 .login-button,
 .dark-button {
   width: 100%;
@@ -120,7 +105,7 @@ input[type="password"] {
   background-color: #00e676;
 }
 
-/* MENSAGENS DE ERRO */
+/* Mensagens de erro */
 .erro-msg {
   color: #ef5350;
   background-color: rgba(239, 83, 80, 0.1);
@@ -131,7 +116,7 @@ input[type="password"] {
   display: none;
 }
 
-/* FILTROS E EXPORTAÇÕES */
+/* Filtros */
 .filtros {
   margin-bottom: 16px;
   text-align: center;
@@ -148,6 +133,7 @@ input[type="password"] {
   font-size: 1rem;
 }
 
+/* Exportações */
 .exportacoes {
   margin-bottom: 24px;
   display: flex;
@@ -179,7 +165,7 @@ input[type="password"] {
   text-align: center;
 }
 
-/* TABELA PADRÃO */
+/* Tabela */
 .table-responsive {
   overflow-x: auto;
   margin-bottom: 32px;
@@ -187,7 +173,6 @@ input[type="password"] {
 
 #tabelaGestor {
   width: 100%;
-  table-layout: auto;
   border-collapse: collapse;
   color: #eee;
   font-size: 0.95rem;
@@ -198,6 +183,13 @@ input[type="password"] {
   padding: 12px;
   text-align: left;
   border-bottom: 2px solid #00c853;
+  white-space: nowrap;
+}
+
+#tabelaGestor tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
 }
 
 #tabelaGestor tbody tr:nth-child(even) {
@@ -209,24 +201,12 @@ input[type="password"] {
   cursor: pointer;
 }
 
-#tabelaGestor tbody td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #333;
+#tabelaGestor tbody tr.destacado {
+  background-color: #00c853;
+  color: #121212;
 }
 
-/* LINKS WHATSAPP */
-a[href^="https://wa.me"] {
-  color: #25D366;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a[href^="https://wa.me"]:hover {
-  color: #128C7E;
-  text-decoration: underline;
-}
-
-/* GRÁFICOS */
+/* Gráficos */
 .graficos {
   display: flex;
   flex-wrap: wrap;
@@ -244,7 +224,7 @@ a[href^="https://wa.me"]:hover {
   height: 320px;
 }
 
-/* BOTÕES VOLTAR */
+/* Botões de navegação */
 .btn-voltar,
 .btn-voltar-login {
   background-color: transparent;
@@ -263,7 +243,58 @@ a[href^="https://wa.me"]:hover {
   color: #00e676;
 }
 
-/* RESPONSIVO */
+/* Botão flutuante fixo no topo */
+.btn-topo {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background-color: #00c853;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-topo:hover {
+  background-color: #009624;
+}
+
+/* Botão fixo no topo direito (link) */
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: #00c853;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: #009624;
+}
+
+/* WhatsApp links */
+a[href^="https://wa.me"] {
+  color: #25D366;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a[href^="https://wa.me"]:hover {
+  color: #128C7E;
+  text-decoration: underline;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
   .loja-buttons-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -283,24 +314,4 @@ a[href^="https://wa.me"]:hover {
   .graficos {
     height: auto;
   }
-}
-
-/* BOTÃO FIXO DE TOPO */
-.btn-topo {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 1000;
-  background-color: #00c853;
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-topo:hover {
-  background-color: #009624;
 }
