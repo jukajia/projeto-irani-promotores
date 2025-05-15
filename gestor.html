@@ -6,18 +6,6 @@
   <title>Painel do Gestor | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
-
-  <!-- Bibliotecas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-
-  <!-- Configuração + Lógica -->
-  <script src="js/config.js" defer></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script src="js/gestor.js" defer></script>
-
 </head>
 <body data-theme="dark">
   <header>
@@ -26,12 +14,10 @@
   </header>
 
   <main>
-    <!-- Filtro -->
     <div class="filtros">
       <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
     </div>
 
-    <!-- Ações -->
     <div class="exportacoes">
       <button onclick="exportarExcel()">📥 Exportar Excel</button>
       <button onclick="exportarPDF()">📄 Exportar PDF</button>
@@ -39,7 +25,6 @@
       <span id="statusAtualiza"></span>
     </div>
 
-    <!-- Gráficos -->
     <section class="graficos">
       <div class="grafico-card">
         <canvas id="graficoDia"></canvas>
@@ -49,7 +34,6 @@
       </div>
     </section>
 
-    <!-- Tabela -->
     <div class="table-responsive">
       <table id="tabelaGestor">
         <thead>
@@ -61,5 +45,14 @@
 
     <button class="btn-voltar" onclick="window.location.href='index.html'">← Voltar para Login</button>
   </main>
+
+  <!-- Scripts: ordem controlada -->
+  <script src="js/config.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="js/gestor.js"></script>
 </body>
 </html>
