@@ -1,44 +1,42 @@
-const PLANILHA_URL = window.PLANILHAS.gestor;
+google.charts.load('current', { packages: ['corechart', 'table'] });
+google.charts.setOnLoadCallback(atualizarPlanilha);
+
 let dadosGestor = [];
 let cabecalhos = [];
-let chartDia, chartPromotor;
 
-// Atualiza dados da planilha
-async function atualizarPlanilha() {
+function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
   status.textContent = "⏳ Carregando…";
 
-  try {
-    const res = await fetch(`${PLANILHA_URL}&t=${Date.now()}`);
-    const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
+  const query = new google.visualization.Query(window.PLANILHAS.gestor);
+  query.send(response => {
+    if (response.isError()) {
+      status.textContent = "❌ Erro ao carregar planilha";
+      console.error(response.getMessage());
+      return;
+    }
 
-    cabecalhos = json.table.cols.map(c => c.label);
-    dadosGestor = json.table.rows.map(r => r.c.map(cell => cell?.f ?? cell?.v ?? ""));
+    const dataTable = response.getDataTable();
+    cabecalhos = [];
+    dadosGestor = [];
 
-    localStorage.setItem("dadosGestor", JSON.stringify({
-      data: Date.now(),
-      cabecalhos,
-      dados: dadosGestor
-    }));
+    // Carrega cabeçalhos
+    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+      cabecalhos.push(dataTable.getColumnLabel(c));
+    }
+
+    // Carrega linhas
+    for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
+      const linha = [];
+      for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+        linha.push(dataTable.getValue(r, c));
+      }
+      dadosGestor.push(linha);
+    }
 
     renderizarTudo(dadosGestor);
-    status.textContent = "✅ Atualizado!";
-  } catch (err) {
-    console.error("Erro ao carregar planilha:", err);
-    status.textContent = "❌ Erro ao atualizar!";
-    usarDadosLocais();
-  }
-}
-
-function usarDadosLocais() {
-  const cache = localStorage.getItem("dadosGestor");
-  if (!cache) return;
-
-  const { cabecalhos: cacheCabecalhos, dados } = JSON.parse(cache);
-  cabecalhos = cacheCabecalhos;
-  dadosGestor = dados;
-  renderizarTudo(dadosGestor);
+    status.textContent = "✅ Dados atualizados";
+  });
 }
 
 function renderizarTudo(dados) {
@@ -49,146 +47,69 @@ function renderizarTudo(dados) {
 
 function renderCabecalho() {
   const head = document.getElementById("cabecalhoGestor");
-  head.innerHTML = cabecalhos.map(titulo => `<th>${titulo}</th>`).join("");
+  head.innerHTML = cabecalhos.map(h => `<th>${h}</th>`).join("");
 }
 
 function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
-
   dados.forEach(linha => {
     const tr = document.createElement("tr");
-
-    linha.forEach((cel, idx) => {
+    linha.forEach(cel => {
       const td = document.createElement("td");
-
-      const titulo = cabecalhos[idx].toLowerCase();
-      if (titulo.includes("data")) {
-        td.textContent = formatarData(cel);
-      } else if (titulo.includes("hora")) {
-        td.textContent = formatarHora(cel);
-      } else {
-        td.textContent = cel;
-      }
-
+      td.textContent = cel ?? "";
       tr.appendChild(td);
     });
-
-    tr.onclick = () => {
-      document.querySelectorAll("tbody tr").forEach(row => row.classList.remove("destacado"));
-      tr.classList.add("destacado");
-    };
-
     tbody.appendChild(tr);
   });
 }
 
-function formatarData(valor) {
-  const date = new Date(valor);
-  return isNaN(date) ? valor : date.toLocaleDateString('pt-BR');
-}
-
-function formatarHora(valor) {
-  const date = new Date(valor);
-  return isNaN(date) ? valor : date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-}
-
-function filtrarDadosGestor() {
-  const termo = document.getElementById("buscaGestor").value.toLowerCase();
-  const filtrado = dadosGestor.filter(linha => linha.join(" ").toLowerCase().includes(termo));
-  renderTabela(filtrado);
-  gerarGraficos(filtrado);
-}
-
 function gerarGraficos(dados) {
-  chartDia?.destroy();
-  chartPromotor?.destroy();
+  // Exemplo: gráfico simples de quantidade por "Dias da Semana" e "Loja"
+  // Encontre índice das colunas que interessam
+  const idxDia = cabecalhos.findIndex(h => h.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
 
-  const colDia = cabecalhos.findIndex(c => c.toLowerCase().includes("dia"));
-  const colPromotor = cabecalhos.findIndex(c => c.toLowerCase().includes("nome"));
+  if (window.chartDia) window.chartDia.destroy();
+  if (window.chartLoja) window.chartLoja.destroy();
 
-  const contagemDia = contar(dados, colDia);
-  const contagemPromotor = contar(dados, colPromotor);
+  const contDia = contar(dados, idxDia);
+  const contLoja = contar(dados, idxLoja);
 
-  chartDia = new Chart(document.getElementById("graficoDia"), {
-    type: 'line',
-    data: {
-      labels: Object.keys(contagemDia),
-      datasets: [{
-        label: "Atendimentos por Dia",
-        data: Object.values(contagemDia),
-        borderColor: '#00C853',
-        backgroundColor: '#00C853',
-        fill: false
-      }]
-    },
-    options: chartOptions()
-  });
-
-  chartPromotor = new Chart(document.getElementById("graficoPromotor"), {
-    type: 'pie',
-    data: {
-      labels: Object.keys(contagemPromotor),
-      datasets: [{
-        label: "Atendimentos por Promotor",
-        data: Object.values(contagemPromotor),
-        backgroundColor: [
-          '#00C853', '#29B6F6', '#EF5350', '#FFC107',
-          '#AB47BC', '#FF7043', '#26A69A', '#EC407A'
-        ]
-      }]
-    },
-    options: chartOptions()
-  });
+  window.chartDia = criarGraficoBarra('graficoDia', 'Atendimentos por Dia', contDia);
+  window.chartLoja = criarGraficoBarra('graficoPromotor', 'Atendimentos por Loja', contLoja);
 }
 
 function contar(dados, idx) {
-  const contagem = {};
+  const res = {};
   dados.forEach(linha => {
-    const chave = linha[idx] || "Não informado";
-    contagem[chave] = (contagem[chave] || 0) + 1;
+    const chave = linha[idx] ?? "Não informado";
+    res[chave] = (res[chave] ?? 0) + 1;
   });
-  return contagem;
+  return res;
 }
 
-function chartOptions() {
-  return {
-    responsive: true,
-    plugins: {
-      legend: {
-        labels: {
-          color: "#fff",
-          font: { family: "Segoe UI" }
-        }
-      }
+function criarGraficoBarra(id, label, dados) {
+  const ctx = document.getElementById(id);
+  return new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(dados),
+      datasets: [{
+        label,
+        data: Object.values(dados),
+        backgroundColor: '#00C853'
+      }]
     },
-    scales: {
-      x: { ticks: { color: "#fff" } },
-      y: { ticks: { color: "#fff" } }
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#fff' } }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' } },
+        y: { ticks: { color: '#fff' }, beginAtZero: true }
+      }
     }
-  };
+  });
 }
-
-function exportarExcel() {
-  const tabela = document.getElementById("tabelaGestor");
-  const wb = XLSX.utils.table_to_book(tabela, { sheet: "Relatório" });
-  XLSX.writeFile(wb, "Relatorio_Gestor.xlsx");
-}
-
-async function exportarPDF() {
-  const { jsPDF } = window.jspdf;
-  const canvas = await html2canvas(document.getElementById("tabelaGestor"));
-  const pdf = new jsPDF('l', 'pt', 'a4');
-  const img = canvas.toDataURL("image/png");
-  const imgW = pdf.internal.pageSize.getWidth() - 40;
-  const imgH = (canvas.height * imgW) / canvas.width;
-  pdf.addImage(img, 'PNG', 20, 20, imgW, imgH);
-  pdf.save("Relatorio_Gestor.pdf");
-}
-
-// Inicialização
-document.addEventListener("DOMContentLoaded", () => {
-  usarDadosLocais();
-  atualizarPlanilha();
-  setInterval(atualizarPlanilha, 300_000); // Atualiza a cada 5 min
-});
