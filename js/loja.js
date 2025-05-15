@@ -78,11 +78,19 @@ function renderTabelaLoja(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
   tbody.innerHTML = "";
 
+  // Aqui, calcule o índice da coluna Telefone
+  const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
+
   dados.forEach(linha => {
     const tr = document.createElement("tr");
-    linha.forEach(cel => {
+    linha.forEach((cel, i) => {
       const td = document.createElement("td");
-      td.textContent = cel ?? "";
+      if (i === idxTelefone && cel) {
+        const telefoneLimpo = cel.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${cel}</a>`;
+      } else {
+        td.textContent = cel ?? "";
+      }
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
