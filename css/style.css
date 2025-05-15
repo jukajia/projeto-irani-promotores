@@ -1,347 +1,186 @@
-/\* Reset básico \*/
-
+/* RESET GERAL */
 * {
   box-sizing: border-box;
-  }
+  margin: 0;
+  padding: 0;
+}
 
-/\* Cabeçalhos e logos \*/
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* LOGO E CABEÇALHO */
 .logo-topo {
-max-width: 180px;
-margin: 20px auto;
-display: block;
+  max-width: 180px;
+  margin: 20px auto;
+  display: block;
 }
 
 header, main {
-max-width: 960px;
-margin: 0 auto;
-padding: 0 16px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 header h1 {
-text-align: center;
-margin-bottom: 20px;
-font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
-/\* Login Container \*/
+/* CONTAINER DE LOGIN */
 .login-container {
-background-color: #1e1e1e;
-padding: 40px;
-border-radius: 12px;
-box-shadow: 0 0 20px #00c853aa;
-max-width: 400px;
-margin: 80px auto;
-text-align: center;
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00c853aa;
+  max-width: 400px;
+  margin: 80px auto;
+  text-align: center;
 }
 
 .login-logo {
-max-width: 150px;
-margin-bottom: 24px;
+  max-width: 150px;
+  margin-bottom: 24px;
 }
 
-/\* Grid dos botões de loja \*/
+/* BOTÕES DAS LOJAS */
 .loja-buttons-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-gap: 12px;
-margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .loja-button {
-background-color: #2a2a2a;
-color: #e0e0e0;
-padding: 12px;
-border: none;
-border-radius: 6px;
-font-weight: 600;
-cursor: pointer;
-transition: background-color 0.3s ease;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.loja-button\:hover,
+.loja-button:hover,
 .loja-button.selected {
-background-color: #00c853;
-color: #121212;
-box-shadow: 0 0 8px #00e676;
+  background-color: #00c853;
+  color: #121212;
+  box-shadow: 0 0 8px #00e676;
 }
 
 .gestor-button {
-background-color: #29b6f6;
-color: #121212;
-grid-column: 1 / -1;
+  background-color: #29b6f6;
+  color: #121212;
+  grid-column: 1 / -1;
 }
 
-.gestor-button\:hover {
-background-color: #4fc3f7;
+.gestor-button:hover {
+  background-color: #4fc3f7;
 }
 
-/\* Inputs e botões \*/
+/* INPUTS E BOTÕES */
 .dark-input,
-input\[type="password"] {
-width: 100%;
-padding: 12px;
-margin-bottom: 16px;
-border: 1px solid #555;
-border-radius: 6px;
-background-color: #222;
-color: #e0e0e0;
-font-size: 1rem;
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #222;
+  color: #e0e0e0;
+  font-size: 1rem;
 }
 
 .dark-label {
-display: block;
-margin-bottom: 8px;
-font-weight: 600;
-color: #ccc;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
 }
 
 .login-button,
 .dark-button {
-width: 100%;
-padding: 12px;
-background-color: #00c853;
-border: none;
-border-radius: 6px;
-font-weight: 700;
-color: #121212;
-cursor: pointer;
-transition: background-color 0.3s ease;
+  width: 100%;
+  padding: 12px;
+  background-color: #00c853;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.login-button\:hover,
-.dark-button\:hover {
-background-color: #00e676;
+.login-button:hover,
+.dark-button:hover {
+  background-color: #00e676;
 }
 
-/\* Mensagens de erro \*/
+/* MENSAGENS DE ERRO */
 .erro-msg {
-color: #ef5350;
-background-color: rgba(239, 83, 80, 0.1);
-padding: 12px;
-border-radius: 6px;
-margin-top: 8px;
-font-weight: 600;
-display: none;
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+  display: none;
 }
 
-/\* Filtros e exportações \*/
+/* FILTROS E EXPORTAÇÕES */
 .filtros {
-margin-bottom: 16px;
-text-align: center;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-.filtros input\[type="text"] {
-width: 100%;
-max-width: 480px;
-padding: 10px;
-border-radius: 6px;
-border: 1px solid #444;
-background-color: #222;
-color: #eee;
-font-size: 1rem;
+.filtros input[type="text"] {
+  width: 100%;
+  max-width: 480px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: #eee;
+  font-size: 1rem;
 }
 
 .exportacoes {
-margin-bottom: 24px;
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-justify-content: center;
-align-items: center;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .exportacoes button {
-background-color: #00c853;
-border: none;
-padding: 10px 16px;
-border-radius: 6px;
-font-weight: 600;
-color: #121212;
-cursor: pointer;
-transition: background-color 0.3s ease;
+  background-color: #00c853;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.exportacoes button\:hover {
-background-color: #00e676;
+.exportacoes button:hover {
+  background-color: #00e676;
 }
 
-\#statusAtualiza {
-color: #eee;
-font-weight: 600;
-min-width: 120px;
-text-align: center;
+#statusAtualiza {
+  color: #eee;
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
 }
-\#tabelaGestor {
-width: 100%;
-table-layout: auto; /\* Permite que colunas ajustem conforme conteúdo */
-border-collapse: collapse;
-}
-/* Tabelas \*/
+
+/* TABELA PADRÃO */
 .table-responsive {
-overflow-x: auto;
-margin-bottom: 32px;
-}
-.table-responsive {
-width: 100%;
-overflow-x: auto;
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-color: #eee;
-font-size: 0.95rem;
-}
-
-thead th {
-background-color: #1b5e20;
-padding: 12px;
-text-align: left;
-border-bottom: 2px solid #00c853;
-}
-
-tbody tr\:nth-child(even) {
-background-color: #222;
-}
-
-tbody tr\:hover {
-background-color: #004d40;
-cursor: pointer;
-}
-
-tbody td {
-padding: 10px 12px;
-border-bottom: 1px solid #333;
-}
-
-tbody tr.destacado {
-background-color: #00c853;
-color: #121212;
-}
-
-/\* Botão voltar \*/
-.btn-voltar,
-.btn-voltar-login {
-background-color: transparent;
-border: none;
-color: #00c853;
-font-weight: 700;
-cursor: pointer;
-font-size: 1rem;
-display: block;
-margin: 0 auto 40px;
-transition: color 0.3s ease;
-}
-
-.btn-voltar\:hover,
-.btn-voltar-login\:hover {
-color: #00e676;
-}
-
-/\* Gráficos \*/
-.graficos {
-display: flex;
-flex-wrap: wrap;
-gap: 24px;
-justify-content: center;
-margin-bottom: 32px;
-}
-
-.grafico-card {
-background-color: #1e1e1e;
-padding: 20px;
-border-radius: 12px;
-flex: 1 1 400px;
-max-width: 480px;
-height: 320px;
-}
-
-/\* Responsividade \*/
-@media (max-width: 768px) {
-.loja-buttons-grid {
-grid-template-columns: repeat(2, 1fr);
-}
-
-.graficos {
-flex-direction: column;
-gap: 16px;
-}
-}
-
-@media (max-width: 480px) {
-.loja-buttons-grid {
-grid-template-columns: 1fr;
-}
-
-.graficos {
-height: auto;
-}
-}
-.table-wrapper {
-width: 100%;
-overflow-x: auto;
-margin-top: 20px;
-}
-
-.table-scroll {
-min-width: 1000px;
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-color: #eee;
-font-size: 0.95rem;
-}
-
-thead th {
-background-color: #1b5e20;
-padding: 12px;
-text-align: left;
-border-bottom: 2px solid #00c853;
-white-space: nowrap;
-}
-
-tbody td {
-padding: 10px 12px;
-border-bottom: 1px solid #333;
-white-space: nowrap;
-}
-
-tbody tr\:hover {
-background-color: #004d40;
-}
-
-tbody tr.destacado {
-background-color: #00c853;
-color: #121212;
-}
-.loja-button.selected {
-background-color: #00C853;
-color: #121212;
-box-shadow: 0 0 0 2px #00e676;
-}
-a\[href^="[https://wa.me](https://wa.me)"] {
-transition: color 0.3s ease;
-}
-a\[href^="[https://wa.me](https://wa.me)"]\:hover {
-color: #128C7E;
-text-decoration: underline;
-}
-.btn-cadastrar-promotor {
-position: fixed;
-top: 16px;
-right: 16px;
-background-color: #00c853;
-color: #fff;
-padding: 10px 16px;
-border-radius: 8px;
-font-weight: 600;
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-text-decoration: none;
-z-index: 999;
-transition: background-color 0.3s ease;
-}.table-responsive {
   overflow-x: auto;
   margin-bottom: 32px;
 }
@@ -375,13 +214,93 @@ transition: background-color 0.3s ease;
   border-bottom: 1px solid #333;
 }
 
-/* Links do WhatsApp */
+/* LINKS WHATSAPP */
 a[href^="https://wa.me"] {
   color: #25D366;
   text-decoration: none;
   transition: color 0.3s ease;
 }
+
 a[href^="https://wa.me"]:hover {
   color: #128C7E;
   text-decoration: underline;
+}
+
+/* GRÁFICOS */
+.graficos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.grafico-card {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1 1 400px;
+  max-width: 480px;
+  height: 320px;
+}
+
+/* BOTÕES VOLTAR */
+.btn-voltar,
+.btn-voltar-login {
+  background-color: transparent;
+  border: none;
+  color: #00c853;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+  margin: 0 auto 40px;
+  transition: color 0.3s ease;
+}
+
+.btn-voltar:hover,
+.btn-voltar-login:hover {
+  color: #00e676;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .loja-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .graficos {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loja-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .graficos {
+    height: auto;
+  }
+}
+
+/* BOTÃO FIXO DE TOPO */
+.btn-topo {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background-color: #00c853;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-topo:hover {
+  background-color: #009624;
 }
