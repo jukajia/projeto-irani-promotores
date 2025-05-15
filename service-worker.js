@@ -16,11 +16,20 @@ const urlsToCache = [
   "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      return Promise.all(
+        urlsToCache.map(url =>
+          cache.add(url).catch(err => {
+            console.error('Falha ao adicionar no cache:', url, err);
+          })
+        )
+      );
+    })
   );
 });
+
 
 self.addEventListener("fetch", event => {
   event.respondWith(
