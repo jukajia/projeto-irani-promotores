@@ -4,50 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#121212" />
-  <link rel="manifest" href="manifest.json" />
   <title>Painel do Gestor | Supermercado Irani</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
 <body data-theme="dark">
 
-  <!-- Botão flutuante -->
-  <button class="btn-voltar" onclick="window.location.href='index.html'">← Voltar</button>
+  <!-- Botão fixo no topo -->
+  <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
 
-  <!-- Container principal -->
-  <div class="dashboard">
+  <header>
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
+    <h1>Painel do Gestor</h1>
+  </header>
 
-    <!-- Logo + título -->
-    <header>
-      <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
-      <h1>Painel do Gestor</h1>
-    </header>
-
-    <!-- KPIs -->
+  <main class="dashboard">
+    <!-- KPIs de destaque -->
     <section class="kpi-cards">
-      <div class="kpi-card">🛒 Lojas: <span id="totalLojas">--</span></div>
-      <div class="kpi-card">👥 Promotores: <span id="totalPromotores">--</span></div>
-      <div class="kpi-card">📆 Visitas Hoje: <span id="visitasHoje">--</span></div>
+      <div class="kpi-card">👥 Total de Promotores</div>
+      <div class="kpi-card">🏬 Lojas Ativas</div>
+      <div class="kpi-card">📆 Dias Monitorados</div>
     </section>
 
-    <!-- Filtros + Ações -->
+    <!-- Filtros -->
     <section class="filtros exportacoes">
+      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
       <div class="loja-buttons-grid" id="filtrosLojas">
-        <button class="loja-button selected" onclick="filtrarPorLoja('TODAS')">Todas</button>
-        <button class="loja-button" onclick="filtrarPorLoja('001')">Brasil</button>
-        <button class="loja-button" onclick="filtrarPorLoja('002')">Parque Verde</button>
-        <button class="loja-button" onclick="filtrarPorLoja('003')">Floresta</button>
-        <button class="loja-button" onclick="filtrarPorLoja('004')">Tancredo</button>
-        <button class="loja-button" onclick="filtrarPorLoja('201')">Portí 1</button>
-        <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2</button>
+        <button class="loja-button selected" onclick="filtrarPorLoja('TODAS')">Todas as Lojas</button>
+        <button class="loja-button" onclick="filtrarPorLoja('001')">Brasil (001)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('002')">Parque Verde (002)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('003')">Floresta (003)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('004')">Tancredo (004)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('201')">Portí 1 (201)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2 (202)</button>
       </div>
 
-      <input type="text" id="buscaGestor" placeholder="Buscar promotor ou produto..." oninput="filtrarDadosGestor()" />
-
+      <!-- Botões de exportação -->
       <div class="export-buttons">
-        <button onclick="exportarExcel()">📥 Exportar Excel</button>
-        <button onclick="exportarPDF()">📄 Exportar PDF</button>
-        <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+        <button onclick="exportarExcel()">📥 Excel</button>
+        <button onclick="exportarPDF()">📄 PDF</button>
+        <button onclick="atualizarPlanilha()">🔄 Atualizar</button>
         <span id="statusAtualiza"></span>
       </div>
     </section>
@@ -64,7 +61,7 @@
 
     <!-- Tabela -->
     <section class="table-container">
-      <h2>Relatório Consolidado</h2>
+      <h2>Dados Detalhados</h2>
       <div class="table-responsive">
         <table id="tabelaGestor">
           <thead>
@@ -74,24 +71,22 @@
         </table>
       </div>
     </section>
+  </main>
 
-  </div>
-
-  <!-- Scripts -->
+  <!-- Scripts: ordem controlada -->
   <script src="js/config.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="js/gestor.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('✅ Service Worker registrado.'))
+        .then(() => console.log('✅ Service Worker registrado com sucesso.'))
         .catch(err => console.error('❌ Erro ao registrar SW:', err));
     }
   </script>
-
 </body>
 </html>
