@@ -213,3 +213,52 @@ a[href^="https://wa.me"]:hover {
     max-width: 100px;
   }
 }
+.dashboard {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.kpi-cards {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.kpi-card {
+  background: #1e1e1e;
+  color: #00c853;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 200px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 200, 83, 0.2);
+  text-align: center;
+}
+
+.filtros.exportacoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.export-buttons button {
+  margin: 0 6px;
+}
+
+.table-container h2 {
+  color: #00c853;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow-x: auto;
+  background: #1e1e1e;
+  padding: 8px;
+}
