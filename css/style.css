@@ -213,3 +213,125 @@ a[href^="https://wa.me"]:hover {
     max-width: 100px;
   }
 }
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.header-centralizado {
+  text-align: center;
+  padding: 20px 0;
+}
+.logo-topo {
+  width: 120px;
+  margin-bottom: 10px;
+}
+h1 {
+  color: #1f7135;
+}
+
+/* Filtros */
+.filtros-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+.campo-busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* Botões de loja */
+.loja-buttons-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.loja-button {
+  background-color: #1e1e1e;
+  border: 1px solid #1f7135;
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+}
+.loja-button.selected,
+.loja-button:hover {
+  background-color: #1f7135;
+  color: #121212;
+}
+
+/* Tabela */
+.table-container {
+  max-width: 95%;
+  margin: auto;
+  padding: 20px;
+}
+.table-container h2 {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #1f7135;
+}
+.table-responsive {
+  overflow-x: auto;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+th {
+  background-color: #1f7135;
+  color: #121212;
+}
+tr:nth-child(even) {
+  background-color: #222;
+}
+tr:hover {
+  background-color: #333;
+}
+
+/* Rodapé */
+.footer-dashboard {
+  background-color: #1e1e1e;
+  color: #999;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 40px;
+}
+
+/* Botão voltar */
+.btn-voltar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ef5350;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-voltar:hover {
+  background: #d32f2f;
+}
