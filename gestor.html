@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#121212" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121212" />
   <title>Painel do Gestor | Supermercado Irani</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
-  <body data-theme="dark">
-    <!-- Botão fixo no topo -->
-    <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
+
+<body data-theme="dark">
+  <button class="btn-voltar" onclick="window.location.href='index.html'">← Voltar</button>
 
   <header>
     <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
     <h1>Painel do Gestor</h1>
-    <div class="loja-buttons-grid" id="filtrosLojas">
-      <button class="loja-button selected" onclick="filtrarPorLoja('TODAS')">Todas as Lojas</button>
-      <button class="loja-button" onclick="filtrarPorLoja('001')">Brasil (001)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('002')">Parque Verde (002)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('003')">Floresta (003)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('004')">Tancredo (004)</button>
-      <!-- <button class="loja-button" onclick="filtrarPorLoja('005')">Gourmet (005)</button> -->
-      <button class="loja-button" onclick="filtrarPorLoja('201')">Portí 1 (201)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2 (202)</button>
-      <!-- <button class="loja-button" onclick="filtrarPorLoja('203')">Portí 3 (203)</button>
-      <button class="loja-button" onclick="filtrarPorLoja('204')">Portí 4 (204)</button> -->
-    </div>
   </header>
 
-  <main>
-    <div class="filtros">
+  <main class="dashboard">
+    <!-- Cards Resumo -->
+    <section class="kpi-cards">
+      <div class="kpi-card">👥 Promotores: <strong id="kpi-promotores">--</strong></div>
+      <div class="kpi-card">🏬 Lojas: <strong id="kpi-lojas">--</strong></div>
+      <div class="kpi-card">📅 Hoje: <strong id="kpi-hoje">--</strong></div>
+    </section>
+
+    <!-- Filtros e Busca -->
+    <section class="filtros exportacoes">
+      <div class="loja-buttons-grid" id="filtrosLojas">
+        <button class="loja-button selected" onclick="filtrarPorLoja('TODAS')">Todas as Lojas</button>
+        <button class="loja-button" onclick="filtrarPorLoja('001')">Brasil (001)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('002')">Parque Verde (002)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('003')">Floresta (003)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('004')">Tancredo (004)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('201')">Portí 1 (201)</button>
+        <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2 (202)</button>
+      </div>
+
       <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
-    </div>
 
-    <div class="exportacoes">
-      <button onclick="exportarExcel()">📥 Exportar Excel</button>
-      <button onclick="exportarPDF()">📄 Exportar PDF</button>
-      <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
-      <span id="statusAtualiza"></span>
-    </div>
+      <div class="export-buttons">
+        <button onclick="exportarExcel()">📥 Excel</button>
+        <button onclick="exportarPDF()">📄 PDF</button>
+        <button onclick="atualizarPlanilha()">🔄 Atualizar</button>
+        <span id="statusAtualiza"></span>
+      </div>
+    </section>
 
+    <!-- Gráficos -->
     <section class="graficos">
       <div class="grafico-card">
         <canvas id="graficoDia"></canvas>
@@ -51,19 +58,23 @@
       </div>
     </section>
 
-    <div class="table-responsive">
-      <table id="tabelaGestor">
-        <thead>
-          <tr id="cabecalhoGestor"></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <button class="btn-voltar btn-rodape" onclick="window.location.href='index.html'">← Voltar para Login</button>
+    <!-- Tabela -->
+    <section class="table-container">
+      <h2>📊 Relatório Completo</h2>
+      <div class="table-responsive">
+        <table id="tabelaGestor">
+          <thead>
+            <tr id="cabecalhoGestor">
+              <!-- Cabeçalhos serão inseridos via JS -->
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
-  <!-- Scripts: ordem controlada -->
+  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
