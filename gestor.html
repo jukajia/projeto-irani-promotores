@@ -14,20 +14,14 @@
   <!-- Botão fixo no topo -->
   <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
 
+  <!-- Cabeçalho com logo centralizada -->
   <header>
-    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" />
-    <h1>Painel do Gestor</h1>
+    <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="logo-topo" style="margin: 0 auto; display: block; max-width: 160px;" />
+    <h1 style="text-align: center; color: #1f7135">Painel do Gestor</h1>
   </header>
 
   <main class="dashboard">
-    <!-- KPIs de destaque -->
-    <section class="kpi-cards">
-      <div class="kpi-card">👥 Total de Promotores</div>
-      <div class="kpi-card">🏬 Lojas Ativas</div>
-      <div class="kpi-card">📆 Dias Monitorados</div>
-    </section>
-
-    <!-- Filtros -->
+    <!-- Campo de busca e filtros abaixo da logo -->
     <section class="filtros exportacoes">
       <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
       <div class="loja-buttons-grid" id="filtrosLojas">
@@ -49,20 +43,10 @@
       </div>
     </section>
 
-    <!-- Gráficos -->
-    <!--section class="graficos">
-      <div class="grafico-card">
-        <canvas id="graficoDia"></canvas>
-      </div>
-      <div class="grafico-card">
-        <canvas id="graficoPromotor"></canvas>
-      </div>
-  </section-->
-
-    <!-- Tabela -->
+    <!-- Tabela no topo -->
     <section class="table-container">
-      <h2>Dados Detalhados</h2>
-      <div class="table-responsive">
+      <h2 style="text-align:center; color:#1f7135">Dados Detalhados</h2>
+      <div class="table-responsive" style="max-width: 100%; overflow-x: auto;">
         <table id="tabelaGestor">
           <thead>
             <tr id="cabecalhoGestor"></tr>
@@ -71,9 +55,26 @@
         </table>
       </div>
     </section>
+
+    <!-- Gráficos comentados -->
+    <!--
+    <section class="graficos">
+      <div class="grafico-card">
+        <canvas id="graficoDia"></canvas>
+      </div>
+      <div class="grafico-card">
+        <canvas id="graficoPromotor"></canvas>
+      </div>
+    </section>
+    -->
   </main>
 
-  <!-- Scripts: ordem controlada -->
+  <!-- Rodapé com versão -->
+  <footer class="py-4 bg-gray-900 text-center text-gray-400 text-sm fixed bottom-0 w-[95%] max-w-[900px] mx-auto rounded-t-xl">
+    <p>© 2025 Grupo Irani. Todos os direitos reservados. Desenvolvido por Juka Produções. Versão 1.0.0</p>
+  </footer>
+
+  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
