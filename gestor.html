@@ -10,6 +10,8 @@
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
 <body data-theme="dark">
+
+  <!-- Botão fixo no topo -->
   <button class="btn-voltar btn-topo" onclick="window.location.href='index.html'">← Voltar para Login</button>
 
   <header>
@@ -18,9 +20,16 @@
   </header>
 
   <main class="dashboard">
-    <section class="table-container">
-      <h2>Relatório Consolidado</h2>
+    <!-- KPIs de destaque -->
+    <section class="kpi-cards">
+      <div class="kpi-card">👥 Total de Promotores</div>
+      <div class="kpi-card">🏬 Lojas Ativas</div>
+      <div class="kpi-card">📆 Dias Monitorados</div>
+    </section>
 
+    <!-- Filtros -->
+    <section class="filtros exportacoes">
+      <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
       <div class="loja-buttons-grid" id="filtrosLojas">
         <button class="loja-button selected" onclick="filtrarPorLoja('TODAS')">Todas as Lojas</button>
         <button class="loja-button" onclick="filtrarPorLoja('001')">Brasil (001)</button>
@@ -31,17 +40,28 @@
         <button class="loja-button" onclick="filtrarPorLoja('202')">Portí 2 (202)</button>
       </div>
 
-      <div class="filtros">
-        <input type="text" id="buscaGestor" placeholder="Buscar..." oninput="filtrarDadosGestor()" />
-      </div>
-
-      <div class="exportacoes">
-        <button onclick="exportarExcel()">📥 Exportar Excel</button>
-        <button onclick="exportarPDF()">📄 Exportar PDF</button>
-        <button onclick="atualizarPlanilha()">🔄 Atualizar Dados</button>
+      <!-- Botões de exportação -->
+      <div class="export-buttons">
+        <button onclick="exportarExcel()">📥 Excel</button>
+        <button onclick="exportarPDF()">📄 PDF</button>
+        <button onclick="atualizarPlanilha()">🔄 Atualizar</button>
         <span id="statusAtualiza"></span>
       </div>
+    </section>
 
+    <!-- Gráficos -->
+    <section class="graficos">
+      <div class="grafico-card">
+        <canvas id="graficoDia"></canvas>
+      </div>
+      <div class="grafico-card">
+        <canvas id="graficoPromotor"></canvas>
+      </div>
+    </section>
+
+    <!-- Tabela -->
+    <section class="table-container">
+      <h2>Dados Detalhados</h2>
       <div class="table-responsive">
         <table id="tabelaGestor">
           <thead>
@@ -51,49 +71,22 @@
         </table>
       </div>
     </section>
-
-    <section class="graficos">
-      <div class="grafico-card">
-        <canvas id="graficoPizza"></canvas>
-      </div>
-    </section>
   </main>
 
-  <!-- Scripts -->
+  <!-- Scripts: ordem controlada -->
   <script src="js/config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="js/gestor.js"></script>
-
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('✅ Service Worker registrado'))
+        .then(() => console.log('✅ Service Worker registrado com sucesso.'))
         .catch(err => console.error('❌ Erro ao registrar SW:', err));
     }
-
-    // Exemplo de gráfico de pizza
-    window.addEventListener('DOMContentLoaded', () => {
-      const ctx = document.getElementById('graficoPizza').getContext('2d');
-      new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Produto A', 'Produto B', 'Produto C'],
-          datasets: [{
-            label: 'Distribuição',
-            data: [35, 45, 20],
-            backgroundColor: ['#1f7135', '#43a047', '#66bb6a'],
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: '#e0e0e0' } }
-          }
-        }
-      });
-    });
   </script>
 </body>
 </html>
