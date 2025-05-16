@@ -29,7 +29,7 @@ body, body[data-theme="dark"] {
   background-color: #1e1e1e;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 20px #00c853aa;
+  box-shadow: 0 0 20px #1f7135aa;
   max-width: 400px;
   width: 100%;
   text-align: center;
@@ -41,14 +41,14 @@ body, body[data-theme="dark"] {
   padding: 12px;
   border-radius: 12px;
   background-color: #1e1e1e;
-  box-shadow: 0 0 15px rgba(0, 200, 83, 0.5);
+  box-shadow: 0 0 15px rgba(31, 113, 53, 0.5);
   animation: pulse-glow 2s infinite ease-in-out;
 }
 
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 8px rgba(0, 200, 83, 0.4); }
-  50% { box-shadow: 0 0 18px rgba(0, 255, 100, 0.8); }
-  100% { box-shadow: 0 0 8px rgba(0, 200, 83, 0.4); }
+  0% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
 }
 
 .login-logo {
@@ -60,7 +60,7 @@ body, body[data-theme="dark"] {
 .login-container h1 {
   margin-bottom: 24px;
   font-weight: 700;
-  color: #00c853;
+  color: #1f7135;
 }
 
 /* LOJA BOTÕES */
@@ -84,9 +84,9 @@ body, body[data-theme="dark"] {
 
 .loja-button:hover,
 .loja-button.selected {
-  background-color: #00c853;
+  background-color: #1f7135;
   color: #121212;
-  box-shadow: 0 0 8px #00e676;
+  box-shadow: 0 0 8px #25a35d;
 }
 
 /* SENHA */
@@ -114,7 +114,7 @@ body, body[data-theme="dark"] {
 .login-button {
   width: 100%;
   padding: 12px;
-  background-color: #00c853;
+  background-color: #1f7135;
   border: none;
   border-radius: 6px;
   font-weight: 700;
@@ -124,7 +124,7 @@ body, body[data-theme="dark"] {
 }
 
 .login-button:hover {
-  background-color: #00e676;
+  background-color: #25a35d;
 }
 
 /* ERRO */
@@ -143,7 +143,7 @@ body, body[data-theme="dark"] {
   position: fixed;
   top: 16px;
   right: 16px;
-  background-color: #00c853;
+  background-color: #1f7135;
   color: white;
   padding: 10px 16px;
   border-radius: 8px;
@@ -155,7 +155,7 @@ body, body[data-theme="dark"] {
 }
 
 .btn-cadastrar-promotor:hover {
-  background-color: #009624;
+  background-color: #156b2e;
 }
 
 /* BOTÃO FIXO VOLTAR */
@@ -212,53 +212,4 @@ a[href^="https://wa.me"]:hover {
   .login-logo {
     max-width: 100px;
   }
-}
-.dashboard {
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.kpi-cards {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.kpi-card {
-  background: #1e1e1e;
-  color: #00c853;
-  padding: 20px;
-  border-radius: 12px;
-  min-width: 200px;
-  font-weight: bold;
-  box-shadow: 0 0 10px rgba(0, 200, 83, 0.2);
-  text-align: center;
-}
-
-.filtros.exportacoes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.export-buttons button {
-  margin: 0 6px;
-}
-
-.table-container h2 {
-  color: #00c853;
-  margin-bottom: 12px;
-  text-align: center;
-}
-
-.table-responsive {
-  border-radius: 8px;
-  overflow-x: auto;
-  background: #1e1e1e;
-  padding: 8px;
 }
