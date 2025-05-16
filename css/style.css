@@ -335,3 +335,46 @@ tr:hover {
 .btn-voltar:hover {
   background: #d32f2f;
 }
+.table-container {
+  margin-top: 32px;
+  width: 100%;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  padding: 8px;
+  border-radius: 8px;
+  max-height: 500px; /* rolagem vertical limitada */
+}
+
+.table-scroll {
+  min-width: 900px; /* força scroll horizontal em telas menores */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+
+th {
+  background-color: #1f7135;
+  color: #121212;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #222;
+}
+
+tr:hover {
+  background-color: #333;
+}
