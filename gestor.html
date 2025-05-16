@@ -9,18 +9,27 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #121212;
       color: #e0e0e0;
       font-family: 'Ubuntu', sans-serif;
-      margin: 0;
-      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 1000px;
       margin: 0 auto;
       padding: 20px;
+      flex: 1;
+      width: 100%;
     }
 
     header {
@@ -111,12 +120,18 @@
       margin-bottom: 12px;
     }
 
-    .table-responsive {
+    .table-wrapper {
       overflow-x: auto;
+      overflow-y: auto;
       border: 1px solid #333;
       border-radius: 6px;
       background-color: #1e1e1e;
       padding: 8px;
+      max-height: 500px;
+    }
+
+    .table-scroll {
+      min-width: 900px;
     }
 
     table {
@@ -143,9 +158,7 @@
       background-color: #333;
     }
 
-    /* Rodapé fixo */
     footer {
-      margin-top: 40px;
       padding: 16px;
       text-align: center;
       font-size: 0.85rem;
@@ -157,11 +170,16 @@
     @media (max-width: 768px) {
       .export-buttons {
         flex-direction: column;
+        align-items: center;
       }
 
       .loja-buttons-grid {
         flex-direction: column;
         align-items: center;
+      }
+
+      .table-scroll {
+        min-width: 100%;
       }
     }
   </style>
@@ -196,13 +214,15 @@
 
     <section class="table-container">
       <h2>Relatório Detalhado</h2>
-      <div class="table-responsive">
-        <table id="tabelaGestor">
-          <thead>
-            <tr id="cabecalhoGestor"></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="table-wrapper">
+        <div class="table-scroll">
+          <table id="tabelaGestor">
+            <thead>
+              <tr id="cabecalhoGestor"></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </div>
