@@ -16,27 +16,28 @@ function atualizarPlanilha() {
       return;
     }
 
-    const dataTable = response.getDataTable();
-    cabecalhos = [];
-    dadosGestor = [];
-
-    // Carrega cabeçalhos
-    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
-      cabecalhos.push(dataTable.getColumnLabel(c));
-    }
-
-    // Carrega linhas
-    for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
-      const linha = [];
-      for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
-        linha.push(dataTable.getValue(r, c));
-      }
-      dadosGestor.push(linha);
-    }
-
+    const data = response.getDataTable();
+    processarDados(data);
     renderizarTudo(dadosGestor);
     status.textContent = "✅ Dados atualizados";
   });
+}
+
+function processarDados(dataTable) {
+  cabecalhos = [];
+  dadosGestor = [];
+
+  for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+    cabecalhos.push(dataTable.getColumnLabel(c));
+  }
+
+  for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
+    const linha = [];
+    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+      linha.push(dataTable.getValue(r, c));
+    }
+    dadosGestor.push(linha);
+  }
 }
 
 function renderizarTudo(dados) {
@@ -54,66 +55,70 @@ function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
 
-  // Índices das colunas telefone (calcule para garantir atualização)
-  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone supervisor"));
-  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone empresa"));
+  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h?.toLowerCase().includes("telefone supervisor"));
+  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h?.toLowerCase().includes("telefone empresa"));
 
   dados.forEach(linha => {
     const tr = document.createElement("tr");
-    linha.forEach((cel, i) => {
+
+    linha.forEach((celula, i) => {
       const td = document.createElement("td");
-      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel != null) {
-        const telefoneTexto = String(cel).trim();
-        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${telefoneTexto}</a>`;
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && celula != null) {
+        const telefone = String(celula).trim().replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${celula}</a>`;
       } else {
-        td.textContent = cel ?? "";
+        td.textContent = celula ?? "";
       }
       tr.appendChild(td);
     });
+
     tbody.appendChild(tr);
   });
 }
 
 function filtrarPorLoja(codigo) {
-  // Destacar botão
+  // Destaca botão selecionado
   document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
   const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
     .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
   if (botaoSelecionado) botaoSelecionado.classList.add("selected");
 
-  // Filtrar dados
-  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
-  if (codigo === "TODAS" || idxLoja === -1) {
-    renderizarTudo(dadosGestor);
-    return;
-  }
+  // Filtra dados
+  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
 
-  const dadosFiltrados = dadosGestor.filter(linha => (linha[idxLoja] + "").includes(codigo));
+  const dadosFiltrados = (codigo === "TODAS" || idxLoja === -1)
+    ? dadosGestor
+    : dadosGestor.filter(linha => String(linha[idxLoja] ?? "").includes(codigo));
+
   renderizarTudo(dadosFiltrados);
 }
 
 function gerarGraficos(dados) {
-  const idxDia = cabecalhos.findIndex(h => h && h.toLowerCase().includes("dias da semana"));
-  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
+  const idxDia = cabecalhos.findIndex(h => h?.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
 
-  if (window.chartDia) window.chartDia.destroy();
-  if (window.chartLoja) window.chartLoja.destroy();
+  // Limpa e recria canvas para evitar erro de contexto duplicado
+  ['graficoDia', 'graficoPromotor'].forEach(id => {
+    const oldCanvas = document.getElementById(id);
+    const newCanvas = document.createElement('canvas');
+    newCanvas.id = id;
+    oldCanvas.replaceWith(newCanvas);
+  });
 
-  const contDia = contar(dados, idxDia);
-  const contLoja = contar(dados, idxLoja);
+  const contDia = contarOcorrencias(dados, idxDia);
+  const contLoja = contarOcorrencias(dados, idxLoja);
 
   window.chartDia = criarGraficoBarra('graficoDia', 'Atendimentos por Dia', contDia);
   window.chartLoja = criarGraficoBarra('graficoPromotor', 'Atendimentos por Loja', contLoja);
 }
 
-function contar(dados, idx) {
-  const res = {};
+function contarOcorrencias(dados, idx) {
+  const contagem = {};
   dados.forEach(linha => {
     const chave = linha[idx] ?? "Não informado";
-    res[chave] = (res[chave] ?? 0) + 1;
+    contagem[chave] = (contagem[chave] ?? 0) + 1;
   });
-  return res;
+  return contagem;
 }
 
 function criarGraficoBarra(id, label, dados) {
