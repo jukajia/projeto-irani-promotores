@@ -76,3 +76,83 @@
   border-top: 1px solid #333;
 }
 
+/* GESTOR - layout atualizado */
+.gestor-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px 20px 80px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.gestor-topo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 24px;
+}
+
+.logo-gestor {
+  width: 120px;
+  margin-bottom: 16px;
+}
+
+.grid-filtros-export {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+.filtros-gestor {
+  flex: 3;
+  min-width: 280px;
+}
+
+.export-gestor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.export-gestor button {
+  background-color: #1f7135;
+  color: #fff;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.export-gestor button:hover {
+  background-color: #2e8b57;
+}
+
+/* Botão voltar no topo esquerdo */
+.btn-voltar-inicio {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  color: #1f7135;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.btn-voltar-inicio:hover {
+  opacity: 0.8;
+}
