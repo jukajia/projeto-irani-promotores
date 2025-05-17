@@ -16,23 +16,54 @@ const urlsToCache = [
   "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
 ];
 
-self.addEventListener('install', event => {
+// Instalação e cache dos recursos essenciais
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return Promise.all(
-        urlsToCache.map(url =>
+    caches.open(CACHE_NAME).then(cache => 
+      Promise.all(
+        urlsToCache.map(url => 
           cache.add(url).catch(err => {
-            console.error('Falha ao adicionar no cache:', url, err);
+            console.error(`[ServiceWorker] Falha ao adicionar no cache: ${url}`, err);
           })
         )
-      );
-    })
+      )
+    ).then(() => self.skipWaiting()) // Ativa SW imediatamente após instalação
   );
 });
 
+// Ativação e limpeza de caches antigos
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys => 
+      Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            console.log(`[ServiceWorker] Removendo cache antigo: ${key}`);
+            return caches.delete(key);
+          }
+        })
+      )
+    ).then(() => self.clients.claim()) // Controla clientes imediatamente
+  );
+});
 
+// Interceptação das requisições
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse; // Retorna do cache se existir
+      }
+      // Busca na rede e, opcionalmente, pode adicionar ao cache para futuras requisições
+      return fetch(event.request).catch(() => {
+        // Fallback simples caso fetch falhe (exemplo: offline)
+        // Pode implementar página offline customizada aqui
+        return new Response("Você está offline e o recurso não está no cache.", {
+          status: 503,
+          statusText: "Service Unavailable",
+          headers: new Headers({ "Content-Type": "text/plain" }),
+        });
+      });
+    })
   );
 });
