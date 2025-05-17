@@ -1,6 +1,11 @@
+/* ======================== */
+/* IMPORTAÇÃO DE FONTE */
+/* ======================== */
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
-/* ========== RESET & BASE ========== */
+/* ======================== */
+/* RESET E BASE GLOBAL */
+/* ======================== */
 * {
   margin: 0;
   padding: 0;
@@ -11,12 +16,11 @@
 body, body[data-theme="dark"] {
   background-color: #121212;
   color: #e0e0e0;
-  font-family: 'Ubuntu', sans-serif;
-  margin: 0;
-  padding: 0;
 }
 
-/* ========== LOGIN PAGE ========== */
+/* ======================== */
+/* LOGIN */
+/* ======================== */
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -24,7 +28,6 @@ body, body[data-theme="dark"] {
   justify-content: center;
   min-height: 100vh;
   padding: 40px 20px 100px;
-  box-sizing: border-box;
 }
 
 .login-container {
@@ -40,8 +43,6 @@ body, body[data-theme="dark"] {
 
 .login-logo {
   max-width: 180px;
-  height: auto;
-  display: block;
   margin: 0 auto 16px;
 }
 
@@ -51,6 +52,7 @@ body, body[data-theme="dark"] {
   color: #1f7135;
 }
 
+/* Animação com brilho pulsante */
 .pulse-glow {
   display: inline-block;
   padding: 12px;
@@ -61,12 +63,11 @@ body, body[data-theme="dark"] {
 }
 
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
+  0%, 100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
   50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
-  100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
 }
 
-/* Campo de senha */
+/* Campo senha */
 .senha-container {
   margin-top: 12px;
 }
@@ -82,13 +83,13 @@ body, body[data-theme="dark"] {
 .dark-input {
   width: 100%;
   padding: 12px;
-  margin-top: 8px;
-  margin-bottom: 16px;
   border: 1px solid #555;
   border-radius: 6px;
   background-color: #222;
   color: #e0e0e0;
   font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 input:focus {
@@ -97,7 +98,7 @@ input:focus {
   box-shadow: 0 0 5px #1f7135aa;
 }
 
-/* Login button */
+/* Botão de login */
 .login-button {
   width: 100%;
   padding: 12px;
@@ -114,24 +115,25 @@ input:focus {
   background-color: #25a35d;
 }
 
-/* Erro login */
+/* Mensagem de erro login */
 .erro-msg {
+  display: none;
   color: #ef5350;
   background-color: rgba(239, 83, 80, 0.1);
   padding: 12px;
   border-radius: 6px;
   margin-top: 8px;
   font-weight: 600;
-  display: none;
 }
 
-/* ========== BOTÕES ========== */
+/* ======================== */
+/* BOTÕES DAS LOJAS */
+/* ======================== */
 .loja-buttons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 12px;
   margin-bottom: 24px;
-  justify-content: center;
 }
 
 .loja-button {
@@ -152,7 +154,7 @@ input:focus {
   box-shadow: 0 0 8px #25a35d;
 }
 
-/* Botão cadastrar promotor */
+/* Botão para cadastrar promotor */
 .btn-cadastrar-promotor {
   position: fixed;
   top: 16px;
@@ -162,35 +164,26 @@ input:focus {
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 999;
-  transition: background-color 0.3s ease;
 }
 
-.btn-cadastrar-promotor:hover {
-  background-color: #156b2e;
-}
-
-/* Botão voltar início */
+/* Botão voltar para o início */
 .btn-voltar-inicio {
   position: fixed;
   top: 20px;
   left: 20px;
-  background-color: transparent;
   color: #1f7135;
   font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
-  transition: opacity 0.3s ease;
   z-index: 1000;
 }
 
-.btn-voltar-inicio:hover {
-  opacity: 0.8;
-}
-
-/* ========== CONTAINERS LOJA ========== */
+/* ======================== */
+/* CONTAINERS DA LOJA */
+/* ======================== */
 .loja-wrapper {
   display: flex;
   flex-direction: column;
@@ -209,17 +202,11 @@ input:focus {
 .logo-centralizada {
   max-width: 160px;
   margin: 0 auto 20px;
-  display: block;
 }
 
-.loja-botoes-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-/* ========== CONTAINERS GESTOR ========== */
+/* ======================== */
+/* CONTAINERS DO GESTOR */
+/* ======================== */
 .gestor-wrapper {
   display: flex;
   flex-direction: column;
@@ -229,12 +216,10 @@ input:focus {
 }
 
 .gestor-topo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   max-width: 1100px;
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .logo-gestor {
@@ -242,12 +227,12 @@ input:focus {
   margin-bottom: 16px;
 }
 
+/* Filtros e botões de exportação */
 .grid-filtros-export {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
-  width: 100%;
 }
 
 .filtros-gestor {
@@ -259,27 +244,23 @@ input:focus {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  justify-content: flex-start;
   align-items: flex-end;
+  gap: 10px;
 }
 
 .export-gestor button {
   background-color: #1f7135;
   color: #fff;
   padding: 10px 14px;
-  border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: none;
 }
 
-.export-gestor button:hover {
-  background-color: #2e8b57;
-}
-
-/* ========== TABELA E FILTROS ========== */
+/* ======================== */
+/* TABELA DE DADOS */
+/* ======================== */
 .table-container {
   max-width: 1000px;
   width: 100%;
@@ -288,27 +269,23 @@ input:focus {
 
 .table-container h2 {
   text-align: center;
-  margin-bottom: 12px;
   color: #1f7135;
 }
 
 .table-wrapper {
   overflow-x: auto;
   overflow-y: auto;
-  border: 1px solid #333;
-  border-radius: 8px;
   background-color: #1e1e1e;
+  border-radius: 8px;
   padding: 8px;
+  border: 1px solid #333;
   max-height: 500px;
-}
-
-.table-scroll {
-  min-width: 900px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 900px;
 }
 
 th, td {
@@ -343,18 +320,21 @@ tr:hover {
   margin-bottom: 20px;
 }
 
-/* ========== LINKS ========== */
+/* ======================== */
+/* LINKS PARA WHATSAPP */
+/* ======================== */
 a[href^="https://wa.me"] {
   color: #25d366;
   text-decoration: none;
-  transition: color 0.3s ease;
 }
 a[href^="https://wa.me"]:hover {
   color: #128c7e;
   text-decoration: underline;
 }
 
-/* ========== RODAPÉ ========== */
+/* ======================== */
+/* RODAPÉ */
+/* ======================== */
 .rodape-fixo {
   position: fixed;
   bottom: 0;
@@ -367,7 +347,56 @@ a[href^="https://wa.me"]:hover {
   border-top: 1px solid #333;
 }
 
-/* ========== RESPONSIVO ========== */
+/* ======================== */
+/* GRÁFICOS */
+/* ======================== */
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.graficos-container h2 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.graficos-grid canvas {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.grafico-box {
+  margin-bottom: 40px;
+}
+
+.grafico-box canvas {
+  width: 100% !important;
+  max-width: 900px;
+  height: 400px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+#rankingPromotores {
+  color: #fff;
+  padding-left: 20px;
+}
+
+/* ======================== */
+/* RESPONSIVO */
+/* ======================== */
 @media (max-width: 768px) {
   .grid-filtros-export {
     flex-direction: column;
@@ -405,54 +434,4 @@ a[href^="https://wa.me"]:hover {
   .login-logo {
     max-width: 100px;
   }
-}
-/*======estilos dos graficos====*/
-.graficos-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-
-.graficos-container h2 {
-  color: #ffffff;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.graficos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.graficos-grid canvas {
-  background-color: #121212;
-  border-radius: 8px;
-  padding: 1rem;
-}
-.graficos-container {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-}
-
-.grafico-box {
-  margin-bottom: 40px;
-}
-
-.grafico-box canvas {
-  width: 100% !important;
-  max-width: 900px;
-  height: 400px !important;
-  margin: 0 auto;
-  display: block;
-}
-
-#rankingPromotores {
-  color: #fff;
-  padding-left: 20px;
 }
