@@ -43,7 +43,7 @@ function processarDados(dataTable) {
 function renderizarTudo(dados) {
   renderCabecalho();
   renderTabela(dados);
-  gerarGraficos(dados);
+  gerarGraficosCompletos(dados);
 }
 
 function renderCabecalho() {
@@ -65,7 +65,7 @@ function renderTabela(dados) {
       const td = document.createElement("td");
       if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && celula != null) {
         const telefone = String(celula).trim().replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${celula}</a>`;
+        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${celula}</a>`;
       } else {
         td.textContent = celula ?? "";
       }
@@ -77,13 +77,11 @@ function renderTabela(dados) {
 }
 
 function filtrarPorLoja(codigo) {
-  // Destaca botão selecionado
   document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
   const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
     .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
   if (botaoSelecionado) botaoSelecionado.classList.add("selected");
 
-  // Filtra dados
   const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
 
   const dadosFiltrados = (codigo === "TODAS" || idxLoja === -1)
@@ -93,55 +91,94 @@ function filtrarPorLoja(codigo) {
   renderizarTudo(dadosFiltrados);
 }
 
-function gerarGraficos(dados) {
-  const idxDia = cabecalhos.findIndex(h => h?.toLowerCase().includes("dias da semana"));
-  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
+function gerarGraficosCompletos(dados) {
+  const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
+  const idxDiasSemana = cabecalhos.findIndex(h => h.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
 
-  // Limpa e recria canvas para evitar erro de contexto duplicado
-  ['graficoDia', 'graficoPromotor'].forEach(id => {
-    const oldCanvas = document.getElementById(id);
-    const newCanvas = document.createElement('canvas');
-    newCanvas.id = id;
-    oldCanvas.replaceWith(newCanvas);
-  });
+  const promotoresDias = {};
+  const promotoresPorLoja = {};
+  const diasDistribuidos = { "Segunda": 0, "Terça": 0, "Quarta": 0, "Quinta": 0, "Sexta": 0, "Sábado": 0, "Domingo": 0 };
 
-  const contDia = contarOcorrencias(dados, idxDia);
-  const contLoja = contarOcorrencias(dados, idxLoja);
-
-  window.chartDia = criarGraficoBarra('graficoDia', 'Atendimentos por Dia', contDia);
-  window.chartLoja = criarGraficoBarra('graficoPromotor', 'Atendimentos por Loja', contLoja);
-}
-
-function contarOcorrencias(dados, idx) {
-  const contagem = {};
   dados.forEach(linha => {
-    const chave = linha[idx] ?? "Não informado";
-    contagem[chave] = (contagem[chave] ?? 0) + 1;
-  });
-  return contagem;
-}
+    const nome = linha[idxPromotor] ?? "Sem nome";
+    const loja = linha[idxLoja] ?? "Sem loja";
+    const dias = (linha[idxDiasSemana] ?? "").split(/[,;]+/).map(d => d.trim());
 
-function criarGraficoBarra(id, label, dados) {
-  const ctx = document.getElementById(id);
-  return new Chart(ctx, {
+    if (!promotoresDias[nome]) promotoresDias[nome] = new Set();
+    dias.forEach(dia => promotoresDias[nome].add(dia));
+
+    if (!promotoresPorLoja[loja]) promotoresPorLoja[loja] = new Set();
+    promotoresPorLoja[loja].add(nome);
+
+    dias.forEach(d => {
+      if (diasDistribuidos[d] != null) diasDistribuidos[d]++;
+    });
+  });
+
+  // Limpa canvases antigos
+  const graficos = [
+    "graficoPromotorDias",
+    "graficoPromotoresPorLoja",
+    "graficoDiasSemana"
+  ];
+  graficos.forEach(id => {
+    const canvas = document.getElementById(id);
+    const novo = document.createElement("canvas");
+    novo.id = id;
+    canvas.replaceWith(novo);
+  });
+
+  // 1. Promotores x Dias
+  const nomes = Object.keys(promotoresDias);
+  const qtdDias = nomes.map(n => promotoresDias[n].size);
+  new Chart(document.getElementById("graficoPromotorDias"), {
     type: 'bar',
     data: {
-      labels: Object.keys(dados),
-      datasets: [{
-        label,
-        data: Object.values(dados),
-        backgroundColor: '#00C853'
-      }]
+      labels: nomes,
+      datasets: [{ label: 'Dias por semana', data: qtdDias, backgroundColor: '#00c853' }]
     },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { color: '#fff' } }
-      },
-      scales: {
-        x: { ticks: { color: '#fff' } },
-        y: { ticks: { color: '#fff' }, beginAtZero: true }
-      }
-    }
+    options: chartOptions()
   });
+
+  // 2. Promotores por Loja
+  new Chart(document.getElementById("graficoPromotoresPorLoja"), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(promotoresPorLoja),
+      datasets: [{ label: 'Promotores por Loja', data: Object.values(promotoresPorLoja).map(set => set.size), backgroundColor: '#2196f3' }]
+    },
+    options: chartOptions()
+  });
+
+  // 3. Atendimentos por Dia da Semana
+  new Chart(document.getElementById("graficoDiasSemana"), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(diasDistribuidos),
+      datasets: [{ label: 'Atendimentos por Dia', data: Object.values(diasDistribuidos), backgroundColor: '#ff6f00' }]
+    },
+    options: chartOptions()
+  });
+
+  // 4. Ranking Top 10
+  const ranking = nomes
+    .map((n, i) => ({ nome: n, dias: qtdDias[i] }))
+    .sort((a, b) => b.dias - a.dias)
+    .slice(0, 10);
+  document.getElementById("rankingPromotores").innerHTML = ranking
+    .map(p => `<li>${p.nome} - ${p.dias} dias</li>`).join("");
+}
+
+function chartOptions() {
+  return {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: "#fff" } }
+    },
+    scales: {
+      x: { ticks: { color: "#fff" } },
+      y: { beginAtZero: true, ticks: { color: "#fff" } }
+    }
+  };
 }
