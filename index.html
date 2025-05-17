@@ -8,10 +8,235 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
+  <style>
+    :root {
+      --primary-color: #1f7135;
+      --primary-hover: #2e8b57;
+      --background: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #e0e0e0;
+      --error-color: #e53935;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Ubuntu', sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+    
+    .btn-cadastrar-promotor {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .btn-cadastrar-promotor:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .login-container {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pulse-glow {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 25px;
+    }
+    
+    .pulse-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--primary-color);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      opacity: 0.3;
+    }
+    
+    .login-logo {
+      width: 100px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+    
+    .loja-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    
+    .loja-button {
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #2d2d2d;
+      color: var(--text-color);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .loja-button:hover {
+      background-color: #3d3d3d;
+    }
+    
+    .loja-button.gestor-button {
+      background-color: var(--primary-color);
+      color: white;
+      grid-column: span 2;
+    }
+    
+    .loja-button.gestor-button:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .senha-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .dark-label {
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    .dark-input {
+      padding: 12px 15px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #2d2d2d;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    
+    .dark-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(31, 113, 53, 0.3);
+    }
+    
+    .login-button {
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .login-button:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .erro-msg {
+      color: var(--error-color);
+      margin-top: 15px;
+      font-weight: 600;
+      animation: shake 0.5s ease;
+    }
+    
+    /* Animações */
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.3; }
+      50% { transform: scale(1.05); opacity: 0.1; }
+      100% { transform: scale(0.95); opacity: 0.3; }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+      
+      .loja-buttons-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .loja-button.gestor-button {
+        grid-column: span 1;
+      }
+      
+      .btn-cadastrar-promotor {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .login-container {
+        padding: 25px 15px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="dark" class="login-body">
-
   <!-- Botão fixo no topo direito -->
   <a href="https://jukajia.github.io/PromotoresFormulario/" target="_blank" class="btn-cadastrar-promotor">
     ➕ Cadastrar Promotor
@@ -22,7 +247,6 @@
     <div class="pulse-glow">
       <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo" />
     </div>
-
 
     <h1>Área de Acesso</h1>
 
@@ -54,6 +278,5 @@
         .catch(err => console.error('❌ Erro ao registrar SW:', err));
     }
   </script>
-
 </body>
 </html>
