@@ -8,160 +8,49 @@
   <title>Relatório de Promotores | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
-  <style>
-    /* Estilos adicionais para o novo layout */
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .container-principal {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      flex-grow: 1;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    
-    .container-superior {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .logo-container {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .logo-container img {
-      max-width: 200px;
-      height: auto;
-    }
-    
-    .controles-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    
-    .container-tabela {
-      width: 100%;
-      flex-grow: 1;
-    }
-    
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-    }
-    
-    .table-responsive {
-      width: 100%;
-      overflow-x: auto;
-    }
-    
-    .filtros {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto 20px;
-    }
-    
-    #buscaPublica {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-    
-    .exportacoes {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-    
-    @media (max-width: 768px) {
-      .container-principal {
-        padding: 10px;
-      }
-      
-      .controles-container {
-        gap: 10px;
-      }
-    }
-  </style>
 </head>
 <body data-theme="dark">
   
-  <div class="container-principal">
-    <div class="container-superior">
-      <div class="logo-container">
-        <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
-        <h1 id="tituloLoja">Relatório de Promotores</h1>
-      </div>
-      
-      <div class="controles-container">
-        <div class="exportacoes">
-          <button onclick="carregarLoja()">🔄 Carregar Planilha</button>
-          <span id="statusAtualiza" style="margin-left: 12px; min-width: 120px; color: #eee; font-weight: 600;"></span>
-        </div>
-        
-        <div class="filtros">
-          <input
-            type="text"
-            id="buscaPublica"
-            placeholder="Buscar promotor, marca ou produto..."
-            oninput="filtrarDadosPublicoLocal()"
-          />
-        </div>
-      </div>
+  <header>
+    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
+    <h1 id="tituloLoja">Relatório de Promotores</h1>
+  </header>
+
+  <main>
+    <div class="exportacoes" style="justify-content: center; margin-bottom: 20px;">
+      <button onclick="carregarLoja()">🔄 Carregar Planilha</button>
+      <span id="statusAtualiza" style="margin-left: 12px; min-width: 120px; color: #eee; font-weight: 600;"></span>
     </div>
-    
-    <div class="container-tabela">
-      <div class="table-responsive">
-        <table id="tabelaPublica">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Marca</th>
-              <th>Produtos</th>
-              <th>Dia da Semana</th>
-              <th>Telefone</th>
-              <th>Loja</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+
+    <div class="filtros">
+      <input
+        type="text"
+        id="buscaPublica"
+        placeholder="Buscar promotor, marca ou produto..."
+        oninput="filtrarDadosPublicoLocal()"
+      />
     </div>
-    
+
+    <div class="table-responsive">
+      <table id="tabelaPublica">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Marca</th>
+            <th>Produtos</th>
+            <th>Dia da Semana</th>
+            <th>Telefone</th>
+            <th>Loja</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <button class="btn-voltar-login" onclick="window.location.href='index.html'">
       ← Voltar para Login
     </button>
-  </div>
-
-  <footer>
-    Supermercado Irani © 2023 - Todos os direitos reservados
-  </footer>
+  </main>
 
   <!-- SCRIPTS carregados ao final do body, na ordem correta -->
   <script src="js/config.js"></script>
