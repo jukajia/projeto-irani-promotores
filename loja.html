@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#121212" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121212" />
   <title>Relatório de Promotores | Supermercado Irani</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
 <body data-theme="dark">
   
-  <header>
-    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
-    <h1 id="tituloLoja">Relatório de Promotores</h1>
-  </header>
+  <!-- Botão Voltar -->
+  <a href="index.html" class="btn-voltar-inicio">← Voltar Início</a>
 
-  <main>
-    <div class="exportacoes" style="justify-content: center; margin-bottom: 20px;">
-      <button onclick="carregarLoja()">🔄 Carregar Planilha</button>
-      <span id="statusAtualiza" style="margin-left: 12px; min-width: 120px; color: #eee; font-weight: 600;"></span>
+  <!-- Container principal centralizado -->
+  <div class="loja-wrapper">
+    
+    <!-- Container de cima com logo, botões e busca -->
+    <div class="loja-topo-container">
+      <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-centralizada" />
+      
+      <div class="loja-botoes-container">
+        <!-- Botões de loja não são necessários aqui pois a loja já está selecionada via URL -->
+        <input
+          type="text"
+          id="buscaPublica"
+          placeholder="Buscar promotor, marca ou produto..."
+          class="campo-busca"
+          oninput="filtrarDadosPublicoLocal()"
+        />
+      </div>
     </div>
 
-    <div class="filtros">
-      <input
-        type="text"
-        id="buscaPublica"
-        placeholder="Buscar promotor, marca ou produto..."
-        oninput="filtrarDadosPublicoLocal()"
-      />
+    <!-- Container da tabela -->
+    <div class="tabela-container">
+      <h2 id="tituloLoja">Relatório de Promotores</h2>
+      <div class="table-responsive">
+        <table id="tabelaPublica">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Marca</th>
+              <th>Produtos</th>
+              <th>Dia da Semana</th>
+              <th>Telefone</th>
+              <th>Loja</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="table-responsive">
-      <table id="tabelaPublica">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Produtos</th>
-            <th>Dia da Semana</th>
-            <th>Telefone</th>
-            <th>Loja</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+  </div>
 
-    <button class="btn-voltar-login" onclick="window.location.href='index.html'">
-      ← Voltar para Login
-    </button>
-  </main>
+  <!-- Rodapé fixo -->
+  <footer class="rodape-fixo">
+    © 2025 Grupo Irani. Todos os direitos reservados.
+  </footer>
 
-  <!-- SCRIPTS carregados ao final do body, na ordem correta -->
+  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="js/loja.js"></script>
