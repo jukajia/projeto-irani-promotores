@@ -5,10 +5,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Ubuntu', sans-serif;
 }
 
 body, body[data-theme="dark"] {
+  font-family: 'Ubuntu', sans-serif;
   background-color: #121212;
   color: #e0e0e0;
 }
@@ -76,7 +76,7 @@ body, body[data-theme="dark"] {
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .loja-button:hover,
@@ -97,6 +97,7 @@ body, body[data-theme="dark"] {
   background-color: #222;
   color: #e0e0e0;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .dark-label {
@@ -117,7 +118,7 @@ body, body[data-theme="dark"] {
   font-weight: 700;
   color: #121212;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .login-button:hover {
@@ -168,7 +169,6 @@ body, body[data-theme="dark"] {
   cursor: pointer;
   font-weight: bold;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background-color 0.3s;
 }
 
@@ -211,6 +211,16 @@ a[href^="https://wa.me"]:hover {
   padding: 8px;
   border-radius: 8px;
   max-height: 500px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+  background-color: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #1f7135;
+  border-radius: 4px;
 }
 
 .table-scroll {
@@ -261,4 +271,9 @@ tr:hover {
   }
 }
 
-@media (max-width: 480
+@media (max-width: 480px) {
+  .btn-cadastrar-promotor {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
