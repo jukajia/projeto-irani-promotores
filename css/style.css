@@ -433,3 +433,26 @@ a[href^="https://wa.me"]:hover {
   border-radius: 8px;
   padding: 1rem;
 }
+.graficos-container {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+}
+
+.grafico-box {
+  margin-bottom: 40px;
+}
+
+.grafico-box canvas {
+  width: 100% !important;
+  max-width: 900px;
+  height: 400px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+#rankingPromotores {
+  color: #fff;
+  padding-left: 20px;
+}
