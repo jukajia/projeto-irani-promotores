@@ -8,50 +8,171 @@
   <title>Relatório de Promotores | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Ubuntu', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container-central {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      max-width: 1024px;
+    }
+
+    .topo-interativo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .topo-interativo img {
+      max-width: 160px;
+      height: auto;
+    }
+
+    .loja-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .filtros {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .filtros input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    .tabela-container {
+      width: 100%;
+      overflow-x: auto;
+      background-color: #1e1e1e;
+      border-radius: 6px;
+      border: 1px solid #333;
+      padding: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #333;
+      text-align: left;
+    }
+
+    th {
+      background-color: #1f7135;
+      color: #121212;
+    }
+
+    tr:nth-child(even) {
+      background-color: #222;
+    }
+
+    tr:hover {
+      background-color: #333;
+    }
+
+    footer {
+      background-color: #1e1e1e;
+      color: #999;
+      padding: 12px;
+      text-align: center;
+      font-size: 0.85rem;
+      border-top: 1px solid #333;
+    }
+
+    @media (max-width: 480px) {
+      .topo-interativo img {
+        max-width: 100px;
+      }
+    }
+  </style>
 </head>
 
 <body data-theme="dark">
-  
-  <header>
-    <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
-    <h1 id="tituloLoja">Relatório de Promotores</h1>
-  </header>
-
   <main>
-    <div class="exportacoes" style="justify-content: center; margin-bottom: 20px;">
-      <button onclick="carregarLoja()">🔄 Carregar Planilha</button>
-      <span id="statusAtualiza" style="margin-left: 12px; min-width: 120px; color: #eee; font-weight: 600;"></span>
-    </div>
+    <div class="container-central">
+      
+      <!-- 1º Container: Topo com logo, botões e busca -->
+      <section class="topo-interativo">
+        <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
+        
+        <div class="loja-buttons-grid">
+          <button onclick="selecionarLoja('001')" class="loja-button">Brasil (001)</button>
+          <button onclick="selecionarLoja('002')" class="loja-button">Parque Verde (002)</button>
+          <button onclick="selecionarLoja('003')" class="loja-button">Floresta (003)</button>
+          <button onclick="selecionarLoja('004')" class="loja-button">Tancredo (004)</button>
+          <button onclick="selecionarLoja('201')" class="loja-button">Portí 1 (201)</button>
+          <button onclick="selecionarLoja('202')" class="loja-button">Portí 2 (202)</button>
+        </div>
 
-    <div class="filtros">
-      <input
-        type="text"
-        id="buscaPublica"
-        placeholder="Buscar promotor, marca ou produto..."
-        oninput="filtrarDadosPublicoLocal()"
-      />
-    </div>
+        <div class="filtros">
+          <input
+            type="text"
+            id="buscaPublica"
+            placeholder="Buscar promotor, marca ou produto..."
+            oninput="filtrarDadosPublicoLocal()"
+          />
+        </div>
+      </section>
 
-    <div class="table-responsive">
-      <table id="tabelaPublica">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Produtos</th>
-            <th>Dia da Semana</th>
-            <th>Telefone</th>
-            <th>Loja</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+      <!-- 2º Container: Tabela -->
+      <section class="tabela-container">
+        <table id="tabelaPublica">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Marca</th>
+              <th>Produtos</th>
+              <th>Dia da Semana</th>
+              <th>Telefone</th>
+              <th>Loja</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
 
-    <button class="btn-voltar-login" onclick="window.location.href='index.html'">
-      ← Voltar para Login
-    </button>
+    </div>
   </main>
+
+  <!-- 3º Container: Rodapé fixo -->
+  <footer>
+    © 2025 Grupo Irani — Desenvolvido por Juka Produções
+  </footer>
 
   <!-- SCRIPTS -->
   <script src="js/config.js"></script>
