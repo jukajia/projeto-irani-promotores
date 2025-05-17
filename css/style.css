@@ -406,3 +406,30 @@ a[href^="https://wa.me"]:hover {
     max-width: 100px;
   }
 }
+/*======estilos dos graficos====*/
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.graficos-container h2 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.graficos-grid canvas {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 1rem;
+}
