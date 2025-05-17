@@ -1,243 +1,184 @@
 google.charts.load('current', { packages: ['corechart', 'table'] });
 google.charts.setOnLoadCallback(atualizarPlanilha);
 
-let dadosOriginais = [];
-
-document.addEventListener("DOMContentLoaded", async () => {
-  await carregarDados();
-  configurarFiltros();
-});
-
-async function carregarDados() {
-  try {
-    const resposta = await fetch(PLANILHA_GESTOR_URL);
-    const dados = await resposta.json();
-    dadosOriginais = dados;
-    preencherTabela(dados);
-    gerarTodosGraficos(dados);
-  } catch (erro) {
-    console.error("Erro ao carregar dados:", erro);
-  }
-}
-
-// 🧠 Filtros
-function configurarFiltros() {
-  document.querySelectorAll(".loja-button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".loja-button").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      aplicarFiltros();
-    });
-  });
-
-  document.getElementById("buscaGestor").addEventListener("input", aplicarFiltros);
-}
-
-function aplicarFiltros() {
-  const lojaSelecionada = document.querySelector(".loja-button.selected")?.textContent.trim();
-  const termoBusca = document.getElementById("buscaGestor").value.trim().toLowerCase();
-
-  const filtrados = dadosOriginais.filter(d => {
-    const correspondeBusca =
-      d.nome?.toLowerCase().includes(termoBusca) ||
-      d.funcao?.toLowerCase().includes(termoBusca) ||
-      d.loja?.toLowerCase().includes(termoBusca);
-
-    const correspondeLoja = lojaSelecionada === "Todas" || d.loja === lojaSelecionada;
-
-    return correspondeBusca && correspondeLoja;
-  });
-
-  preencherTabela(filtrados);
-  gerarTodosGraficos(filtrados);
-}
-
-// 🧾 Tabela
-function preencherTabela(dados) {
-  const cabecalho = document.getElementById("cabecalhoGestor");
-  const corpo = document.querySelector("#tabelaGestor tbody");
-  cabecalho.innerHTML = "";
-  corpo.innerHTML = "";
-
-  if (dados.length === 0) {
-    corpo.innerHTML = "<tr><td colspan='100%'>Nenhum dado encontrado.</td></tr>";
-    return;
-  }
-
-  Object.keys(dados[0]).forEach(coluna => {
-    cabecalho.innerHTML += `<th>${coluna}</th>`;
-  });
-
-  dados.forEach(item => {
-    const linha = document.createElement("tr");
-    Object.values(item).forEach(valor => {
-      const td = document.createElement("td");
-      td.textContent = valor;
-      linha.appendChild(td);
-    });
-    corpo.appendChild(linha);
-  });
-}
-
-// 📊 Gráficos
-function gerarTodosGraficos(dados) {
-  gerarGraficoDiasPorPromotor(dados);
-  gerarGraficoPromotoresPorLoja(dados);
-  gerarGraficoDistribuicaoPorDia(dados);
-  gerarRankingTop10(dados);
-}
-
-// Gráfico 1: Dias da semana por promotor
-function gerarGraficoDiasPorPromotor(dados) {
-  const mapa = {};
-
-  dados.forEach(d => {
-    const nome = d.nome?.trim();
-    const dias = d.dias?.split(",").map(dia => dia.trim());
-
-    if (nome && dias) {
-      mapa[nome] = (mapa[nome] || 0) + dias.length;
-    }
-  });
-
-  const nomes = Object.keys(mapa);
-  const totais = Object.values(mapa);
-
-  desenharGraficoBarras("graficoPromotorDias", nomes, totais, "Dias na Semana");
-}
-
-// Gráfico 2: Promotores únicos por loja
-function gerarGraficoPromotoresPorLoja(dados) {
-  const mapaPromotorLojas = new Map();
-
-  dados.forEach(registro => {
-    const nome = registro.nome?.trim();
-    const loja = registro.loja?.trim();
-
-    if (nome && loja) {
-      if (!mapaPromotorLojas.has(nome)) {
-        mapaPromotorLojas.set(nome, new Set());
-      }
-      mapaPromotorLojas.get(nome).add(loja);
-    }
-  });
-
-  const contagemLojas = {};
-  mapaPromotorLojas.forEach(lojas => {
-    lojas.forEach(loja => {
-      contagemLojas[loja] = (contagemLojas[loja] || 0) + 1;
-    });
-  });
-
-  const lojas = Object.keys(contagemLojas);
-  const totais = Object.values(contagemLojas);
-
-  desenharGraficoBarras("graficoPromotoresPorLoja", lojas, totais, "Promotores");
-}
-
-// Gráfico 3: Dias da semana totais
-function gerarGraficoDistribuicaoPorDia(dados) {
-  const diasSemana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
-  const contagem = Object.fromEntries(diasSemana.map(d => [d, 0]));
-
-  dados.forEach(d => {
-    const dias = d.dias?.split(",").map(dia => dia.trim());
-    dias?.forEach(dia => {
-      if (contagem[dia] !== undefined) {
-        contagem[dia]++;
-      }
-    });
-  });
-
-  const labels = diasSemana;
-  const valores = diasSemana.map(d => contagem[d]);
-
-  desenharGraficoBarras("graficoDiasSemana", labels, valores, "Atendimentos");
-}
-
-// Gráfico 4: Top 10 promotores
-function gerarRankingTop10(dados) {
-  const mapa = {};
-
-  dados.forEach(d => {
-    const nome = d.nome?.trim();
-    const dias = d.dias?.split(",").map(dia => dia.trim());
-
-    if (nome && dias) {
-      mapa[nome] = (mapa[nome] || 0) + dias.length;
-    }
-  });
-
-  const ranking = Object.entries(mapa)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10);
-
-  const ol = document.getElementById("rankingPromotores");
-  ol.innerHTML = "";
-
-  ranking.forEach(([nome, total]) => {
-    const li = document.createElement("li");
-    li.textContent = `${nome} — ${total} dias`;
-    ol.appendChild(li);
-  });
-}
-
-// 🎨 Utilitário para renderizar gráficos com Chart.js
-function desenharGraficoBarras(idCanvas, labels, valores, labelDataset) {
-  const ctx = document.getElementById(idCanvas).getContext("2d");
-
-  if (window[idCanvas]) window[idCanvas].destroy(); // evita sobreposição
-
-  window[idCanvas] = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: labelDataset,
-        data: valores,
-        backgroundColor: "#1f7135",
-        borderRadius: 6,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-      },
-      scales: {
-        x: { ticks: { color: "#fff" } },
-        y: {
-          beginAtZero: true,
-          ticks: { stepSize: 1, color: "#fff" },
-        },
-      },
-    },
-  });
-}
-
-// 📤 Exportações (Excel/PDF)
-function exportarExcel() {
-  const tabela = document.getElementById("tabelaGestor");
-  const wb = XLSX.utils.table_to_book(tabela, { sheet: "Relatório" });
-  XLSX.writeFile(wb, "relatorio.xlsx");
-}
-
-function exportarPDF() {
-  const tabela = document.getElementById("tabelaGestor");
-  html2canvas(tabela).then(canvas => {
-    const pdf = new jspdf.jsPDF();
-    const imgData = canvas.toDataURL("image/png");
-    pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-    pdf.save("relatorio.pdf");
-  });
-}
+let dadosGestor = [];
+let cabecalhos = [];
 
 function atualizarPlanilha() {
-  document.getElementById("statusAtualiza").textContent = "🔄 Atualizando...";
-  carregarDados().then(() => {
-    document.getElementById("statusAtualiza").textContent = "✅ Atualizado!";
-    setTimeout(() => {
-      document.getElementById("statusAtualiza").textContent = "";
-    }, 3000);
+  const status = document.getElementById("statusAtualiza");
+  status.textContent = "⏳ Carregando…";
+
+  const query = new google.visualization.Query(window.PLANILHAS.gestor);
+  query.send(response => {
+    if (response.isError()) {
+      status.textContent = "❌ Erro ao carregar planilha";
+      console.error(response.getMessage());
+      return;
+    }
+
+    const data = response.getDataTable();
+    processarDados(data);
+    renderizarTudo(dadosGestor);
+    status.textContent = "✅ Dados atualizados";
   });
+}
+
+function processarDados(dataTable) {
+  cabecalhos = [];
+  dadosGestor = [];
+
+  for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+    cabecalhos.push(dataTable.getColumnLabel(c));
+  }
+
+  for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
+    const linha = [];
+    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
+      linha.push(dataTable.getValue(r, c));
+    }
+    dadosGestor.push(linha);
+  }
+}
+
+function renderizarTudo(dados) {
+  renderCabecalho();
+  renderTabela(dados);
+  gerarGraficosCompletos(dados);
+}
+
+function renderCabecalho() {
+  const head = document.getElementById("cabecalhoGestor");
+  head.innerHTML = cabecalhos.map(h => `<th>${h}</th>`).join("");
+}
+
+function renderTabela(dados) {
+  const tbody = document.querySelector("#tabelaGestor tbody");
+  tbody.innerHTML = "";
+
+  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h?.toLowerCase().includes("telefone supervisor"));
+  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h?.toLowerCase().includes("telefone empresa"));
+
+  dados.forEach(linha => {
+    const tr = document.createElement("tr");
+
+    linha.forEach((celula, i) => {
+      const td = document.createElement("td");
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && celula != null) {
+        const telefone = String(celula).trim().replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${celula}</a>`;
+      } else {
+        td.textContent = celula ?? "";
+      }
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function filtrarPorLoja(codigo) {
+  document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
+  const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
+    .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
+  if (botaoSelecionado) botaoSelecionado.classList.add("selected");
+
+  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
+
+  const dadosFiltrados = (codigo === "TODAS" || idxLoja === -1)
+    ? dadosGestor
+    : dadosGestor.filter(linha => String(linha[idxLoja] ?? "").includes(codigo));
+
+  renderizarTudo(dadosFiltrados);
+}
+
+function gerarGraficosCompletos(dados) {
+  const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
+  const idxDiasSemana = cabecalhos.findIndex(h => h.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
+
+  const promotoresDias = {};
+  const promotoresPorLoja = {};
+  const diasDistribuidos = { "Segunda": 0, "Terça": 0, "Quarta": 0, "Quinta": 0, "Sexta": 0, "Sábado": 0, "Domingo": 0 };
+
+  dados.forEach(linha => {
+    const nome = linha[idxPromotor] ?? "Sem nome";
+    const loja = linha[idxLoja] ?? "Sem loja";
+    const dias = (linha[idxDiasSemana] ?? "").split(/[,;]+/).map(d => d.trim());
+
+    if (!promotoresDias[nome]) promotoresDias[nome] = new Set();
+    dias.forEach(dia => promotoresDias[nome].add(dia));
+
+    if (!promotoresPorLoja[loja]) promotoresPorLoja[loja] = new Set();
+    promotoresPorLoja[loja].add(nome);
+
+    dias.forEach(d => {
+      if (diasDistribuidos[d] != null) diasDistribuidos[d]++;
+    });
+  });
+
+  // Limpa canvases antigos
+  const graficos = [
+    "graficoPromotorDias",
+    "graficoPromotoresPorLoja",
+    "graficoDiasSemana"
+  ];
+  graficos.forEach(id => {
+    const canvas = document.getElementById(id);
+    const novo = document.createElement("canvas");
+    novo.id = id;
+    canvas.replaceWith(novo);
+  });
+
+  // 1. Promotores x Dias
+  const nomes = Object.keys(promotoresDias);
+  const qtdDias = nomes.map(n => promotoresDias[n].size);
+  new Chart(document.getElementById("graficoPromotorDias"), {
+    type: 'bar',
+    data: {
+      labels: nomes,
+      datasets: [{ label: 'Dias por semana', data: qtdDias, backgroundColor: '#00c853' }]
+    },
+    options: chartOptions()
+  });
+
+  // 2. Promotores por Loja
+  new Chart(document.getElementById("graficoPromotoresPorLoja"), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(promotoresPorLoja),
+      datasets: [{ label: 'Promotores por Loja', data: Object.values(promotoresPorLoja).map(set => set.size), backgroundColor: '#2196f3' }]
+    },
+    options: chartOptions()
+  });
+
+  // 3. Atendimentos por Dia da Semana
+  new Chart(document.getElementById("graficoDiasSemana"), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(diasDistribuidos),
+      datasets: [{ label: 'Atendimentos por Dia', data: Object.values(diasDistribuidos), backgroundColor: '#ff6f00' }]
+    },
+    options: chartOptions()
+  });
+
+  // 4. Ranking Top 10
+  const ranking = nomes
+    .map((n, i) => ({ nome: n, dias: qtdDias[i] }))
+    .sort((a, b) => b.dias - a.dias)
+    .slice(0, 10);
+  document.getElementById("rankingPromotores").innerHTML = ranking
+    .map(p => `<li>${p.nome} - ${p.dias} dias</li>`).join("");
+}
+
+function chartOptions() {
+  return {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: "#fff" } }
+    },
+    scales: {
+      x: { ticks: { color: "#fff" } },
+      y: { beginAtZero: true, ticks: { color: "#fff" } }
+    }
+  };
 }
