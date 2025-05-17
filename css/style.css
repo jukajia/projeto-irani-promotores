@@ -1,6 +1,193 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
-/* Novo layout loja */
+/* RESET E BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* ======================= LOGIN ======================= */
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px 100px;
+  box-sizing: border-box;
+  background-color: #121212;
+}
+
+.login-container {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #1f7135aa;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.login-container h1 {
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #1f7135;
+}
+
+.pulse-glow {
+  display: inline-block;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  box-shadow: 0 0 15px rgba(31, 113, 53, 0.5);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
+}
+
+.login-logo {
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
+}
+
+.senha-container {
+  margin-top: 12px;
+}
+
+.dark-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
+  text-align: left;
+}
+
+.dark-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #222;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1f7135;
+  box-shadow: 0 0 5px #1f7135aa;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1f7135;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #25a35d;
+}
+
+.erro-msg {
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+  display: none;
+}
+
+/* ======================= BOTÕES ======================= */
+
+.loja-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.loja-button {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loja-button:hover,
+.loja-button.selected {
+  background-color: #1f7135;
+  color: #121212;
+  box-shadow: 0 0 8px #25a35d;
+}
+
+/* ======================= BOTÕES FIXOS ======================= */
+
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: #1f7135;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+  z-index: 999;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: #156b2e;
+}
+
+.btn-voltar-inicio {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  color: #1f7135;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.btn-voltar-inicio:hover {
+  opacity: 0.8;
+}
+
+/* ======================= LAYOUT - LOJA ======================= */
+
 .loja-wrapper {
   display: flex;
   flex-direction: column;
@@ -31,7 +218,6 @@
   gap: 12px;
 }
 
-/* Tabela */
 .tabela-container {
   max-width: 1000px;
   width: 100%;
@@ -45,38 +231,8 @@
   margin-top: 20px;
 }
 
-/* Botão Voltar no topo esquerdo */
-.btn-voltar-inicio {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  color: #1f7135;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
-}
+/* ======================= LAYOUT - GESTOR ======================= */
 
-.btn-voltar-inicio:hover {
-  opacity: 0.8;
-}
-
-/* Rodapé fixo */
-.rodape-fixo {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #1e1e1e;
-  color: #999;
-  padding: 12px;
-  text-align: center;
-  font-size: 0.85rem;
-  border-top: 1px solid #333;
-}
-
-/* GESTOR - layout atualizado */
 .gestor-wrapper {
   display: flex;
   flex-direction: column;
@@ -139,55 +295,7 @@
   background-color: #2e8b57;
 }
 
-/* Botão voltar no topo esquerdo */
-.btn-voltar-inicio {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  color: #1f7135;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
-}
-
-.btn-voltar-inicio:hover {
-  opacity: 0.8;
-}
-/* Login layout aprimorado */
-.login-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 40px 20px 100px;
-  box-sizing: border-box;
-  background-color: #121212;
-}
-
-.login-container {
-  background-color: #1e1e1e;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #1f7135aa;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  position: relative;
-}
-
-.login-container h1 {
-  margin-bottom: 24px;
-  font-weight: 700;
-  color: #1f7135;
-}
-
-.senha-container {
-  margin-top: 12px;
-}
+/* ======================= RODAPÉ ======================= */
 
 .rodape-fixo {
   position: fixed;
@@ -199,4 +307,45 @@
   text-align: center;
   font-size: 0.85rem;
   border-top: 1px solid #333;
+}
+
+/* ======================= RESPONSIVO ======================= */
+
+@media (max-width: 768px) {
+  .grid-filtros-export {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .export-gestor {
+    align-items: center;
+    text-align: center;
+  }
+
+  .export-gestor button {
+    width: 100%;
+  }
+
+  .loja-topo-container,
+  .gestor-topo {
+    padding: 0 10px;
+  }
+
+  .loja-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-cadastrar-promotor {
+    top: 12px;
+    right: 12px;
+    font-size: 0.9rem;
+  }
+
+  .login-container {
+    padding: 20px;
+  }
+
+  .login-logo {
+    max-width: 100px;
+  }
 }
