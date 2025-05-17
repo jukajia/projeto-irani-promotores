@@ -1,144 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#121212" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1f7135" />
-  <link rel="manifest" href="/manifest.json" />
   <title>Relatório de Promotores | Supermercado Irani</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
   <style>
+    /* Estilos adicionais para o novo layout */
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: 'Ubuntu', sans-serif;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
     }
-
-    main {
-      flex: 1;
+    
+    .container-principal {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      flex-grow: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
+      box-sizing: border-box;
     }
-
-    .container-central {
+    
+    .container-superior {
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
-      width: 100%;
-      max-width: 1024px;
+      margin-bottom: 20px;
     }
-
-    .topo-interativo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
+    
+    .logo-container {
+      margin-bottom: 20px;
+      text-align: center;
     }
-
-    .topo-interativo img {
-      max-width: 160px;
+    
+    .logo-container img {
+      max-width: 200px;
       height: auto;
     }
-
-    .loja-buttons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
+    
+    .controles-container {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
     }
-
-    .filtros {
+    
+    .container-tabela {
       width: 100%;
-      max-width: 400px;
+      flex-grow: 1;
     }
-
-    .filtros input {
+    
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
       width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #444;
-      background-color: #1e1e1e;
-      color: #e0e0e0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
     }
-
-    .tabela-container {
+    
+    .table-responsive {
       width: 100%;
       overflow-x: auto;
-      background-color: #1e1e1e;
-      border-radius: 6px;
-      border: 1px solid #333;
-      padding: 12px;
     }
-
-    table {
+    
+    .filtros {
       width: 100%;
-      border-collapse: collapse;
+      max-width: 600px;
+      margin: 0 auto 20px;
     }
-
-    th, td {
-      padding: 12px;
-      border: 1px solid #333;
-      text-align: left;
+    
+    #buscaPublica {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
     }
-
-    th {
-      background-color: #1f7135;
-      color: #121212;
+    
+    .exportacoes {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 100%;
     }
-
-    tr:nth-child(even) {
-      background-color: #222;
-    }
-
-    tr:hover {
-      background-color: #333;
-    }
-
-    footer {
-      background-color: #1e1e1e;
-      color: #999;
-      padding: 12px;
-      text-align: center;
-      font-size: 0.85rem;
-      border-top: 1px solid #333;
-    }
-
-    @media (max-width: 480px) {
-      .topo-interativo img {
-        max-width: 100px;
+    
+    @media (max-width: 768px) {
+      .container-principal {
+        padding: 10px;
+      }
+      
+      .controles-container {
+        gap: 10px;
       }
     }
   </style>
 </head>
-
 <body data-theme="dark">
-  <main>
-    <div class="container-central">
-      
-      <!-- 1º Container: Topo com logo, botões e busca -->
-      <section class="topo-interativo">
+  
+  <div class="container-principal">
+    <div class="container-superior">
+      <div class="logo-container">
         <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-topo" />
-        
-        <div class="loja-buttons-grid">
-          <button onclick="selecionarLoja('001')" class="loja-button">Brasil (001)</button>
-          <button onclick="selecionarLoja('002')" class="loja-button">Parque Verde (002)</button>
-          <button onclick="selecionarLoja('003')" class="loja-button">Floresta (003)</button>
-          <button onclick="selecionarLoja('004')" class="loja-button">Tancredo (004)</button>
-          <button onclick="selecionarLoja('201')" class="loja-button">Portí 1 (201)</button>
-          <button onclick="selecionarLoja('202')" class="loja-button">Portí 2 (202)</button>
+        <h1 id="tituloLoja">Relatório de Promotores</h1>
+      </div>
+      
+      <div class="controles-container">
+        <div class="exportacoes">
+          <button onclick="carregarLoja()">🔄 Carregar Planilha</button>
+          <span id="statusAtualiza" style="margin-left: 12px; min-width: 120px; color: #eee; font-weight: 600;"></span>
         </div>
-
+        
         <div class="filtros">
           <input
             type="text"
@@ -147,10 +133,11 @@
             oninput="filtrarDadosPublicoLocal()"
           />
         </div>
-      </section>
-
-      <!-- 2º Container: Tabela -->
-      <section class="tabela-container">
+      </div>
+    </div>
+    
+    <div class="container-tabela">
+      <div class="table-responsive">
         <table id="tabelaPublica">
           <thead>
             <tr>
@@ -164,27 +151,27 @@
           </thead>
           <tbody></tbody>
         </table>
-      </section>
-
+      </div>
     </div>
-  </main>
+    
+    <button class="btn-voltar-login" onclick="window.location.href='index.html'">
+      ← Voltar para Login
+    </button>
+  </div>
 
-  <!-- 3º Container: Rodapé fixo -->
   <footer>
-    © 2025 Grupo Irani — Desenvolvido por Juka Produções
+    Supermercado Irani © 2023 - Todos os direitos reservados
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS carregados ao final do body, na ordem correta -->
   <script src="js/config.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="js/loja.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-          .catch(err => console.error('❌ Erro ao registrar SW:', err));
-      });
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker registrado com sucesso.'))
+        .catch(err => console.error('❌ Erro ao registrar SW:', err));
     }
   </script>
 </body>
