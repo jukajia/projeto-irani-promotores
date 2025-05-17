@@ -20,10 +20,12 @@ function atualizarPlanilha() {
     cabecalhos = [];
     dadosGestor = [];
 
+    // Carrega cabeçalhos
     for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
       cabecalhos.push(dataTable.getColumnLabel(c));
     }
 
+    // Carrega linhas
     for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
       const linha = [];
       for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
@@ -40,7 +42,7 @@ function atualizarPlanilha() {
 function renderizarTudo(dados) {
   renderCabecalho();
   renderTabela(dados);
-  gerarGraficoPizza(dados); // gráfico único, pizza
+  gerarGraficos(dados);
 }
 
 function renderCabecalho() {
@@ -52,17 +54,18 @@ function renderTabela(dados) {
   const tbody = document.querySelector("#tabelaGestor tbody");
   tbody.innerHTML = "";
 
-  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone supervisor"));
-  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone empresa"));
+  // Índices das colunas telefone (calcule para garantir atualização)
+  const idxTelefoneSupervisor = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone supervisor"));
+  const idxTelefoneEmpresa = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone empresa"));
 
   dados.forEach(linha => {
     const tr = document.createElement("tr");
     linha.forEach((cel, i) => {
       const td = document.createElement("td");
-      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel) {
-        const texto = String(cel).trim();
-        const limpo = texto.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${limpo}" target="_blank" style="color:#25D366;">${texto}</a>`;
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && cel != null) {
+        const telefoneTexto = String(cel).trim();
+        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${telefoneTexto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
@@ -73,43 +76,67 @@ function renderTabela(dados) {
 }
 
 function filtrarPorLoja(codigo) {
+  // Destacar botão
   document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
-  const btn = Array.from(document.querySelectorAll("#filtrosLojas .loja-button")).find(b => b.textContent.includes(codigo) || codigo === "TODAS");
-  if (btn) btn.classList.add("selected");
+  const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
+    .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
+  if (botaoSelecionado) botaoSelecionado.classList.add("selected");
 
-  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
+  // Filtrar dados
+  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
   if (codigo === "TODAS" || idxLoja === -1) {
     renderizarTudo(dadosGestor);
-  } else {
-    const filtrados = dadosGestor.filter(l => (l[idxLoja] + "").includes(codigo));
-    renderizarTudo(filtrados);
+    return;
   }
+
+  const dadosFiltrados = dadosGestor.filter(linha => (linha[idxLoja] + "").includes(codigo));
+  renderizarTudo(dadosFiltrados);
 }
 
-function gerarGraficoPizza(dados) {
-  const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
-  if (idxLoja === -1) return;
+function gerarGraficos(dados) {
+  const idxDia = cabecalhos.findIndex(h => h && h.toLowerCase().includes("dias da semana"));
+  const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase() === "loja");
 
-  const mapa = {};
-  dados.forEach(l => {
-    const loja = l[idxLoja] ?? "Não informado";
-    mapa[loja] = (mapa[loja] ?? 0) + 1;
+  if (window.chartDia) window.chartDia.destroy();
+  if (window.chartLoja) window.chartLoja.destroy();
+
+  const contDia = contar(dados, idxDia);
+  const contLoja = contar(dados, idxLoja);
+
+  window.chartDia = criarGraficoBarra('graficoDia', 'Atendimentos por Dia', contDia);
+  window.chartLoja = criarGraficoBarra('graficoPromotor', 'Atendimentos por Loja', contLoja);
+}
+
+function contar(dados, idx) {
+  const res = {};
+  dados.forEach(linha => {
+    const chave = linha[idx] ?? "Não informado";
+    res[chave] = (res[chave] ?? 0) + 1;
   });
+  return res;
+}
 
-  const data = new google.visualization.DataTable();
-  data.addColumn('string', 'Loja');
-  data.addColumn('number', 'Qtd Atendimentos');
-
-  Object.entries(mapa).forEach(([loja, qtd]) => {
-    data.addRow([loja, qtd]);
-  });
-
-  const chart = new google.visualization.PieChart(document.getElementById('graficoPizza'));
-  chart.draw(data, {
-    title: 'Distribuição de Atendimentos por Loja',
-    backgroundColor: 'transparent',
-    legend: { textStyle: { color: '#fff' } },
-    titleTextStyle: { color: '#fff' },
-    pieSliceTextStyle: { color: '#000' },
+function criarGraficoBarra(id, label, dados) {
+  const ctx = document.getElementById(id);
+  return new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(dados),
+      datasets: [{
+        label,
+        data: Object.values(dados),
+        backgroundColor: '#00C853'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#fff' } }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' } },
+        y: { ticks: { color: '#fff' }, beginAtZero: true }
+      }
+    }
   });
 }
