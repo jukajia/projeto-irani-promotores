@@ -3,6 +3,7 @@ google.charts.setOnLoadCallback(carregarLoja);
 
 let dadosLoja = [];
 let cabecalhos = [];
+let filtroDiaSelecionado = "Todos";
 
 // Dicionário de códigos → nomes reais da planilha
 const mapaLojas = {
@@ -62,23 +63,64 @@ function carregarLoja() {
       dadosLoja.push(linha);
     }
 
-    renderTabelaLoja(dadosLoja);
+    aplicarFiltros();
+  });
+
+  configurarFiltrosDia();
+}
+
+function configurarFiltrosDia() {
+  const containerFiltros = document.getElementById("filtrosDiasLoja");
+  if (!containerFiltros) return;
+
+  const botoes = containerFiltros.querySelectorAll(".dia-button");
+
+  botoes.forEach(btn => {
+    btn.onclick = () => {
+      // Remove a seleção anterior
+      botoes.forEach(b => b.classList.remove("selected"));
+      // Marca o botão clicado como selecionado
+      btn.classList.add("selected");
+      // Atualiza o filtro de dia selecionado
+      filtroDiaSelecionado = btn.textContent.trim();
+      // Aplica o filtro e renderiza a tabela
+      aplicarFiltros();
+    };
   });
 }
 
 function filtrarDadosPublicoLocal() {
-  const termo = document.getElementById("buscaPublica").value.toLowerCase();
-  const filtrado = dadosLoja.filter(item =>
-    item.some(cel => String(cel).toLowerCase().includes(termo))
-  );
-  renderTabelaLoja(filtrado);
+  aplicarFiltros();
+}
+
+function aplicarFiltros() {
+  const termoBusca = document.getElementById("buscaPublica").value.toLowerCase();
+
+  // Índice da coluna "Dia da Semana"
+  const idxDiaSemana = cabecalhos.findIndex(h => h && h.toLowerCase().includes("dia"));
+
+  let dadosFiltrados = dadosLoja.filter(linha => {
+    // Filtrar por busca textual
+    const correspondeBusca = linha.some(cel => String(cel).toLowerCase().includes(termoBusca));
+    
+    if (!correspondeBusca) return false;
+
+    // Filtrar por dia da semana
+    if (filtroDiaSelecionado && filtroDiaSelecionado !== "Todos" && idxDiaSemana !== -1) {
+      const diaLinha = linha[idxDiaSemana] ? linha[idxDiaSemana].toString().trim() : "";
+      return diaLinha.toLowerCase() === filtroDiaSelecionado.toLowerCase();
+    }
+    return true;
+  });
+
+  renderTabelaLoja(dadosFiltrados);
 }
 
 function renderTabelaLoja(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
   tbody.innerHTML = "";
 
-  // Identifica índice da coluna Telefone
+  // Índice da coluna Telefone
   const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
 
   dados.forEach(linha => {
