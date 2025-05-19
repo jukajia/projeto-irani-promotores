@@ -478,6 +478,23 @@ table#tabelaPublica th {
   background-color: #222;
   color: #fff;
 }
+#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#tabelaPublica th, #tabelaPublica td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#tabelaPublica th {
+  background-color: #222;
+  color: #fff;
+}
 
 /* ======================== */
 /* GRÁFICOS */
