@@ -3,6 +3,8 @@ google.charts.setOnLoadCallback(atualizarPlanilha);
 
 let dadosGestor = [];
 let cabecalhos = [];
+let lojaSelecionada = "TODAS";
+let termoBusca = "";
 
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
@@ -42,8 +44,10 @@ function processarDados(dataTable) {
 
 function renderizarTudo(dados) {
   renderCabecalho();
-  renderTabela(dados);
-  gerarGraficosCompletos(dados);
+  renderizarFiltrosLojas(dadosGestor);
+  const dadosFiltrados = aplicarFiltros(dadosGestor);
+  renderTabela(dadosFiltrados);
+  gerarGraficosCompletos(dadosFiltrados);
 }
 
 function renderCabecalho() {
@@ -76,19 +80,53 @@ function renderTabela(dados) {
   });
 }
 
-function filtrarPorLoja(codigo) {
-  document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => btn.classList.remove("selected"));
-  const botaoSelecionado = Array.from(document.querySelectorAll("#filtrosLojas .loja-button"))
-    .find(btn => btn.textContent.includes(codigo) || codigo === "TODAS");
-  if (botaoSelecionado) botaoSelecionado.classList.add("selected");
+function renderizarFiltrosLojas(dados) {
+  const container = document.getElementById("filtrosLojas");
+  container.innerHTML = "";
 
   const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
+  const lojas = new Set(dados.map(l => l[idxLoja]).filter(Boolean));
 
-  const dadosFiltrados = (codigo === "TODAS" || idxLoja === -1)
-    ? dadosGestor
-    : dadosGestor.filter(linha => String(linha[idxLoja] ?? "").includes(codigo));
+  // Botão "Todas"
+  const botaoTodas = document.createElement("button");
+  botaoTodas.textContent = "Todas";
+  botaoTodas.className = "loja-button" + (lojaSelecionada === "TODAS" ? " selected" : "");
+  botaoTodas.onclick = () => {
+    lojaSelecionada = "TODAS";
+    atualizarFiltro();
+  };
+  container.appendChild(botaoTodas);
 
-  renderizarTudo(dadosFiltrados);
+  lojas.forEach(loja => {
+    const botao = document.createElement("button");
+    botao.textContent = loja;
+    botao.className = "loja-button" + (lojaSelecionada === loja ? " selected" : "");
+    botao.onclick = () => {
+      lojaSelecionada = loja;
+      atualizarFiltro();
+    };
+    container.appendChild(botao);
+  });
+}
+
+function atualizarFiltro() {
+  renderizarTudo(dadosGestor);
+}
+
+function aplicarFiltros(dados) {
+  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
+  return dados.filter(linha => {
+    const loja = String(linha[idxLoja] ?? "").toLowerCase();
+    const textoLinha = linha.join(" ").toLowerCase();
+    const correspondeLoja = lojaSelecionada === "TODAS" || loja.includes(lojaSelecionada.toLowerCase());
+    const correspondeBusca = !termoBusca || textoLinha.includes(termoBusca.toLowerCase());
+    return correspondeLoja && correspondeBusca;
+  });
+}
+
+function filtrarDadosGestor() {
+  termoBusca = document.getElementById("buscaGestor").value;
+  renderizarTudo(dadosGestor);
 }
 
 function gerarGraficosCompletos(dados) {
@@ -116,12 +154,8 @@ function gerarGraficosCompletos(dados) {
     });
   });
 
-  // Limpa canvases antigos
-  const graficos = [
-    "graficoPromotorDias",
-    "graficoPromotoresPorLoja",
-    "graficoDiasSemana"
-  ];
+  // Limpa gráficos
+  const graficos = ["graficoPromotorDias", "graficoPromotoresPorLoja", "graficoDiasSemana"];
   graficos.forEach(id => {
     const canvas = document.getElementById(id);
     const novo = document.createElement("canvas");
@@ -129,7 +163,7 @@ function gerarGraficosCompletos(dados) {
     canvas.replaceWith(novo);
   });
 
-  // 1. Promotores x Dias
+  // 1. Promotor x Dias
   const nomes = Object.keys(promotoresDias);
   const qtdDias = nomes.map(n => promotoresDias[n].size);
   new Chart(document.getElementById("graficoPromotorDias"), {
@@ -161,11 +195,12 @@ function gerarGraficosCompletos(dados) {
     options: chartOptions()
   });
 
-  // 4. Ranking Top 10
+  // 4. Ranking
   const ranking = nomes
     .map((n, i) => ({ nome: n, dias: qtdDias[i] }))
     .sort((a, b) => b.dias - a.dias)
     .slice(0, 10);
+
   document.getElementById("rankingPromotores").innerHTML = ranking
     .map(p => `<li>${p.nome} - ${p.dias} dias</li>`).join("");
 }
