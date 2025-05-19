@@ -1,10 +1,13 @@
+// gestor.js
+
+// Carregamento Google Charts e atualização inicial
 google.charts.load('current', { packages: ['corechart', 'table'] });
 google.charts.setOnLoadCallback(atualizarPlanilha);
 
 let dadosGestor = [];
 let cabecalhos = [];
 let lojaSelecionada = "TODAS";
-let termoBusca = "";
+let diaSelecionado = "Todos os Dias";
 
 function atualizarPlanilha() {
   const status = document.getElementById("statusAtualiza");
@@ -20,7 +23,7 @@ function atualizarPlanilha() {
 
     const data = response.getDataTable();
     processarDados(data);
-    renderizarTudo(dadosGestor);
+    aplicarFiltros();
     status.textContent = "✅ Dados atualizados";
   });
 }
@@ -42,12 +45,24 @@ function processarDados(dataTable) {
   }
 }
 
+function aplicarFiltros() {
+  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
+  const idxDia = cabecalhos.findIndex(h => h?.toLowerCase().includes("dia"));
+
+  const dadosFiltrados = dadosGestor.filter(linha => {
+    const lojaValida = lojaSelecionada === "TODAS" || (linha[idxLoja] ?? "").includes(lojaSelecionada);
+    const diasTexto = (linha[idxDia] ?? "").toLowerCase();
+    const diaValido = diaSelecionado === "Todos os Dias" || diasTexto.includes(diaSelecionado.toLowerCase());
+    return lojaValida && diaValido;
+  });
+
+  renderizarTudo(dadosFiltrados);
+}
+
 function renderizarTudo(dados) {
   renderCabecalho();
-  renderizarFiltrosLojas(dadosGestor);
-  const dadosFiltrados = aplicarFiltros(dadosGestor);
-  renderTabela(dadosFiltrados);
-  gerarGraficosCompletos(dadosFiltrados);
+  renderTabela(dados);
+  gerarGraficosCompletos(dados);
 }
 
 function renderCabecalho() {
@@ -69,7 +84,7 @@ function renderTabela(dados) {
       const td = document.createElement("td");
       if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && celula != null) {
         const telefone = String(celula).trim().replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${celula}</a>`;
+        td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" style="color:#25D366;">${celula}</a>`;
       } else {
         td.textContent = celula ?? "";
       }
@@ -80,58 +95,9 @@ function renderTabela(dados) {
   });
 }
 
-function renderizarFiltrosLojas(dados) {
-  const container = document.getElementById("filtrosLojas");
-  container.innerHTML = "";
-
-  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
-  const lojas = new Set(dados.map(l => l[idxLoja]).filter(Boolean));
-
-  // Botão "Todas"
-  const botaoTodas = document.createElement("button");
-  botaoTodas.textContent = "Todas";
-  botaoTodas.className = "loja-button" + (lojaSelecionada === "TODAS" ? " selected" : "");
-  botaoTodas.onclick = () => {
-    lojaSelecionada = "TODAS";
-    atualizarFiltro();
-  };
-  container.appendChild(botaoTodas);
-
-  lojas.forEach(loja => {
-    const botao = document.createElement("button");
-    botao.textContent = loja;
-    botao.className = "loja-button" + (lojaSelecionada === loja ? " selected" : "");
-    botao.onclick = () => {
-      lojaSelecionada = loja;
-      atualizarFiltro();
-    };
-    container.appendChild(botao);
-  });
-}
-
-function atualizarFiltro() {
-  renderizarTudo(dadosGestor);
-}
-
-function aplicarFiltros(dados) {
-  const idxLoja = cabecalhos.findIndex(h => h?.toLowerCase() === "loja");
-  return dados.filter(linha => {
-    const loja = String(linha[idxLoja] ?? "").toLowerCase();
-    const textoLinha = linha.join(" ").toLowerCase();
-    const correspondeLoja = lojaSelecionada === "TODAS" || loja.includes(lojaSelecionada.toLowerCase());
-    const correspondeBusca = !termoBusca || textoLinha.includes(termoBusca.toLowerCase());
-    return correspondeLoja && correspondeBusca;
-  });
-}
-
-function filtrarDadosGestor() {
-  termoBusca = document.getElementById("buscaGestor").value;
-  renderizarTudo(dadosGestor);
-}
-
 function gerarGraficosCompletos(dados) {
   const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
-  const idxDiasSemana = cabecalhos.findIndex(h => h.toLowerCase().includes("dias da semana"));
+  const idxDiasSemana = cabecalhos.findIndex(h => h.toLowerCase().includes("dia"));
   const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
 
   const promotoresDias = {};
@@ -154,28 +120,22 @@ function gerarGraficosCompletos(dados) {
     });
   });
 
-  // Limpa gráficos
-  const graficos = ["graficoPromotorDias", "graficoPromotoresPorLoja", "graficoDiasSemana"];
-  graficos.forEach(id => {
+  ["graficoPromotorDias", "graficoPromotoresPorLoja", "graficoDiasSemana"].forEach(id => {
     const canvas = document.getElementById(id);
     const novo = document.createElement("canvas");
     novo.id = id;
     canvas.replaceWith(novo);
   });
 
-  // 1. Promotor x Dias
-  const nomes = Object.keys(promotoresDias);
-  const qtdDias = nomes.map(n => promotoresDias[n].size);
   new Chart(document.getElementById("graficoPromotorDias"), {
     type: 'bar',
     data: {
-      labels: nomes,
-      datasets: [{ label: 'Dias por semana', data: qtdDias, backgroundColor: '#00c853' }]
+      labels: Object.keys(promotoresDias),
+      datasets: [{ label: 'Dias por semana', data: Object.values(promotoresDias).map(set => set.size), backgroundColor: '#00c853' }]
     },
     options: chartOptions()
   });
 
-  // 2. Promotores por Loja
   new Chart(document.getElementById("graficoPromotoresPorLoja"), {
     type: 'bar',
     data: {
@@ -185,7 +145,6 @@ function gerarGraficosCompletos(dados) {
     options: chartOptions()
   });
 
-  // 3. Atendimentos por Dia da Semana
   new Chart(document.getElementById("graficoDiasSemana"), {
     type: 'bar',
     data: {
@@ -195,9 +154,8 @@ function gerarGraficosCompletos(dados) {
     options: chartOptions()
   });
 
-  // 4. Ranking
-  const ranking = nomes
-    .map((n, i) => ({ nome: n, dias: qtdDias[i] }))
+  const ranking = Object.entries(promotoresDias)
+    .map(([nome, dias]) => ({ nome, dias: dias.size }))
     .sort((a, b) => b.dias - a.dias)
     .slice(0, 10);
 
@@ -216,4 +174,47 @@ function chartOptions() {
       y: { beginAtZero: true, ticks: { color: "#fff" } }
     }
   };
+}
+
+// Filtros
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("#filtrosLojas .loja-button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      lojaSelecionada = btn.textContent.includes("Todas") ? "TODAS" : btn.textContent.split(" - ")[1];
+      aplicarFiltros();
+      document.querySelectorAll(".loja-button").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+  });
+
+  document.querySelectorAll("#filtrosDias .dia-button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      diaSelecionado = btn.textContent.trim();
+      aplicarFiltros();
+      document.querySelectorAll(".dia-button").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+  });
+});
+
+// Exportação
+function exportarExcel() {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(document.getElementById("tabelaGestor"));
+  XLSX.utils.book_append_sheet(wb, ws, "Relatorio");
+  XLSX.writeFile(wb, "relatorio-gestor.xlsx");
+}
+
+function exportarPDF() {
+  const tabela = document.querySelector(".tabela-container");
+  html2canvas(tabela).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jspdf.jsPDF('l', 'mm', 'a4');
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save("relatorio-gestor.pdf");
+  });
 }
