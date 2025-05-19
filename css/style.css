@@ -513,6 +513,44 @@ a[href^="https://wa.me"]:hover {
 ::-webkit-scrollbar-track {
   background: #1e1e1e;
 }
+/* ======================== */
+/* FILTROS - DIAS DA SEMANA */
+/* ======================== */
+
+/* Legenda de filtros */
+.filtro-legenda {
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+/* Grid de botões de dias */
+.dias-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Botões dos dias da semana */
+.dia-button {
+  background-color: #1e1e1e;
+  border: 1px solid #1f7135;
+  padding: 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dia-button:hover,
+.dia-button.selected {
+  background-color: #1f7135;
+  color: #121212;
+  box-shadow: 0 0 8px #25a35d;
+}
 
 /* ======================== */
 /* FIM DO CSS */
