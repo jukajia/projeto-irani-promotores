@@ -191,6 +191,26 @@ input:focus {
   padding: 40px 20px 80px;
   min-height: 100vh;
 }
+.btn-atualizar {
+  background-color: #1f7135;     /* verde escuro do tema */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-atualizar:hover {
+  background-color: #145823;     /* verde mais escuro no hover */
+}
+
+.btn-atualizar:active {
+  background-color: #0f3d1b;     /* verde ainda mais escuro ao clicar */
+  transform: scale(0.97);
+}
 
 .loja-topo-container {
   max-width: 900px;
