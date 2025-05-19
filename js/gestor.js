@@ -228,3 +228,4 @@ function exportarPDF() {
 
   pdf.save("relatorio-gestor.pdf");
 }
+}
