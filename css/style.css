@@ -435,3 +435,85 @@ a[href^="https://wa.me"]:hover {
     max-width: 100px;
   }
 }
+/* ======================== */
+/* GRÁFICOS */
+/* ======================== */
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 1100px;
+  overflow-x: auto;
+}
+
+/* Título de seção dos gráficos */
+.graficos-container h3 {
+  color: #1f7135;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Espaçamento entre gráficos */
+.grafico-item {
+  margin-bottom: 2rem;
+}
+
+/* Responsividade extra para gráficos */
+@media (max-width: 768px) {
+  .graficos-container {
+    padding: 1rem;
+  }
+}
+
+/* ======================== */
+/* RESPONSIVIDADE GERAL */
+/* ======================== */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 24px;
+  }
+
+  .btn-cadastrar-promotor,
+  .btn-voltar-inicio {
+    top: 12px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .grid-filtros-export {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .export-gestor {
+    align-items: stretch;
+  }
+
+  .loja-topo-container,
+  .gestor-topo {
+    padding: 0 10px;
+  }
+}
+
+/* ======================== */
+/* SCROLLBAR CUSTOMIZADA */
+/* ======================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f7135;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+/* ======================== */
+/* FIM DO CSS */
+/* ======================== */
