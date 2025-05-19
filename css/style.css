@@ -461,6 +461,24 @@ a[href^="https://wa.me"]:hover {
     max-width: 100px;
   }
 }
+table#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table#tabelaPublica th,
+table#tabelaPublica td {
+  border: 1px solid #555;
+  padding: 8px;
+  text-align: left;
+}
+
+table#tabelaPublica th {
+  background-color: #222;
+  color: #fff;
+}
+
 /* ======================== */
 /* GRÁFICOS */
 /* ======================== */
