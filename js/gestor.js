@@ -82,18 +82,20 @@ function renderTabela(dados) {
 
     linha.forEach((celula, i) => {
       const td = document.createElement("td");
-      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa) && celula != null) {
+
+      if ((i === idxTelefoneSupervisor || i === idxTelefoneEmpresa || i === 9) && celula != null) {
         const telefone = String(celula).trim().replace(/\D/g, "");
         td.innerHTML = `<a href="https://wa.me/${telefone}" target="_blank" style="color:#25D366;">${celula}</a>`;
       } else {
         td.textContent = celula ?? "";
       }
+
       tr.appendChild(td);
     });
 
     tbody.appendChild(tr);
   });
-}
+
 
 function gerarGraficosCompletos(dados) {
   const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
