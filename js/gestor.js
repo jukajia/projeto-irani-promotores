@@ -4,6 +4,7 @@
 google.charts.load('current', { packages: ['corechart', 'table'] });
 google.charts.setOnLoadCallback(atualizarPlanilha);
 
+
 let dadosGestor = [];
 let cabecalhos = [];
 let lojaSelecionada = "TODAS";
@@ -209,14 +210,21 @@ function exportarExcel() {
 }
 
 function exportarPDF() {
-  const tabela = document.querySelector(".tabela-container");
-  html2canvas(tabela).then(canvas => {
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jspdf.jsPDF('l', 'mm', 'a4');
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save("relatorio-gestor.pdf");
+  const pdf = new jspdf.jsPDF('l', 'mm', 'a4');
+
+  const table = document.getElementById("tabelaGestor");
+  const rows = Array.from(table.querySelectorAll("tbody tr")).map(tr =>
+    Array.from(tr.querySelectorAll("td")).map(td => td.innerText.trim())
+  );
+  const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.innerText.trim());
+
+  pdf.autoTable({
+    head: [headers],
+    body: rows,
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [41, 128, 185] },
+    margin: { top: 20 },
   });
+
+  pdf.save("relatorio-gestor.pdf");
 }
