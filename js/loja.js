@@ -127,28 +127,52 @@ function aplicarFiltros() {
 // Renderiza a tabela com os dados filtrados no DOM
 function renderTabelaLoja(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
-  tbody.innerHTML = ""; // Limpa o conteúdo anterior
+  const thead = document.querySelector("#tabelaPublica thead");
+  
+  // Limpa conteúdo atual
+  tbody.innerHTML = "";
+  thead.innerHTML = "";
 
+  if (dados.length === 0) return;
+
+  // Cria o cabeçalho com uma célula vazia + uma para cada pessoa
+  const headerRow = document.createElement("tr");
+  headerRow.appendChild(document.createElement("th")); // célula vazia no canto
+  for (let i = 0; i < dados.length; i++) {
+    const th = document.createElement("th");
+    th.textContent = `Promotor ${i + 1}`;
+    headerRow.appendChild(th);
+  }
+  thead.appendChild(headerRow);
+
+  // Índice da coluna de telefone (para link do WhatsApp)
   const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
 
-  dados.forEach(linha => {
+  // Para cada campo (Nome, Marca, etc)
+  for (let c = 0; c < cabecalhos.length; c++) {
     const tr = document.createElement("tr");
 
-    linha.forEach((cel, i) => {
-      const td = document.createElement("td");
+    // Nome do campo na primeira coluna
+    const th = document.createElement("th");
+    th.textContent = cabecalhos[c];
+    tr.appendChild(th);
 
-      // Transforma número de telefone em link para WhatsApp
-      if (i === idxTelefone && cel) {
+    // Dados de cada promotor nessa linha
+    for (let i = 0; i < dados.length; i++) {
+      const td = document.createElement("td");
+      const cel = dados[i][c];
+
+      if (c === idxTelefone && cel) {
         const telefoneTexto = String(cel).trim();
-        const telefoneLimpo = telefoneTexto.replace(/\D/g, ""); // Remove tudo que não é número
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366; text-decoration:none;">${telefoneTexto}</a>`;
+        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${telefoneTexto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
 
       tr.appendChild(td);
-    });
+    }
 
     tbody.appendChild(tr);
-  });
+  }
 }
