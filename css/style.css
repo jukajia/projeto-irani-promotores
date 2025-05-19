@@ -214,6 +214,12 @@ input:focus {
   padding: 40px 20px 80px;
   min-height: 100vh;
 }
+.legenda-filtro {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
 
 .gestor-topo {
   width: 100%;
