@@ -7,17 +7,28 @@ function selecionarLoja(codigo) {
   erroLogin.style.display = "none";
 
   if (usuarioSelecionado === "gestor") {
-    // Mostrar o campo de senha só para gestor
     senhaContainer.style.display = "block";
-    document.getElementById("senha").value = "";
     document.getElementById("senha").focus();
   } else {
-    // Para lojas, ir direto para a página, sem senha
     senhaContainer.style.display = "none";
-
-    // Redireciona para página da loja diretamente
-    // Ajuste aqui para o link correto da loja, ex: loja.html?loja=001
-    window.location.href = `loja.html?loja=${usuarioSelecionado}`;
+    // Redireciona direto para a página da loja, sem senha
+    const paginas = {
+      "001": "loja.html?loja=001",
+      "002": "loja.html?loja=002",
+      "003": "loja.html?loja=003",
+      "004": "loja.html?loja=004",
+      "005": "loja.html?loja=005",
+      "201": "loja.html?loja=201",
+      "202": "loja.html?loja=202",
+      "203": "loja.html?loja=203",
+      "204": "loja.html?loja=204"
+    };
+    const pagina = paginas[usuarioSelecionado];
+    if (pagina) {
+      window.location.href = pagina;
+    } else {
+      alert("Loja não configurada para acesso direto.");
+    }
   }
 }
 
@@ -26,22 +37,29 @@ function login() {
   const erroElement = document.getElementById("erroLogin");
   const senha = senhaInput.value.trim();
 
-  if (usuarioSelecionado !== "gestor") {
-    mostrarErroLogin("Selecione o painel do gestor para fazer login.", erroElement);
+  if (!usuarioSelecionado) {
+    mostrarErroLogin("Selecione uma loja ou o painel do gestor.", erroElement);
     return;
   }
 
-  const senhaCorreta = "Ira95101"; // Senha do gestor
+  const logins = {
+    gestor: { senha: "Ira95101", pagina: "gestor.html" }
+  };
 
-  if (senha !== senhaCorreta) {
+  const loginInfo = logins[usuarioSelecionado];
+  if (!loginInfo) {
+    mostrarErroLogin("Usuário inválido para login com senha.", erroElement);
+    return;
+  }
+
+  if (senha !== loginInfo.senha) {
     mostrarErroLogin("Senha incorreta.", erroElement);
     senhaInput.focus();
     senhaInput.select();
     return;
   }
 
-  // Senha correta: redirecionar para painel do gestor
-  window.location.href = "gestor.html";
+  window.location.href = loginInfo.pagina;
 }
 
 function mostrarErroLogin(mensagem, erroElement) {
@@ -52,7 +70,6 @@ function mostrarErroLogin(mensagem, erroElement) {
   }, 3000);
 }
 
-// Permitir login ao apertar Enter no campo senha
 document.getElementById("senha").addEventListener("keypress", function (e) {
   if (e.key === "Enter") login();
 });
