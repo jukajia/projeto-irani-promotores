@@ -79,6 +79,32 @@ body, body[data-theme="dark"] {
   color: #ccc;
   text-align: left;
 }
+.table-scroll {
+  max-height: 400px; /* ajuste conforme precisar */
+  overflow-y: auto;
+}
+
+#tabelaGestor {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tabelaGestor thead th {
+  position: sticky;
+  top: 0;
+  background-color: #121212; /* cor do cabeçalho, combina com seu tema dark */
+  color: white;
+  z-index: 10;
+  padding: 8px;
+  border-bottom: 2px solid #444;
+}
+
+#tabelaGestor tbody td {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  color: white;
+  background-color: #1e1e1e;
+}
 
 .dark-input {
   width: 100%;
