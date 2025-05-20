@@ -96,7 +96,7 @@ function renderTabela(dados) {
 
     tbody.appendChild(tr);
   });
-
+}
 
 function gerarGraficosCompletos(dados) {
   const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
