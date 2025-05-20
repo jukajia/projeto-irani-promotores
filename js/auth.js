@@ -5,8 +5,20 @@ function selecionarLoja(codigo) {
   const senhaContainer = document.getElementById("senhaContainer");
   const erroLogin = document.getElementById("erroLogin");
   erroLogin.style.display = "none";
-  senhaContainer.style.display = "block";
-  document.getElementById("senha").focus();
+
+  if (usuarioSelecionado === "gestor") {
+    // Mostrar o campo de senha só para gestor
+    senhaContainer.style.display = "block";
+    document.getElementById("senha").value = "";
+    document.getElementById("senha").focus();
+  } else {
+    // Para lojas, ir direto para a página, sem senha
+    senhaContainer.style.display = "none";
+
+    // Redireciona para página da loja diretamente
+    // Ajuste aqui para o link correto da loja, ex: loja.html?loja=001
+    window.location.href = `loja.html?loja=${usuarioSelecionado}`;
+  }
 }
 
 function login() {
@@ -14,38 +26,22 @@ function login() {
   const erroElement = document.getElementById("erroLogin");
   const senha = senhaInput.value.trim();
 
-  if (!usuarioSelecionado) {
-    mostrarErroLogin("Selecione uma loja ou o painel do gestor.", erroElement);
+  if (usuarioSelecionado !== "gestor") {
+    mostrarErroLogin("Selecione o painel do gestor para fazer login.", erroElement);
     return;
   }
 
-  const logins = {
-    gestor: { senha: "Ira95101", pagina: "gestor.html" },
-    "001": { senha: "001", pagina: "loja.html?loja=001" },
-    "002": { senha: "002", pagina: "loja.html?loja=002" },
-    "003": { senha: "003", pagina: "loja.html?loja=003" },
-    "004": { senha: "004", pagina: "loja.html?loja=004" },
-    "005": { senha: "005", pagina: "loja.html?loja=005" },
-    "201": { senha: "201", pagina: "loja.html?loja=201" },
-    "202": { senha: "202", pagina: "loja.html?loja=202" },
-    "203": { senha: "203", pagina: "loja.html?loja=203" },
-    "204": { senha: "204", pagina: "loja.html?loja=204" }
-  };
+  const senhaCorreta = "Ira95101"; // Senha do gestor
 
-  const loginInfo = logins[usuarioSelecionado];
-  if (!loginInfo) {
-    mostrarErroLogin("Loja não encontrada.", erroElement);
-    return;
-  }
-
-  if (senha !== loginInfo.senha) {
+  if (senha !== senhaCorreta) {
     mostrarErroLogin("Senha incorreta.", erroElement);
     senhaInput.focus();
     senhaInput.select();
     return;
   }
 
-  window.location.href = loginInfo.pagina;
+  // Senha correta: redirecionar para painel do gestor
+  window.location.href = "gestor.html";
 }
 
 function mostrarErroLogin(mensagem, erroElement) {
@@ -56,6 +52,7 @@ function mostrarErroLogin(mensagem, erroElement) {
   }, 3000);
 }
 
+// Permitir login ao apertar Enter no campo senha
 document.getElementById("senha").addEventListener("keypress", function (e) {
   if (e.key === "Enter") login();
 });
