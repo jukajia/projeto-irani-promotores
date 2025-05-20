@@ -92,7 +92,7 @@ body, body[data-theme="dark"] {
 #tabelaGestor thead th {
   position: sticky;
   top: 0;
-  background-color: #121212; /* cor do cabeçalho, combina com seu tema dark */
+  background-color: #1f7135; /* cor do cabeçalho, combina com seu tema dark */
   color: white;
   z-index: 10;
   padding: 8px;
