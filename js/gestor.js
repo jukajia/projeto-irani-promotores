@@ -98,8 +98,10 @@ function renderTabela(dados) {
   });
 }
 
+// <- Fim da função renderTabela
+
 function gerarGraficosCompletos(dados) {
-  const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor"));
+  const idxPromotor = cabecalhos.findIndex(h => h.toLowerCase().includes("promotor") || h.toLowerCase().includes("nome"));
   const idxDiasSemana = cabecalhos.findIndex(h => h.toLowerCase().includes("dia"));
   const idxLoja = cabecalhos.findIndex(h => h.toLowerCase() === "loja");
 
