@@ -52,7 +52,6 @@ body, body[data-theme="dark"] {
   color: #1f7135;
 }
 
-/* Animação com brilho pulsante */
 .pulse-glow {
   display: inline-block;
   padding: 12px;
@@ -67,7 +66,6 @@ body, body[data-theme="dark"] {
   50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
 }
 
-/* Campo senha */
 .senha-container {
   margin-top: 12px;
 }
@@ -78,32 +76,6 @@ body, body[data-theme="dark"] {
   font-weight: 600;
   color: #ccc;
   text-align: left;
-}
-.table-scroll {
-  max-height: 400px; /* ajuste conforme precisar */
-  overflow-y: auto;
-}
-
-#tabelaGestor {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#tabelaGestor thead th {
-  position: sticky;
-  top: 0;
-  background-color: #1f7135; /* cor do cabeçalho, combina com seu tema dark */
-  color: white;
-  z-index: 10;
-  padding: 8px;
-  border-bottom: 2px solid #444;
-}
-
-#tabelaGestor tbody td {
-  padding: 8px;
-  border-bottom: 1px solid #333;
-  color: white;
-  background-color: #1e1e1e;
 }
 
 .dark-input {
@@ -118,13 +90,12 @@ body, body[data-theme="dark"] {
   margin-bottom: 16px;
 }
 
-input:focus {
+.dark-input:focus {
   outline: none;
   border-color: #1f7135;
   box-shadow: 0 0 5px #1f7135aa;
 }
 
-/* Botão de login */
 .login-button {
   width: 100%;
   padding: 12px;
@@ -141,7 +112,6 @@ input:focus {
   background-color: #25a35d;
 }
 
-/* Mensagem de erro login */
 .erro-msg {
   display: none;
   color: #ef5350;
@@ -155,14 +125,16 @@ input:focus {
 /* ======================== */
 /* BOTÕES DAS LOJAS */
 /* ======================== */
-.loja-buttons-grid {
+.loja-buttons-grid,
+.dias-buttons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 12px;
   margin-bottom: 24px;
 }
 
-.loja-button {
+.loja-button,
+.dia-button {
   background-color: #1e1e1e;
   border: 1px solid #1f7135;
   padding: 12px;
@@ -174,13 +146,14 @@ input:focus {
 }
 
 .loja-button:hover,
-.loja-button.selected {
+.loja-button.selected,
+.dia-button:hover,
+.dia-button.selected {
   background-color: #1f7135;
   color: #121212;
   box-shadow: 0 0 8px #25a35d;
 }
 
-/* Botão para cadastrar promotor */
 .btn-cadastrar-promotor {
   position: fixed;
   top: 16px;
@@ -195,7 +168,6 @@ input:focus {
   z-index: 999;
 }
 
-/* Botão voltar para o início */
 .btn-voltar-inicio {
   position: fixed;
   top: 20px;
@@ -208,17 +180,37 @@ input:focus {
 }
 
 /* ======================== */
-/* CONTAINERS DA LOJA */
+/* CONTAINERS DA LOJA/GESTOR */
 /* ======================== */
-.loja-wrapper {
+.loja-wrapper,
+.gestor-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px 80px;
   min-height: 100vh;
 }
+
+.loja-topo-container,
+.gestor-topo {
+  max-width: 1100px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.logo-centralizada,
+.logo-gestor {
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.logo-gestor {
+  width: 120px;
+}
+
 .btn-atualizar {
-  background-color: #1f7135;     /* verde escuro do tema */
+  background-color: #1f7135;
   color: white;
   border: none;
   padding: 10px 18px;
@@ -229,37 +221,12 @@ input:focus {
   user-select: none;
 }
 
-.btn-atualizar:hover {
-  background-color: #145823;     /* verde mais escuro no hover */
-}
-
+.btn-atualizar:hover { background-color: #145823; }
 .btn-atualizar:active {
-  background-color: #0f3d1b;     /* verde ainda mais escuro ao clicar */
+  background-color: #0f3d1b;
   transform: scale(0.97);
 }
 
-.loja-topo-container {
-  max-width: 900px;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.logo-centralizada {
-  max-width: 160px;
-  margin: 0 auto 20px;
-}
-
-/* ======================== */
-/* CONTAINERS DO GESTOR */
-/* ======================== */
-.gestor-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px 80px;
-  min-height: 100vh;
-}
 .legenda-filtro {
   font-weight: bold;
   margin-bottom: 4px;
@@ -267,19 +234,9 @@ input:focus {
   color: #ccc;
 }
 
-.gestor-topo {
-  width: 100%;
-  max-width: 1100px;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.logo-gestor {
-  width: 120px;
-  margin-bottom: 16px;
-}
-
-/* Filtros e botões de exportação */
+/* ======================== */
+/* FILTROS / EXPORTAÇÃO */
+/* ======================== */
 .grid-filtros-export {
   display: flex;
   flex-wrap: wrap;
@@ -308,10 +265,11 @@ input:focus {
   font-weight: 600;
   cursor: pointer;
   border: none;
+  width: 100%;
 }
 
 /* ======================== */
-/* TABELA DE DADOS */
+/* TABELAS */
 /* ======================== */
 .table-container {
   max-width: 1000px;
@@ -325,8 +283,7 @@ input:focus {
 }
 
 .table-wrapper {
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
   background-color: #1e1e1e;
   border-radius: 8px;
   padding: 8px;
@@ -360,6 +317,42 @@ tr:hover {
   background-color: #333;
 }
 
+.table-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#tabelaGestor thead th {
+  position: sticky;
+  top: 0;
+  background-color: #1f7135;
+  color: white;
+  z-index: 10;
+}
+
+#tabelaGestor tbody td {
+  color: white;
+  background-color: #1e1e1e;
+}
+
+#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#tabelaPublica th, #tabelaPublica td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#tabelaPublica th {
+  background-color: #222;
+  color: #fff;
+}
+
 /* Campo de busca */
 .campo-busca {
   width: 100%;
@@ -370,6 +363,71 @@ tr:hover {
   border-radius: 6px;
   color: #fff;
   margin-bottom: 20px;
+}
+
+/* ======================== */
+/* GRÁFICOS */
+/* ======================== */
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 1100px;
+  overflow-x: auto;
+}
+
+.graficos-container h2,
+.graficos-container h3 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.graficos-container h2 { color: #ffffff; }
+.graficos-container h3 { color: #1f7135; }
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.graficos-grid canvas,
+.grafico-box canvas {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 1rem;
+  display: block;
+  margin: 0 auto;
+  width: 100% !important;
+  height: 400px !important;
+}
+
+.grafico-item {
+  margin-bottom: 2rem;
+}
+
+#rankingPromotores {
+  color: #fff;
+  padding-left: 20px;
+}
+
+/* ======================== */
+/* SCROLLBAR CUSTOMIZADA */
+/* ======================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f7135;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
 }
 
 /* ======================== */
@@ -400,53 +458,6 @@ a[href^="https://wa.me"]:hover {
 }
 
 /* ======================== */
-/* GRÁFICOS */
-/* ======================== */
-.graficos-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-
-.graficos-container h2 {
-  color: #ffffff;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.graficos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.graficos-grid canvas {
-  background-color: #121212;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.grafico-box {
-  margin-bottom: 40px;
-}
-
-.grafico-box canvas {
-  width: 100% !important;
-  max-width: 900px;
-  height: 400px !important;
-  margin: 0 auto;
-  display: block;
-}
-
-#rankingPromotores {
-  color: #fff;
-  padding-left: 20px;
-}
-
-/* ======================== */
 /* RESPONSIVO */
 /* ======================== */
 @media (max-width: 768px) {
@@ -457,26 +468,10 @@ a[href^="https://wa.me"]:hover {
 
   .export-gestor {
     align-items: center;
-    text-align: center;
-  }
-
-  .export-gestor button {
-    width: 100%;
-  }
-
-  .loja-topo-container,
-  .gestor-topo {
-    padding: 0 10px;
   }
 
   .loja-buttons-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .btn-cadastrar-promotor {
-    top: 12px;
-    right: 12px;
-    font-size: 0.9rem;
   }
 
   .login-container {
@@ -486,159 +481,23 @@ a[href^="https://wa.me"]:hover {
   .login-logo {
     max-width: 100px;
   }
-}
-table#tabelaPublica {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
 
-table#tabelaPublica th,
-table#tabelaPublica td {
-  border: 1px solid #555;
-  padding: 8px;
-  text-align: left;
-}
-
-table#tabelaPublica th {
-  background-color: #222;
-  color: #fff;
-}
-#tabelaPublica {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-#tabelaPublica th, #tabelaPublica td {
-  border: 1px solid #444;
-  padding: 8px;
-  text-align: left;
-  word-wrap: break-word;
-}
-
-#tabelaPublica th {
-  background-color: #222;
-  color: #fff;
-}
-
-/* ======================== */
-/* GRÁFICOS */
-/* ======================== */
-.graficos-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 1100px;
-  overflow-x: auto;
-}
-
-/* Título de seção dos gráficos */
-.graficos-container h3 {
-  color: #1f7135;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-/* Espaçamento entre gráficos */
-.grafico-item {
-  margin-bottom: 2rem;
-}
-
-/* Responsividade extra para gráficos */
-@media (max-width: 768px) {
   .graficos-container {
     padding: 1rem;
   }
+
+  .btn-cadastrar-promotor {
+    top: 12px;
+    right: 12px;
+    font-size: 0.9rem;
+  }
 }
 
-/* ======================== */
-/* RESPONSIVIDADE GERAL */
-/* ======================== */
 @media (max-width: 600px) {
-  .login-container {
-    padding: 24px;
-  }
-
   .btn-cadastrar-promotor,
   .btn-voltar-inicio {
     top: 12px;
     padding: 8px 12px;
     font-size: 0.9rem;
   }
-
-  .grid-filtros-export {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .export-gestor {
-    align-items: stretch;
-  }
-
-  .loja-topo-container,
-  .gestor-topo {
-    padding: 0 10px;
-  }
 }
-
-/* ======================== */
-/* SCROLLBAR CUSTOMIZADA */
-/* ======================== */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-thumb {
-  background: #1f7135;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #1e1e1e;
-}
-/* ======================== */
-/* FILTROS - DIAS DA SEMANA */
-/* ======================== */
-
-/* Legenda de filtros */
-.filtro-legenda {
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 8px;
-  font-size: 1rem;
-}
-
-/* Grid de botões de dias */
-.dias-buttons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-/* Botões dos dias da semana */
-.dia-button {
-  background-color: #1e1e1e;
-  border: 1px solid #1f7135;
-  padding: 12px;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.dia-button:hover,
-.dia-button.selected {
-  background-color: #1f7135;
-  color: #121212;
-  box-shadow: 0 0 8px #25a35d;
-}
-
-/* ======================== */
-/* FIM DO CSS */
-/* ======================== */
