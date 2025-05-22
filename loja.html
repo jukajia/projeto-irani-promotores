@@ -9,26 +9,27 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="imagens/favicon-juka.png" type="image/png" />
 </head>
-<body data-theme="dark">
+<body data-theme="dark" class="fade-in">
 
   <!-- Botão Voltar -->
   <a href="index.html" class="btn-voltar-inicio">← Voltar Início</a>
 
-  <!-- Container principal centralizado -->
-  <div class="loja-wrapper">
+  <!-- Container principal -->
+  <main class="container loja-wrapper">
 
-    <!-- Container topo com logo, busca e filtros -->
-    <div class="loja-topo-container">
+    <!-- Topo: logo, busca, filtros e botão -->
+    <section class="loja-topo-container">
       <img src="imagens/logo-irani.png" alt="Logo Irani" class="logo-centralizada" />
 
       <div class="loja-botoes-container">
         <input
           type="text"
           id="buscaPublica"
-          placeholder="Buscar promotor, marca ou produto..."
           class="campo-busca"
+          placeholder="Buscar promotor, marca ou produto..."
           oninput="filtrarDadosPublicoLocal()"
         />
+
         <div class="filtros-dias-wrapper">
           <label class="filtro-label">Filtrar por:</label>
           <div class="dias-buttons-grid" id="filtrosDiasLoja">
@@ -42,12 +43,13 @@
             <button class="dia-button">Domingo</button>
           </div>
         </div>
+
         <button class="btn-atualizar" onclick="carregarLoja()">🔄 Atualizar Tabela</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Container da tabela -->
-    <div class="tabela-container">
+    <!-- Tabela -->
+    <section class="tabela-container">
       <h2 id="tituloLoja">Relatório de Promotores</h2>
       <div class="table-responsive">
         <table id="tabelaPublica">
@@ -62,15 +64,15 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Dados preenchidos via JS -->
+            <!-- Conteúdo gerado por JS -->
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
 
-  </div>
+  </main>
 
-  <!-- Rodapé fixo -->
+  <!-- Rodapé -->
   <footer class="rodape-fixo">
     © 2025 Grupo Irani. Todos os direitos reservados. Desenvolvido por Juka Produções. Versão 1.1.2
   </footer>
@@ -88,3 +90,4 @@
   </script>
 </body>
 </html>
+
