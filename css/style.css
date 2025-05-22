@@ -501,3 +501,164 @@ a[href^="https://wa.me"]:hover {
     font-size: 0.9rem;
   }
 }
+/* ======================== */
+/* TOPO - CAMPO DE BUSCA + BOTÃO */
+/* ======================== */
+.topo-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.campo-busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.campo-busca:focus {
+  outline: none;
+  border-color: #1f7135;
+  box-shadow: 0 0 6px #1f713588;
+}
+
+.btn-atualizar {
+  background-color: #1f7135;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+}
+
+.btn-atualizar:hover {
+  background-color: #25a35d;
+}
+
+.btn-atualizar:active {
+  background-color: #145823;
+  transform: scale(0.97);
+}
+
+/* ======================== */
+/* TÍTULO LOJA */
+/* ======================== */
+#tituloLoja {
+  font-size: 1.8rem;
+  color: #1f7135;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ======================== */
+/* FILTROS POR DIA */
+/* ======================== */
+.filtros-dias-wrapper {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.filtro-label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.dias-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ======================== */
+/* TABELA PÚBLICA */
+/* ======================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #1e1e1e;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+#tabelaPublica {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+#tabelaPublica th,
+#tabelaPublica td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#tabelaPublica th {
+  background-color: #222;
+  color: #1f7135;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#tabelaPublica tr:nth-child(even) {
+  background-color: #1b1b1b;
+}
+
+#tabelaPublica tr:hover {
+  background-color: #1f713510;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* ======================== */
+/* MENSAGEM: NENHUM RESULTADO */
+/* ======================== */
+#nenhumResultado {
+  display: none;
+  text-align: center;
+  color: #888;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* ======================== */
+/* RESPONSIVO */
+/* ======================== */
+@media (max-width: 768px) {
+  .dias-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .topo-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-atualizar {
+    justify-content: center;
+    width: 100%;
+  }
+}
