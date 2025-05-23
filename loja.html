@@ -17,7 +17,6 @@
     <span id="theme-icon"></span>
   </button>
 
-
   <!-- Container principal -->
   <main class="container loja-wrapper">
 
@@ -52,26 +51,10 @@
       </div>
     </section>
 
-    <!-- Tabela -->
+    <!-- Tabela ou Cards renderizados via JS -->
     <section class="tabela-container">
       <h2 id="tituloLoja">Relatório de Promotores</h2>
-      <div class="table-responsive">
-        <table id="tabelaPublica">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Marca</th>
-              <th>Produtos</th>
-              <th>Dia da Semana</th>
-              <th>Telefone</th>
-              <th>Loja</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Conteúdo gerado por JS -->
-          </tbody>
-        </table>
-      </div>
+      <div id="tabelaPublica" class="table-or-cards"></div>
     </section>
 
   </main>
@@ -95,4 +78,3 @@
   <script src="js/tema.js" defer></script>
 </body>
 </html>
-
