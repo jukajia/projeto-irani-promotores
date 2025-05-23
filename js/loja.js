@@ -1,5 +1,4 @@
-// loja.js
-
+// Carrega Google Charts
 google.charts.load('current', { packages: ['corechart', 'table'] });
 google.charts.setOnLoadCallback(inicializarLoja);
 
@@ -90,20 +89,18 @@ function aplicarFiltros() {
     return true;
   });
 
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   isMobile ? renderizarTabelaVertical(dadosFiltrados) : renderizarTabelaHorizontal(dadosFiltrados);
 }
 
 function renderizarTabelaHorizontal(dados) {
-  const container = document.getElementById("tabelaPublica");
-  container.innerHTML = "";
+  const tbody = document.querySelector("#tabelaPublica tbody");
+  const thead = document.querySelector("#tabelaPublica thead");
+  tbody.innerHTML = "";
+  thead.innerHTML = "";
 
   if (dados.length === 0) return;
 
-  const table = document.createElement("table");
-  table.className = "horizontal-table";
-
-  const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
   cabecalhos.forEach(label => {
     const th = document.createElement("th");
@@ -111,9 +108,7 @@ function renderizarTabelaHorizontal(dados) {
     headerRow.appendChild(th);
   });
   thead.appendChild(headerRow);
-  table.appendChild(thead);
 
-  const tbody = document.createElement("tbody");
   const idxTelefone = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone"));
 
   dados.forEach(linha => {
@@ -134,14 +129,11 @@ function renderizarTabelaHorizontal(dados) {
     });
     tbody.appendChild(tr);
   });
-
-  table.appendChild(tbody);
-  container.appendChild(table);
 }
 
 function renderizarTabelaVertical(dados) {
-  const container = document.getElementById("tabelaPublica");
-  container.innerHTML = "";
+  const tabelaContainer = document.getElementById("tabelaPublica");
+  tabelaContainer.innerHTML = ""; // Limpa o conteúdo existente
 
   if (dados.length === 0) return;
 
@@ -161,7 +153,7 @@ function renderizarTabelaVertical(dados) {
     card.style.backgroundColor = "#1a1a1a";
 
     const formatItem = (emoji, label, valor) => {
-      if (!valor) return null;
+      if (!valor) return "";
       const div = document.createElement("div");
       div.style.marginBottom = "6px";
       div.innerHTML = `<strong>${emoji} ${label}:</strong> ${valor}`;
@@ -181,6 +173,6 @@ function renderizarTabelaVertical(dados) {
       card.appendChild(link);
     }
 
-    container.appendChild(card);
+    tabelaContainer.appendChild(card);
   });
 }
