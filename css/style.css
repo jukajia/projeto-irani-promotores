@@ -205,22 +205,97 @@ input:focus {
 /* ======================== */
 /* TABELA PÚBLICA */
 /* ======================== */
+
+/* Container com scroll fixo e responsivo */
+.table-responsive {
+  max-height: 500px;       /* Altura máxima da tabela com scroll vertical */
+  overflow-x: auto;        /* Scroll horizontal quando necessário */
+  overflow-y: auto;        /* Scroll vertical quando necessário */
+  border: 1px solid #444;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* Tabela padrão */
 #tabelaPublica {
   width: 100%;
+  min-width: 800px;        /* Força scroll horizontal em telas pequenas */
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: fixed;     /* Colunas com largura fixa e igual */
 }
 
-#tabelaPublica th, #tabelaPublica td {
+/* Cabeçalho e células */
+#tabelaPublica th,
+#tabelaPublica td {
   border: 1px solid #444;
-  padding: 8px;
+  padding: 10px;
   text-align: left;
+  vertical-align: top;
   word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;     /* Permite quebra de linha automática */
 }
 
+/* Cabeçalho com destaque */
 #tabelaPublica th {
   background-color: #222;
   color: #fff;
+  font-weight: bold;
+}
+
+/* Linhas */
+#tabelaPublica tr:nth-child(even) {
+  background-color: #1a1a1a;
+}
+#tabelaPublica tr:hover {
+  background-color: #2a2a2a;
+}
+
+/* Estilo responsivo para celular: tabela vira lista vertical */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow: visible;
+  }
+
+  #tabelaPublica,
+  #tabelaPublica thead,
+  #tabelaPublica tbody,
+  #tabelaPublica th,
+  #tabelaPublica td,
+  #tabelaPublica tr {
+    display: block;
+    width: 100%;
+  }
+
+  #tabelaPublica thead {
+    display: none; /* Esconde cabeçalho no mobile */
+  }
+
+  #tabelaPublica tr {
+    margin-bottom: 16px;
+    padding: 10px;
+    border: 1px solid #333;
+    background-color: #121212;
+    border-radius: 6px;
+  }
+
+  #tabelaPublica td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+  }
+
+  #tabelaPublica td::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 45%;
+    font-weight: bold;
+    color: #ccc;
+    white-space: nowrap;
+  }
 }
 
 /* ======================== */
