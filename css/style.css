@@ -205,6 +205,29 @@ input:focus {
 /* ======================== */
 /* TABELA PÚBLICA */
 /* ======================== */
+.table-or-cards table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.card-promotor {
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-promotor strong {
+  color: #eee;
+}
+
+.card-promotor a {
+  text-decoration: none;
+  color: #25D366;
+  font-weight: bold;
+}
 
 .tabela-container {
   margin-top: 2rem;
