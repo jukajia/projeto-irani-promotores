@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#121212" />
   <title>Login | Supermercado Irani</title>
   <link rel="manifest" href="manifest.json" />
@@ -11,20 +11,19 @@
 </head>
 
 <body data-theme="dark">
-<button id="toggle-theme" aria-label="Alternar tema">
-  <span id="theme-icon"></span>
-</button>
 
-
-  <!-- Container principal do login -->
-  <div class="login-wrapper">
-
-    <!-- Botão para cadastro externo -->
+  <!-- Topo com botão cadastrar e tema -->
+  <div class="topo-login">
     <a href="https://jukajia.github.io/PromotoresFormulario/" target="_blank" class="btn-cadastrar-promotor">
       ➕ Cadastrar Promotor
     </a>
+    <button id="toggle-theme" aria-label="Alternar tema">
+      <span id="theme-icon"></span>
+    </button>
+  </div>
 
-    <!-- Container de conteúdo -->
+  <!-- Container principal -->
+  <div class="login-wrapper">
     <div class="login-container">
       <div class="pulse-glow">
         <img src="imagens/logo-irani.png" alt="Logo Supermercado Irani" class="login-logo" />
@@ -32,9 +31,13 @@
 
       <h1>Área de Acesso</h1>
 
-      <!-- Botões de seleção -->
-      <div class="loja-buttons-grid">
+      <!-- Botão do Gestor isolado -->
+      <div class="gestor-button-container">
         <button onclick="selecionarLoja('gestor')" class="loja-button">Gestor</button>
+      </div>
+
+      <!-- Grid de lojas em 2 colunas -->
+      <div class="lojas-grid">
         <button onclick="selecionarLoja('001')" class="loja-button">Irani Brasil (001)</button>
         <button onclick="selecionarLoja('002')" class="loja-button">Irani Parque Verde (002)</button>
         <button onclick="selecionarLoja('003')" class="loja-button">Irani Floresta (003)</button>
@@ -46,7 +49,7 @@
         <button onclick="selecionarLoja('204')" class="loja-button">Portí 4 Cascavel (204)</button-->
       </div>
 
-      <!-- Campo de senha (exibido só para Gestor) -->
+      <!-- Campo de senha (aparece só para gestor) -->
       <div id="senhaContainer" class="senha-container" style="display: none;">
         <label for="senha" class="dark-label">Senha:</label>
         <input type="password" id="senha" class="dark-input" placeholder="Digite a senha" />
