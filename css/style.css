@@ -1,12 +1,10 @@
 /* ======================== */
-/* IMPORTAÇÃO DE FONTE      */
-/* Fonte Ubuntu do Google Fonts para o projeto */
+/* IMPORTAÇÃO DE FONTE */
 /* ======================== */
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
 /* ======================== */
-/* RESET E ESTILOS GLOBAIS */
-/* Remove margens/paddings padrão e define o tema escuro */
+/* RESET E BASE GLOBAL */
 /* ======================== */
 * {
   margin: 0;
@@ -19,101 +17,706 @@ body, body[data-theme="dark"] {
   background-color: #121212;
   color: #e0e0e0;
 }
-@media (max-width: 480px) {
-  .btn-cadastrar-promotor {
-    top: 10px;
-    right: 10px;
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-}
-.topo-login-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-}
-
-/* Botão de cadastrar (mantém estilo atual ou melhore aqui) */
-.btn-cadastrar-promotor {
-  color: white;
-  background-color: transparent;
-  border: 2px solid white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s ease;
-}
-
-.btn-cadastrar-promotor:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #66ff99;
-  border-color: #66ff99;
-}
-
-/* Botão tema */
-#toggle-theme {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
 
 /* ======================== */
-/* ESTILOS PARA PÁGINA DE LOGIN */
-/* Wrapper do login e container central com logo e formulário */
+/* LOGIN */
 /* ======================== */
 .login-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px 100px;
 }
 
 .login-container {
   background-color: #1e1e1e;
-  padding: 2rem;
-  border-radius: 10px;
-  text-align: center;
-  width: 100%;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #1f7135aa;
   max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
 }
 
 .login-logo {
-  width: 120px;
-  margin-bottom: 1rem;
+  max-width: 180px;
+  margin: 0 auto 16px;
 }
 
 .login-container h1 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #1f7135;
 }
 
+/* Animação com brilho pulsante */
 .pulse-glow {
-  animation: pulse-glow 2s infinite;
+  display: inline-block;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  box-shadow: 0 0 15px rgba(31, 113, 53, 0.5);
+  animation: pulse-glow 2s infinite ease-in-out;
 }
 
 @keyframes pulse-glow {
-  0% {
-    filter: drop-shadow(0 0 0px #66ff99);
-  }
-  50% {
-    filter: drop-shadow(0 0 10px #66ff99);
-  }
-  100% {
-    filter: drop-shadow(0 0 0px #66ff99);
-  }
+  0%, 100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
 }
 
+/* Campo senha */
 .senha-container {
-  position: relative;
+  margin-top: 12px;
 }
 
 .dark-label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
+  text-align: left;
+}
+.table-scroll {
+  max-height: 400px; /* ajuste conforme precisar */
+  overflow-y: auto;
+}
+
+#tabelaGestor {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tabelaGestor thead th {
+  position: sticky;
+  top: 0;
+  background-color: #1f7135; /* cor do cabeçalho, combina com seu tema dark */
+  color: white;
+  z-index: 10;
+  padding: 8px;
+  border-bottom: 2px solid #444;
+}
+
+#tabelaGestor tbody td {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  color: white;
+  background-color: #1e1e1e;
+}
+
+.dark-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #222;
   color: #e0e0e0;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1f7135;
+  box-shadow: 0 0 5px #1f7135aa;
+}
+
+/* Botão de login */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1f7135;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #121212;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #25a35d;
+}
+
+/* Mensagem de erro login */
+.erro-msg {
+  display: none;
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+/* ======================== */
+/* BOTÕES DAS LOJAS */
+/* ======================== */
+.loja-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.loja-button {
+  background-color: #1e1e1e;
+  border: 1px solid #1f7135;
+  padding: 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loja-button:hover,
+.loja-button.selected {
+  background-color: #1f7135;
+  color: #121212;
+  box-shadow: 0 0 8px #25a35d;
+}
+
+/* Botão para cadastrar promotor */
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: #1f7135;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+/* Botão voltar para o início */
+.btn-voltar-inicio {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: #1f7135;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  z-index: 1000;
+}
+
+/* ======================== */
+/* CONTAINERS DA LOJA */
+/* ======================== */
+.loja-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 80px;
+  min-height: 100vh;
+}
+.btn-atualizar {
+  background-color: #1f7135;     /* verde escuro do tema */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-atualizar:hover {
+  background-color: #145823;     /* verde mais escuro no hover */
+}
+
+.btn-atualizar:active {
+  background-color: #0f3d1b;     /* verde ainda mais escuro ao clicar */
+  transform: scale(0.97);
+}
+
+.loja-topo-container {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.logo-centralizada {
+  max-width: 160px;
+  margin: 0 auto 20px;
+}
+
+/* ======================== */
+/* CONTAINERS DO GESTOR */
+/* ======================== */
+.gestor-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 80px;
+  min-height: 100vh;
+}
+.legenda-filtro {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.gestor-topo {
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.logo-gestor {
+  width: 120px;
+  margin-bottom: 16px;
+}
+
+/* Filtros e botões de exportação */
+.grid-filtros-export {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.filtros-gestor {
+  flex: 3;
+  min-width: 280px;
+}
+
+.export-gestor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.export-gestor button {
+  background-color: #1f7135;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+/* ======================== */
+/* TABELA DE DADOS */
+/* ======================== */
+.table-container {
+  max-width: 1000px;
+  width: 100%;
+  margin-top: 32px;
+}
+
+.table-container h2 {
+  text-align: center;
+  color: #1f7135;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 8px;
+  border: 1px solid #333;
+  max-height: 500px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+
+th {
+  background-color: #1f7135;
+  color: #121212;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #222;
+}
+
+tr:hover {
+  background-color: #333;
+}
+
+/* Campo de busca */
+.campo-busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* ======================== */
+/* LINKS PARA WHATSAPP */
+/* ======================== */
+a[href^="https://wa.me"] {
+  color: #25d366;
+  text-decoration: none;
+}
+a[href^="https://wa.me"]:hover {
+  color: #128c7e;
+  text-decoration: underline;
+}
+
+/* ======================== */
+/* RODAPÉ */
+/* ======================== */
+.rodape-fixo {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #1e1e1e;
+  color: #999;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  border-top: 1px solid #333;
+}
+
+/* ======================== */
+/* GRÁFICOS */
+/* ======================== */
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.graficos-container h2 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.graficos-grid canvas {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.grafico-box {
+  margin-bottom: 40px;
+}
+
+.grafico-box canvas {
+  width: 100% !important;
+  max-width: 900px;
+  height: 400px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+#rankingPromotores {
+  color: #fff;
+  padding-left: 20px;
+}
+
+/* ======================== */
+/* RESPONSIVO */
+/* ======================== */
+@media (max-width: 768px) {
+  .grid-filtros-export {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .export-gestor {
+    align-items: center;
+    text-align: center;
+  }
+
+  .export-gestor button {
+    width: 100%;
+  }
+
+  .loja-topo-container,
+  .gestor-topo {
+    padding: 0 10px;
+  }
+
+  .loja-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-cadastrar-promotor {
+    top: 12px;
+    right: 12px;
+    font-size: 0.9rem;
+  }
+
+  .login-container {
+    padding: 20px;
+  }
+
+  .login-logo {
+    max-width: 100px;
+  }
+}
+table#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table#tabelaPublica th,
+table#tabelaPublica td {
+  border: 1px solid #555;
+  padding: 8px;
+  text-align: left;
+}
+
+table#tabelaPublica th {
+  background-color: #222;
+  color: #fff;
+}
+#tabelaPublica {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#tabelaPublica th, #tabelaPublica td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#tabelaPublica th {
+  background-color: #222;
+  color: #fff;
+}
+
+/* ======================== */
+/* GRÁFICOS */
+/* ======================== */
+.graficos-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 1100px;
+  overflow-x: auto;
+}
+
+/* Título de seção dos gráficos */
+.graficos-container h3 {
+  color: #1f7135;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Espaçamento entre gráficos */
+.grafico-item {
+  margin-bottom: 2rem;
+}
+
+/* Responsividade extra para gráficos */
+@media (max-width: 768px) {
+  .graficos-container {
+    padding: 1rem;
+  }
+}
+
+/* ======================== */
+/* RESPONSIVIDADE GERAL */
+/* ======================== */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 24px;
+  }
+
+  .btn-cadastrar-promotor,
+  .btn-voltar-inicio {
+    top: 12px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .grid-filtros-export {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .export-gestor {
+    align-items: stretch;
+  }
+
+  .loja-topo-container,
+  .gestor-topo {
+    padding: 0 10px;
+  }
+}
+
+/* ======================== */
+/* SCROLLBAR CUSTOMIZADA */
+/* ======================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f7135;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+/* ======================== */
+/* FILTROS - DIAS DA SEMANA */
+/* ======================== */
+
+/* Legenda de filtros */
+.filtro-legenda {
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+/* Grid de botões de dias */
+.dias-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Botões dos dias da semana */
+.dia-button {
+  background-color: #1e1e1e;
+  border: 1px solid #1f7135;
+  padding: 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dia-button:hover,
+.dia-button.selected {
+  background-color: #1f7135;
+  color: #121212;
+  box-shadow: 0 0 8px #25a35d;
+}
+
+/* ======================== */
+/* FIM DO CSS */
+/* ======================== */
+
+
+/* ======================== */
+/* BOTÃO DE TROCA DE TEMA */
+/* Fixado no canto superior direito com SVG */
+/* ======================== */
+#toggle-theme {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#toggle-theme svg {
+  width: 28px;
+  height: 28px;
+  fill: #66ff99;
+  transition: transform 0.3s;
+}
+
+#toggle-theme:hover svg {
+  transform: rotate(20deg);
+}
+body[data-theme="light"] {
+  background-color: #F5F5F5; /* Cinza claro */
+  color: #222;
+}
+
+body[data-theme="light"] .login-container,
+body[data-theme="light"] .grafico-box,
+body[data-theme="light"] #tabelaGestor tbody td,
+body[data-theme="light"] .campo-busca {
+  background-color: #FFFFFF; /* Branco */
+  color: #000;
+}
+
+body[data-theme="light"] #tabelaGestor thead th,
+body[data-theme="light"] th {
+  background-color: #007A33; /* Verde */
+  color: #FFFFFF; /* Branco */
+}
+
+body[data-theme="light"] .loja-button,
+body[data-theme="light"] .dia-button {
+  background-color: #FFD700; /* Amarelo */
+  color: #000;
+}
+
+body[data-theme="light"] .loja-button:hover,
+body[data-theme="light"] .loja-button.selected,
+body[data-theme="light"] .dia-button:hover,
+body[data-theme="light"] .dia-button.selected {
+  background-color: #007A33; /* Verde */
+  color: #FFFFFF; /* Branco */
+}
+
+body[data-theme="light"] .rodape-fixo {
+  background-color: #007A33; /* Verde */
+  color: #FFFFFF; /* Branco */
+}
+.btn-cadastrar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999; /* Garante que fique acima de outros elementos */
+}
+.loja-topo-container {
+  position: sticky;
+  top: 0;
+  background-color: var(--fundo); /* ou a cor desejada */
+  z-index: 10;
+  padding-top: 10px;
 }
 /* Botão fixo no topo direito */
 .btn-cadastrar-promotor {
@@ -153,460 +756,141 @@ body, body[data-theme="dark"] {
   color: #66ff99; /* opcional: destaque no hover */
   border-color: #66ff99;
 }
-
-/* ======================== */
-/* TABELA DE GESTOR         */
-/* Estilização de tabela com rolagem e cabeçalho fixo */
-/* ======================== */
-.table-scroll {
-  overflow-x: auto;
-  margin-top: 1rem;
+.topo-login-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
 }
 
-#tabelaGestor {
-  width: 100%;
-  border-collapse: collapse;
+/* Botão de cadastrar (mantém estilo atual ou melhore aqui) */
+.btn-cadastrar-promotor {
+  color: white;
+  background-color: transparent;
+  border: 2px solid white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease;
 }
 
-#tabelaGestor thead th {
-  position: sticky;
-  top: 0;
-  background-color: #2c2c2c;
-  z-index: 1;
-}
-
-#tabelaGestor tbody td {
-  background-color: #1e1e1e;
-}
-
-/* ======================== */
-/* CAMPOS DE ENTRADA ESCUROS */
-/* Inputs com tema escuro para login e filtros */
-/* ======================== */
-.dark-input {
-  background-color: #2c2c2c;
-  border: 1px solid #444;
-  color: #fff;
-  padding: 0.5rem;
-  width: 100%;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-}
-
-input:focus {
-  outline: none;
+.btn-cadastrar-promotor:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #66ff99;
   border-color: #66ff99;
-  box-shadow: 0 0 5px #66ff99;
 }
 
-/* ======================== */
-/* BOTÃO DE LOGIN */
-/* Botão verde com efeito de hover */
-/* ======================== */
-.login-button {
-  background-color: #66ff99;
+/* Botão tema */
+#toggle-theme {
+  background: transparent;
   border: none;
-  color: #000;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  padding: 8px;
+}
+/* Container do botão Gestor (mantém centralizado) */
+.gestor-button-container {
+  text-align: center;
+  margin-bottom: 16px;
 }
 
-.login-button:hover {
-  background-color: #55dd88;
-}
-
-/* ======================== */
-/* MENSAGEM DE ERRO DE LOGIN */
-/* Exibida ao tentar login inválido */
-/* ======================== */
-.erro-msg {
-  color: #ff4d4d;
-  margin-top: 1rem;
-}
-
-/* ======================== */
-/* BOTÕES DAS LOJAS */
-/* Grade de botões para selecionar lojas */
-/* ======================== */
-.loja-buttons-grid {
+/* Grid das lojas com 2 colunas */
+.lojas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Estilo dos botões (mantém aparência) */
+.loja-button {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #66ff99;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.loja-button:hover {
+  background-color: rgba(102, 255, 153, 0.1);
+  color: #66ff99;
+}
+/* Topo com os botões alinhados */
+.topo-login {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem;
+}
+
+/* Cadastrar Promotor */
+.btn-cadastrar-promotor {
+  color: white;
+  background-color: transparent;
+  border: 2px solid #66ff99;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: rgba(102, 255, 153, 0.1);
+  color: #66ff99;
+}
+
+/* Botão tema (ajuste se necessário) */
+#toggle-theme {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Gestor separado */
+.gestor-button-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Grid 2 colunas para as lojas */
+.lojas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 1rem;
 }
 
 .loja-button {
-  padding: 1rem;
-  background-color: #2c2c2c;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #66ff99;
+  background-color: transparent;
+  color: white;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.3s;
+  transition: 0.3s ease;
 }
 
-.loja-button:hover,
-.loja-button.selected {
-  background-color: #66ff99;
-  color: #000;
-}
-
-/* ======================== */
-/* BOTÕES FIXOS */
-/* Botões para cadastrar promotor e voltar ao início */
-/* ======================== */
-.btn-cadastrar-promotor,
-.btn-voltar-inicio {
-  background-color: #66ff99;
-  color: #000;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-}
-
-/* ======================== */
-/* CONTAINERS DA LOJA */
-/* Layout geral e topo da página da loja */
-/* ======================== */
-.loja-wrapper {
-  padding: 1rem;
-}
-
-.btn-atualizar {
-  background-color: #66ff99;
-  border: none;
-  color: #000;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-  margin-bottom: 1rem;
-}
-
-.btn-atualizar:hover {
-  background-color: #55dd88;
-}
-
-.btn-atualizar:active {
-  background-color: #44cc77;
-}
-
-.loja-topo-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo-centralizada {
-  width: 100px;
-}
-
-/* ======================== */
-/* CONTAINERS DO GESTOR */
-/* Layout geral e topo da página de gestão */
-/* ======================== */
-.gestor-wrapper {
-  padding: 1rem;
-}
-
-.legenda-filtro {
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-
-.gestor-topo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.logo-gestor {
-  width: 80px;
-}
-
-/* ======================== */
-/* FILTROS E EXPORTAÇÃO */
-/* Contêineres e botões para filtros e exportação */
-/* ======================== */
-.grid-filtros-export {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-  gap: 1rem;
-}
-
-.filtros-gestor,
-.export-gestor {
-  flex: 1;
-}
-
-.export-gestor button {
-  background-color: #66ff99;
-  color: #000;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-}
-
-/* ======================== */
-/* TABELA DE DADOS */
-/* Tabela usada no gestor com rolagem horizontal */
-/* ======================== */
-.table-container {
-  overflow-x: auto;
-  margin-top: 1rem;
-}
-
-.table-container h2 {
-  margin-bottom: 1rem;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 0.5rem;
-  border: 1px solid #444;
-  text-align: left;
-}
-
-th {
-  background-color: #2c2c2c;
-}
-
-tr:nth-child(even) {
-  background-color: #1e1e1e;
-}
-
-tr:hover {
-  background-color: #333;
-}
-
-/* ======================== */
-/* CAMPO DE BUSCA */
-/* Campo de texto usado para filtrar conteúdo da tabela */
-/* ======================== */
-.campo-busca {
-  width: 100%;
-  max-width: 300px;
-  padding: 0.5rem;
-  border: 1px solid #444;
-  border-radius: 5px;
-  background-color: #2c2c2c;
-  color: #fff;
-  margin-bottom: 1rem;
-}
-
-/* ======================== */
-/* LINKS PARA WHATSAPP */
-/* Estilo para links que levam ao WhatsApp */
-/* ======================== */
-a[href^="https://wa.me"] {
+.loja-button:hover {
+  background-color: rgba(102, 255, 153, 0.1);
   color: #66ff99;
-  text-decoration: none;
 }
 
-a[href^="https://wa.me"]:hover {
-  text-decoration: underline;
+/* Responsivo: 1 coluna em telas pequenas */
+@media (max-width: 600px) {
+  .lojas-grid {
+    grid-template-columns: 1fr;
+  }
 }
-
-/* ======================== */
-/* RODAPÉ FIXO */
-/* Rodapé visível em todas as telas no final */
-/* ======================== */
-.rodape-fixo {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-  text-align: center;
-  padding: 0.5rem;
-}
-
-/* ======================== */
-/* GRÁFICOS */
-/* Contêiner de gráficos, layout em grid, responsivo */
-/* ======================== */
-.graficos-container {
-  margin-top: 2rem;
-}
-
-.graficos-container h2 {
-  margin-bottom: 1rem;
-}
-
-.graficos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.graficos-grid canvas {
-  width: 100% !important;
-  height: auto !important;
-}
-
-.grafico-box {
-  background-color: #1e1e1e;
+.login-container {
   padding: 1rem;
-  border-radius: 10px;
 }
-
-.grafico-box canvas {
-  width: 100%;
-}
-
-#rankingPromotores {
-  width: 100%;
-  height: 300px;
-}
-
-/* ======================== */
-/* RESPONSIVIDADE */
-/* Ajustes para telas menores: login, loja, gestor e botões */
-/* ======================== */
-@media (max-width: 768px) {
-  .login-container {
-    margin: 1rem;
-  }
-
-  .loja-topo-container,
-  .gestor-topo,
-  .grid-filtros-export {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .btn-voltar-inicio,
-  .btn-cadastrar-promotor {
-    width: 100%;
-  }
-}
-
-/* ======================== */
-/* SCROLLBAR CUSTOMIZADA */
-/* Barra de rolagem personalizada no tema dark */
-/* ======================== */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1e1e1e;
-}
-
-/* ======================== */
-/* FILTROS - DIAS DA SEMANA */
-/* Botões para seleção de dias específicos */
-/* ======================== */
-.filtro-legenda {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.dias-buttons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.dia-button {
-  background-color: #2c2c2c;
-  color: #fff;
-  border: 1px solid #444;
+.table-container,
+.graficos-container {
   padding: 0.5rem;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-}
-/* ======================== */
-/* BOTÃO DE TROCA DE TEMA */
-/* Fixado no canto superior direito com SVG */
-/* ======================== */
-#toggle-theme {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-#toggle-theme svg {
-  width: 28px;
-  height: 28px;
-  fill: #66ff99;
-  transition: transform 0.3s;
-}
-
-#toggle-theme:hover svg {
-  transform: rotate(20deg);
-}
-
-.dia-button:hover,
-.dia-button.selected {
-  background-color: #66ff99;
-  color: #000;
-}
-body[data-theme="light"] {
-  background-color: #f9f9f9;
-  color: #222;
-}
-
-body[data-theme="light"] .login-container,
-body[data-theme="light"] .grafico-box,
-body[data-theme="light"] #tabelaGestor tbody td,
-body[data-theme="light"] .campo-busca {
-  background-color: #fff;
-  color: #000;
-}
-
-body[data-theme="light"] #tabelaGestor thead th,
-body[data-theme="light"] th {
-  background-color: #ddd;
-}
-
-body[data-theme="light"] .loja-button,
-body[data-theme="light"] .dia-button {
-  background-color: #eee;
-  color: #000;
-}
-
-body[data-theme="light"] .loja-button:hover,
-body[data-theme="light"] .loja-button.selected,
-body[data-theme="light"] .dia-button:hover,
-body[data-theme="light"] .dia-button.selected {
-  background-color: #66ff99;
-  color: #000;
-}
-
-body[data-theme="light"] .rodape-fixo {
-  background-color: #eee;
-  color: #222;
 }
