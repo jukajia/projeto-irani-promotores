@@ -1,5 +1,5 @@
 google.charts.load('current', { packages: ['corechart', 'table'] });
-google.charts.setOnLoadCallback(carregarLoja);
+google.charts.setOnLoadCallback(inicializarLoja);
 
 let dadosLoja = [];
 let cabecalhos = [];
@@ -17,63 +17,47 @@ const mapaLojas = {
   "204": "Portí Cascavel 204"
 };
 
-function carregarLoja() {
-  const params = new URLSearchParams(window.location.search);
-  const codigoLoja = params.get("loja");
+function inicializarLoja() {
+  const codigoLoja = new URLSearchParams(window.location.search).get("loja");
+  const nomeLoja = mapaLojas[codigoLoja];
 
-  if (!codigoLoja || !mapaLojas[codigoLoja]) {
-    console.warn("Código da loja ausente ou inválido na URL.");
+  if (!nomeLoja) {
+    console.warn("Loja inválida ou não especificada.");
     return;
   }
 
-  const nomeLoja = mapaLojas[codigoLoja];
   document.getElementById("tituloLoja").textContent = `Relatório de Promotores - ${nomeLoja}`;
+  configurarFiltrosDia();
+  configurarRedimensionamento();
+  buscarDados(nomeLoja);
+}
 
+function buscarDados(nomeLoja) {
   const query = new google.visualization.Query(window.PLANILHAS.lojas);
   query.send(response => {
     if (response.isError()) {
-      console.error("Erro ao carregar loja: ", response.getMessage());
+      console.error("Erro ao buscar dados:", response.getMessage());
       return;
     }
 
-    const dataTable = response.getDataTable();
-    cabecalhos = [];
+    const tabela = response.getDataTable();
+    cabecalhos = Array.from({ length: tabela.getNumberOfColumns() }, (_, i) => tabela.getColumnLabel(i));
+    const idxLoja = cabecalhos.findIndex(h => h.toLowerCase().includes("loja"));
+
     dadosLoja = [];
 
-    for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
-      cabecalhos.push(dataTable.getColumnLabel(c));
-    }
-
-    const idxLoja = cabecalhos.findIndex(h => h && h.toLowerCase().includes("loja"));
-    if (idxLoja === -1) {
-      console.error("Coluna 'Loja' não encontrada.");
-      return;
-    }
-
-    for (let r = 0; r < dataTable.getNumberOfRows(); r++) {
-      const lojaNaLinha = dataTable.getValue(r, idxLoja);
-      if (String(lojaNaLinha).trim().toLowerCase() !== nomeLoja.trim().toLowerCase()) continue;
-
-      const linha = [];
-      for (let c = 0; c < dataTable.getNumberOfColumns(); c++) {
-        linha.push(dataTable.getValue(r, c));
-      }
+    for (let r = 0; r < tabela.getNumberOfRows(); r++) {
+      if (tabela.getValue(r, idxLoja)?.trim().toLowerCase() !== nomeLoja.toLowerCase()) continue;
+      const linha = cabecalhos.map((_, c) => tabela.getValue(r, c));
       dadosLoja.push(linha);
     }
 
     aplicarFiltros();
   });
-
-  configurarFiltrosDia();
-  configurarRedimensionamento();
 }
 
 function configurarFiltrosDia() {
-  const containerFiltros = document.getElementById("filtrosDiasLoja");
-  if (!containerFiltros) return;
-
-  const botoes = containerFiltros.querySelectorAll(".dia-button");
-
+  const botoes = document.querySelectorAll("#filtrosDiasLoja .dia-button");
   botoes.forEach(btn => {
     btn.onclick = () => {
       botoes.forEach(b => b.classList.remove("selected"));
@@ -85,35 +69,30 @@ function configurarFiltrosDia() {
 }
 
 function configurarRedimensionamento() {
-  window.addEventListener('resize', () => {
-    aplicarFiltros();
-  });
+  window.addEventListener("resize", aplicarFiltros);
 }
 
 function aplicarFiltros() {
-  const termoBusca = document.getElementById("buscaPublica")?.value.toLowerCase() || "";
-  const idxDiaSemana = 4; // coluna fixa 4 para dias da semana
+  const busca = document.getElementById("buscaPublica")?.value.toLowerCase() || "";
+  const idxDia = 4; // coluna de dias da semana
 
-  let dadosFiltrados = dadosLoja.filter(linha => {
-    const correspondeBusca = linha.some(cel => String(cel).toLowerCase().includes(termoBusca));
+  const dadosFiltrados = dadosLoja.filter(linha => {
+    const correspondeBusca = linha.some(cel => String(cel).toLowerCase().includes(busca));
     if (!correspondeBusca) return false;
 
     if (filtroDiaSelecionado !== "Todos") {
-      const valorDia = linha[idxDiaSemana]?.toString().toLowerCase() || "";
-      // Permite várias entradas separadas por vírgula, espaços etc
+      const valorDia = (linha[idxDia] ?? "").toString().toLowerCase();
       return valorDia.split(/\s*,\s*/).some(d => d === filtroDiaSelecionado.toLowerCase());
     }
+
     return true;
   });
 
-  if (window.innerWidth <= 768) {
-    renderTabelaVertical(dadosFiltrados);
-  } else {
-    renderTabelaHorizontal(dadosFiltrados);
-  }
+  const isMobile = window.innerWidth <= 768;
+  isMobile ? renderizarTabelaVertical(dadosFiltrados) : renderizarTabelaHorizontal(dadosFiltrados);
 }
 
-function renderTabelaHorizontal(dados) {
+function renderizarTabelaHorizontal(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
   const thead = document.querySelector("#tabelaPublica thead");
   tbody.innerHTML = "";
@@ -129,26 +108,29 @@ function renderTabelaHorizontal(dados) {
   });
   thead.appendChild(headerRow);
 
-  const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
+  const idxTelefone = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone"));
 
   dados.forEach(linha => {
     const tr = document.createElement("tr");
     linha.forEach((cel, i) => {
       const td = document.createElement("td");
+      td.setAttribute("data-label", cabecalhos[i]);
+
       if (i === idxTelefone && cel) {
-        const telefoneTexto = String(cel).trim();
-        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${telefoneTexto}</a>`;
+        const texto = String(cel).trim();
+        const limpo = texto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${limpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${texto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
+
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
 }
 
-function renderTabelaVertical(dados) {
+function renderizarTabelaVertical(dados) {
   const tbody = document.querySelector("#tabelaPublica tbody");
   const thead = document.querySelector("#tabelaPublica thead");
   tbody.innerHTML = "";
@@ -157,38 +139,39 @@ function renderTabelaVertical(dados) {
   if (dados.length === 0) return;
 
   const headerRow = document.createElement("tr");
-  headerRow.appendChild(document.createElement("th")); // canto vazio no cabeçalho
-  for (let i = 0; i < dados.length; i++) {
+  headerRow.appendChild(document.createElement("th")); // Canto vazio
+  dados.forEach((_, i) => {
     const th = document.createElement("th");
     th.textContent = `Promotor ${i + 1}`;
     headerRow.appendChild(th);
-  }
+  });
   thead.appendChild(headerRow);
 
-  const idxTelefone = cabecalhos.findIndex(h => h && h.toLowerCase().includes("telefone"));
+  const idxTelefone = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone"));
 
-  for (let c = 0; c < cabecalhos.length; c++) {
+  cabecalhos.forEach((rotulo, c) => {
     const tr = document.createElement("tr");
 
     const th = document.createElement("th");
-    th.textContent = cabecalhos[c];
+    th.textContent = rotulo;
     tr.appendChild(th);
 
-    for (let i = 0; i < dados.length; i++) {
+    dados.forEach(linha => {
       const td = document.createElement("td");
-      const cel = dados[i][c];
+      td.setAttribute("data-label", rotulo);
+      const cel = linha[c];
 
       if (c === idxTelefone && cel) {
-        const telefoneTexto = String(cel).trim();
-        const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${telefoneLimpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${telefoneTexto}</a>`;
+        const texto = String(cel).trim();
+        const limpo = texto.replace(/\D/g, "");
+        td.innerHTML = `<a href="https://wa.me/${limpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${texto}</a>`;
       } else {
         td.textContent = cel ?? "";
       }
 
       tr.appendChild(td);
-    }
+    });
 
     tbody.appendChild(tr);
-  }
+  });
 }
