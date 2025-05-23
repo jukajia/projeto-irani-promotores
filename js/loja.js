@@ -1,3 +1,5 @@
+// loja.js
+
 google.charts.load('current', { packages: ['corechart', 'table'] });
 google.charts.setOnLoadCallback(inicializarLoja);
 
@@ -74,7 +76,7 @@ function configurarRedimensionamento() {
 
 function aplicarFiltros() {
   const busca = document.getElementById("buscaPublica")?.value.toLowerCase() || "";
-  const idxDia = 4; // coluna de dias da semana
+  const idxDia = 4;
 
   const dadosFiltrados = dadosLoja.filter(linha => {
     const correspondeBusca = linha.some(cel => String(cel).toLowerCase().includes(busca));
@@ -93,13 +95,15 @@ function aplicarFiltros() {
 }
 
 function renderizarTabelaHorizontal(dados) {
-  const tbody = document.querySelector("#tabelaPublica tbody");
-  const thead = document.querySelector("#tabelaPublica thead");
-  tbody.innerHTML = "";
-  thead.innerHTML = "";
+  const container = document.getElementById("tabelaPublica");
+  container.innerHTML = "";
 
   if (dados.length === 0) return;
 
+  const table = document.createElement("table");
+  table.className = "horizontal-table";
+
+  const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
   cabecalhos.forEach(label => {
     const th = document.createElement("th");
@@ -107,7 +111,9 @@ function renderizarTabelaHorizontal(dados) {
     headerRow.appendChild(th);
   });
   thead.appendChild(headerRow);
+  table.appendChild(thead);
 
+  const tbody = document.createElement("tbody");
   const idxTelefone = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone"));
 
   dados.forEach(linha => {
@@ -128,11 +134,14 @@ function renderizarTabelaHorizontal(dados) {
     });
     tbody.appendChild(tr);
   });
+
+  table.appendChild(tbody);
+  container.appendChild(table);
 }
 
-function renderTabelaVertical(dados) {
-  const tabelaContainer = document.getElementById("tabelaPublica");
-  tabelaContainer.innerHTML = ""; // Limpa a tabela para recriar com cards
+function renderizarTabelaVertical(dados) {
+  const container = document.getElementById("tabelaPublica");
+  container.innerHTML = "";
 
   if (dados.length === 0) return;
 
@@ -152,7 +161,7 @@ function renderTabelaVertical(dados) {
     card.style.backgroundColor = "#1a1a1a";
 
     const formatItem = (emoji, label, valor) => {
-      if (!valor) return "";
+      if (!valor) return null;
       const div = document.createElement("div");
       div.style.marginBottom = "6px";
       div.innerHTML = `<strong>${emoji} ${label}:</strong> ${valor}`;
@@ -172,6 +181,6 @@ function renderTabelaVertical(dados) {
       card.appendChild(link);
     }
 
-    tabelaContainer.appendChild(card);
+    container.appendChild(card);
   });
 }
