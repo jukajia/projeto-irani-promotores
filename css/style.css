@@ -1,10 +1,12 @@
 /* ======================== */
-/* IMPORTAÇÃO DE FONTE */
+/* IMPORTAÇÃO DE FONTE      */
+/* Fonte Ubuntu do Google Fonts para o projeto */
 /* ======================== */
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
 /* ======================== */
-/* RESET E BASE GLOBAL */
+/* RESET E ESTILOS GLOBAIS */
+/* Remove margens/paddings padrão e define o tema escuro */
 /* ======================== */
 * {
   margin: 0;
@@ -19,626 +21,490 @@ body, body[data-theme="dark"] {
 }
 
 /* ======================== */
-/* LOGIN */
+/* ESTILOS PARA PÁGINA DE LOGIN */
+/* Wrapper do login e container central com logo e formulário */
 /* ======================== */
 .login-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 40px 20px 100px;
+  align-items: center;
+  height: 100vh;
 }
 
 .login-container {
   background-color: #1e1e1e;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #1f7135aa;
-  max-width: 400px;
-  width: 100%;
+  padding: 2rem;
+  border-radius: 10px;
   text-align: center;
-  position: relative;
+  width: 100%;
+  max-width: 400px;
 }
 
 .login-logo {
-  max-width: 180px;
-  margin: 0 auto 16px;
+  width: 120px;
+  margin-bottom: 1rem;
 }
 
 .login-container h1 {
-  margin-bottom: 24px;
-  font-weight: 700;
-  color: #1f7135;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
-/* Animação com brilho pulsante */
 .pulse-glow {
-  display: inline-block;
-  padding: 12px;
-  border-radius: 12px;
-  background-color: #1e1e1e;
-  box-shadow: 0 0 15px rgba(31, 113, 53, 0.5);
-  animation: pulse-glow 2s infinite ease-in-out;
+  animation: pulse-glow 2s infinite;
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(31, 113, 53, 0.4); }
-  50% { box-shadow: 0 0 18px rgba(31, 113, 53, 0.8); }
+  0% {
+    filter: drop-shadow(0 0 0px #66ff99);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #66ff99);
+  }
+  100% {
+    filter: drop-shadow(0 0 0px #66ff99);
+  }
 }
 
-/* Campo senha */
 .senha-container {
-  margin-top: 12px;
+  position: relative;
 }
 
 .dark-label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #ccc;
-  text-align: left;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
 }
+
+/* ======================== */
+/* TABELA DE GESTOR         */
+/* Estilização de tabela com rolagem e cabeçalho fixo */
+/* ======================== */
 .table-scroll {
-  max-height: 400px; /* ajuste conforme precisar */
-  overflow-y: auto;
+  overflow-x: auto;
+  margin-top: 1rem;
 }
 
 #tabelaGestor {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
 }
 
 #tabelaGestor thead th {
   position: sticky;
   top: 0;
-  background-color: #1f7135; /* cor do cabeçalho, combina com seu tema dark */
-  color: white;
-  z-index: 10;
-  padding: 8px;
-  border-bottom: 2px solid #444;
+  background-color: #2c2c2c;
+  z-index: 1;
 }
 
 #tabelaGestor tbody td {
-  padding: 8px;
-  border-bottom: 1px solid #333;
-  color: white;
   background-color: #1e1e1e;
 }
 
+/* ======================== */
+/* CAMPOS DE ENTRADA ESCUROS */
+/* Inputs com tema escuro para login e filtros */
+/* ======================== */
 .dark-input {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 0.5rem;
   width: 100%;
-  padding: 12px;
-  border: 1px solid #555;
-  border-radius: 6px;
-  background-color: #222;
-  color: #e0e0e0;
-  font-size: 1rem;
-  margin-top: 8px;
-  margin-bottom: 16px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
 }
 
 input:focus {
   outline: none;
-  border-color: #1f7135;
-  box-shadow: 0 0 5px #1f7135aa;
+  border-color: #66ff99;
+  box-shadow: 0 0 5px #66ff99;
 }
 
-/* Botão de login */
+/* ======================== */
+/* BOTÃO DE LOGIN */
+/* Botão verde com efeito de hover */
+/* ======================== */
 .login-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #1f7135;
+  background-color: #66ff99;
   border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  color: #121212;
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .login-button:hover {
-  background-color: #25a35d;
+  background-color: #55dd88;
 }
 
-/* Mensagem de erro login */
+/* ======================== */
+/* MENSAGEM DE ERRO DE LOGIN */
+/* Exibida ao tentar login inválido */
+/* ======================== */
 .erro-msg {
-  display: none;
-  color: #ef5350;
-  background-color: rgba(239, 83, 80, 0.1);
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 8px;
-  font-weight: 600;
+  color: #ff4d4d;
+  margin-top: 1rem;
 }
 
 /* ======================== */
 /* BOTÕES DAS LOJAS */
+/* Grade de botões para selecionar lojas */
 /* ======================== */
 .loja-buttons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .loja-button {
-  background-color: #1e1e1e;
-  border: 1px solid #1f7135;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 1rem;
+  background-color: #2c2c2c;
   color: #fff;
-  font-weight: 600;
+  border: 1px solid #444;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  transition: all 0.3s;
 }
 
 .loja-button:hover,
 .loja-button.selected {
-  background-color: #1f7135;
-  color: #121212;
-  box-shadow: 0 0 8px #25a35d;
+  background-color: #66ff99;
+  color: #000;
 }
 
-/* Botão para cadastrar promotor */
-.btn-cadastrar-promotor {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background-color: #1f7135;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  z-index: 999;
-}
-
-/* Botão voltar para o início */
+/* ======================== */
+/* BOTÕES FIXOS */
+/* Botões para cadastrar promotor e voltar ao início */
+/* ======================== */
+.btn-cadastrar-promotor,
 .btn-voltar-inicio {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  color: #1f7135;
-  font-weight: 600;
+  background-color: #66ff99;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
   text-decoration: none;
-  font-size: 1rem;
-  z-index: 1000;
+  display: inline-block;
 }
 
 /* ======================== */
 /* CONTAINERS DA LOJA */
+/* Layout geral e topo da página da loja */
 /* ======================== */
 .loja-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px 80px;
-  min-height: 100vh;
+  padding: 1rem;
 }
+
 .btn-atualizar {
-  background-color: #1f7135;     /* verde escuro do tema */
-  color: white;
+  background-color: #66ff99;
   border: none;
-  padding: 10px 18px;
-  font-size: 16px;
-  border-radius: 6px;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  transition: all 0.3s;
+  margin-bottom: 1rem;
 }
 
 .btn-atualizar:hover {
-  background-color: #145823;     /* verde mais escuro no hover */
+  background-color: #55dd88;
 }
 
 .btn-atualizar:active {
-  background-color: #0f3d1b;     /* verde ainda mais escuro ao clicar */
-  transform: scale(0.97);
+  background-color: #44cc77;
 }
 
 .loja-topo-container {
-  max-width: 900px;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo-centralizada {
-  max-width: 160px;
-  margin: 0 auto 20px;
+  width: 100px;
 }
 
 /* ======================== */
 /* CONTAINERS DO GESTOR */
+/* Layout geral e topo da página de gestão */
 /* ======================== */
 .gestor-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px 80px;
-  min-height: 100vh;
+  padding: 1rem;
 }
+
 .legenda-filtro {
-  font-weight: bold;
-  margin-bottom: 4px;
   font-size: 0.9rem;
-  color: #ccc;
+  margin-top: 0.5rem;
 }
 
 .gestor-topo {
-  width: 100%;
-  max-width: 1100px;
-  margin-bottom: 24px;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .logo-gestor {
-  width: 120px;
-  margin-bottom: 16px;
+  width: 80px;
 }
 
-/* Filtros e botões de exportação */
+/* ======================== */
+/* FILTROS E EXPORTAÇÃO */
+/* Contêineres e botões para filtros e exportação */
+/* ======================== */
 .grid-filtros-export {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
-.filtros-gestor {
-  flex: 3;
-  min-width: 280px;
-}
-
+.filtros-gestor,
 .export-gestor {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
 }
 
 .export-gestor button {
-  background-color: #1f7135;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
+  background-color: #66ff99;
+  color: #000;
   border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem;
 }
 
 /* ======================== */
 /* TABELA DE DADOS */
+/* Tabela usada no gestor com rolagem horizontal */
 /* ======================== */
 .table-container {
-  max-width: 1000px;
-  width: 100%;
-  margin-top: 32px;
+  overflow-x: auto;
+  margin-top: 1rem;
 }
 
 .table-container h2 {
-  text-align: center;
-  color: #1f7135;
+  margin-bottom: 1rem;
 }
 
 .table-wrapper {
   overflow-x: auto;
-  overflow-y: auto;
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  padding: 8px;
-  border: 1px solid #333;
-  max-height: 500px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px;
 }
 
 th, td {
-  padding: 12px;
-  border: 1px solid #333;
+  padding: 0.5rem;
+  border: 1px solid #444;
   text-align: left;
 }
 
 th {
-  background-color: #1f7135;
-  color: #121212;
-  font-weight: bold;
+  background-color: #2c2c2c;
 }
 
 tr:nth-child(even) {
-  background-color: #222;
+  background-color: #1e1e1e;
 }
 
 tr:hover {
   background-color: #333;
 }
 
-/* Campo de busca */
+/* ======================== */
+/* CAMPO DE BUSCA */
+/* Campo de texto usado para filtrar conteúdo da tabela */
+/* ======================== */
 .campo-busca {
   width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  background: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
+  max-width: 300px;
+  padding: 0.5rem;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #2c2c2c;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
 /* ======================== */
 /* LINKS PARA WHATSAPP */
+/* Estilo para links que levam ao WhatsApp */
 /* ======================== */
 a[href^="https://wa.me"] {
-  color: #25d366;
+  color: #66ff99;
   text-decoration: none;
 }
+
 a[href^="https://wa.me"]:hover {
-  color: #128c7e;
   text-decoration: underline;
 }
 
 /* ======================== */
-/* RODAPÉ */
+/* RODAPÉ FIXO */
+/* Rodapé visível em todas as telas no final */
 /* ======================== */
 .rodape-fixo {
   position: fixed;
   bottom: 0;
   width: 100%;
   background-color: #1e1e1e;
-  color: #999;
-  padding: 12px;
+  color: #e0e0e0;
   text-align: center;
-  font-size: 0.85rem;
-  border-top: 1px solid #333;
+  padding: 0.5rem;
 }
 
 /* ======================== */
 /* GRÁFICOS */
+/* Contêiner de gráficos, layout em grid, responsivo */
 /* ======================== */
 .graficos-container {
   margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 .graficos-container h2 {
-  color: #ffffff;
   margin-bottom: 1rem;
-  font-size: 1.5rem;
-  text-align: center;
 }
 
 .graficos-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
 .graficos-grid canvas {
-  background-color: #121212;
-  border-radius: 8px;
-  padding: 1rem;
+  width: 100% !important;
+  height: auto !important;
 }
 
 .grafico-box {
-  margin-bottom: 40px;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  border-radius: 10px;
 }
 
 .grafico-box canvas {
-  width: 100% !important;
-  max-width: 900px;
-  height: 400px !important;
-  margin: 0 auto;
-  display: block;
+  width: 100%;
 }
 
 #rankingPromotores {
-  color: #fff;
-  padding-left: 20px;
+  width: 100%;
+  height: 300px;
 }
 
 /* ======================== */
-/* RESPONSIVO */
+/* RESPONSIVIDADE */
+/* Ajustes para telas menores: login, loja, gestor e botões */
 /* ======================== */
 @media (max-width: 768px) {
-  .grid-filtros-export {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .export-gestor {
-    align-items: center;
-    text-align: center;
-  }
-
-  .export-gestor button {
-    width: 100%;
+  .login-container {
+    margin: 1rem;
   }
 
   .loja-topo-container,
-  .gestor-topo {
-    padding: 0 10px;
+  .gestor-topo,
+  .grid-filtros-export {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .loja-buttons-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+  .btn-voltar-inicio,
   .btn-cadastrar-promotor {
-    top: 12px;
-    right: 12px;
-    font-size: 0.9rem;
-  }
-
-  .login-container {
-    padding: 20px;
-  }
-
-  .login-logo {
-    max-width: 100px;
-  }
-}
-table#tabelaPublica {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-table#tabelaPublica th,
-table#tabelaPublica td {
-  border: 1px solid #555;
-  padding: 8px;
-  text-align: left;
-}
-
-table#tabelaPublica th {
-  background-color: #222;
-  color: #fff;
-}
-#tabelaPublica {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-#tabelaPublica th, #tabelaPublica td {
-  border: 1px solid #444;
-  padding: 8px;
-  text-align: left;
-  word-wrap: break-word;
-}
-
-#tabelaPublica th {
-  background-color: #222;
-  color: #fff;
-}
-
-/* ======================== */
-/* GRÁFICOS */
-/* ======================== */
-.graficos-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 1100px;
-  overflow-x: auto;
-}
-
-/* Título de seção dos gráficos */
-.graficos-container h3 {
-  color: #1f7135;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-/* Espaçamento entre gráficos */
-.grafico-item {
-  margin-bottom: 2rem;
-}
-
-/* Responsividade extra para gráficos */
-@media (max-width: 768px) {
-  .graficos-container {
-    padding: 1rem;
-  }
-}
-
-/* ======================== */
-/* RESPONSIVIDADE GERAL */
-/* ======================== */
-@media (max-width: 600px) {
-  .login-container {
-    padding: 24px;
-  }
-
-  .btn-cadastrar-promotor,
-  .btn-voltar-inicio {
-    top: 12px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .grid-filtros-export {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .export-gestor {
-    align-items: stretch;
-  }
-
-  .loja-topo-container,
-  .gestor-topo {
-    padding: 0 10px;
+    width: 100%;
   }
 }
 
 /* ======================== */
 /* SCROLLBAR CUSTOMIZADA */
+/* Barra de rolagem personalizada no tema dark */
 /* ======================== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #1f7135;
-  border-radius: 10px;
+  background: #444;
+  border-radius: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: #1e1e1e;
 }
+
 /* ======================== */
 /* FILTROS - DIAS DA SEMANA */
+/* Botões para seleção de dias específicos */
 /* ======================== */
-
-/* Legenda de filtros */
 .filtro-legenda {
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 8px;
-  font-size: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* Grid de botões de dias */
 .dias-buttons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-/* Botões dos dias da semana */
 .dia-button {
-  background-color: #1e1e1e;
-  border: 1px solid #1f7135;
-  padding: 12px;
-  border-radius: 6px;
+  background-color: #2c2c2c;
   color: #fff;
-  font-weight: 600;
+  border: 1px solid #444;
+  padding: 0.5rem;
+  border-radius: 5px;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .dia-button:hover,
 .dia-button.selected {
-  background-color: #1f7135;
-  color: #121212;
-  box-shadow: 0 0 8px #25a35d;
+  background-color: #66ff99;
+  color: #000;
+}
+body[data-theme="light"] {
+  background-color: #f9f9f9;
+  color: #222;
 }
 
-/* ======================== */
-/* FIM DO CSS */
-/* ======================== */
+body[data-theme="light"] .login-container,
+body[data-theme="light"] .grafico-box,
+body[data-theme="light"] #tabelaGestor tbody td,
+body[data-theme="light"] .campo-busca {
+  background-color: #fff;
+  color: #000;
+}
+
+body[data-theme="light"] #tabelaGestor thead th,
+body[data-theme="light"] th {
+  background-color: #ddd;
+}
+
+body[data-theme="light"] .loja-button,
+body[data-theme="light"] .dia-button {
+  background-color: #eee;
+  color: #000;
+}
+
+body[data-theme="light"] .loja-button:hover,
+body[data-theme="light"] .loja-button.selected,
+body[data-theme="light"] .dia-button:hover,
+body[data-theme="light"] .dia-button.selected {
+  background-color: #66ff99;
+  color: #000;
+}
+
+body[data-theme="light"] .rodape-fixo {
+  background-color: #eee;
+  color: #222;
+}
