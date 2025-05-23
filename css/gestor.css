@@ -1,0 +1,55 @@
+@import url('./base.css');
+
+/* Painel do gestor */
+
+.container {
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #1f7135;
+  margin-bottom: 1rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+/* Tabela de promotores */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1e1e1e;
+  border-radius: 6px;
+}
+
+th, td {
+  padding: 0.75rem;
+  border: 1px solid #2c2c2c;
+  text-align: left;
+}
+
+th {
+  background-color: #1f7135;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+/* Gráficos */
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+canvas {
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 6px;
+}
