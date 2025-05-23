@@ -206,95 +206,97 @@ input:focus {
 /* TABELA PÚBLICA */
 /* ======================== */
 
-/* Container com scroll fixo e responsivo */
-.table-responsive {
-  max-height: 500px;       /* Altura máxima da tabela com scroll vertical */
-  overflow-x: auto;        /* Scroll horizontal quando necessário */
-  overflow-y: auto;        /* Scroll vertical quando necessário */
-  border: 1px solid #444;
-  border-radius: 8px;
-  margin-top: 1rem;
+.tabela-container {
+  margin-top: 2rem;
 }
 
-/* Tabela padrão */
+.table-responsive {
+  overflow-x: auto;
+  max-height: 70vh;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+}
+
 #tabelaPublica {
   width: 100%;
-  min-width: 800px;        /* Força scroll horizontal em telas pequenas */
   border-collapse: collapse;
   font-size: 14px;
-  table-layout: fixed;     /* Colunas com largura fixa e igual */
+  min-width: 700px; /* força o scroll horizontal se a tela for menor */
 }
 
-/* Cabeçalho e células */
 #tabelaPublica th,
 #tabelaPublica td {
   border: 1px solid #444;
-  padding: 10px;
+  padding: 8px;
   text-align: left;
   vertical-align: top;
-  word-wrap: break-word;
   word-break: break-word;
-  white-space: normal;     /* Permite quebra de linha automática */
+  white-space: normal;
 }
 
-/* Cabeçalho com destaque */
 #tabelaPublica th {
   background-color: #222;
   color: #fff;
-  font-weight: bold;
 }
 
-/* Linhas */
-#tabelaPublica tr:nth-child(even) {
-  background-color: #1a1a1a;
-}
-#tabelaPublica tr:hover {
-  background-color: #2a2a2a;
+/* Colunas com largura fixa */
+#tabelaPublica th,
+#tabelaPublica td {
+  width: 160px;
+  max-width: 200px;
 }
 
-/* Estilo responsivo para celular: tabela vira lista vertical */
+/* Estilo para tabela vertical (mobile) */
 @media (max-width: 768px) {
   .table-responsive {
-    overflow: visible;
+    overflow-x: auto;
+    max-height: none;
   }
 
-  #tabelaPublica,
+  #tabelaPublica {
+    min-width: unset;
+    width: 100%;
+    display: block;
+  }
+
   #tabelaPublica thead,
   #tabelaPublica tbody,
-  #tabelaPublica th,
-  #tabelaPublica td,
   #tabelaPublica tr {
     display: block;
     width: 100%;
   }
 
   #tabelaPublica thead {
-    display: none; /* Esconde cabeçalho no mobile */
+    display: none;
   }
 
   #tabelaPublica tr {
-    margin-bottom: 16px;
-    padding: 10px;
+    margin-bottom: 1rem;
+    background-color: #1a1a1a;
     border: 1px solid #333;
-    background-color: #121212;
     border-radius: 6px;
+    padding: 0.5rem;
   }
 
   #tabelaPublica td {
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #333;
   }
 
   #tabelaPublica td::before {
     content: attr(data-label);
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 45%;
     font-weight: bold;
-    color: #ccc;
-    white-space: nowrap;
+    flex-shrink: 0;
+    padding-right: 1rem;
+    color: #ddd;
+    text-transform: capitalize;
+  }
+
+  #tabelaPublica td:last-child {
+    border-bottom: none;
   }
 }
 
