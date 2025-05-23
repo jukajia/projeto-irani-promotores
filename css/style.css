@@ -466,6 +466,30 @@ a[href^="https://wa.me"]:hover {
   text-align: center;
   cursor: pointer;
 }
+/* ======================== */
+/* BOTÃO DE TROCA DE TEMA */
+/* Fixado no canto superior direito com SVG */
+/* ======================== */
+#toggle-theme {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#toggle-theme svg {
+  width: 28px;
+  height: 28px;
+  fill: #66ff99;
+  transition: transform 0.3s;
+}
+
+#toggle-theme:hover svg {
+  transform: rotate(20deg);
+}
 
 .dia-button:hover,
 .dia-button.selected {
