@@ -12,7 +12,7 @@
 <body data-theme="dark" class="fade-in">
 
   <!-- Botão Voltar -->
-  <a href="index.html" class="btn-voltar-inicio">← Voltar Início</a>
+  <a href="index.html" class="btn-voltar-inicio">&larr; Voltar Início</a>
   <button id="toggle-theme" aria-label="Alternar tema">
     <span id="theme-icon"></span>
   </button>
@@ -30,7 +30,7 @@
           id="buscaPublica"
           class="campo-busca"
           placeholder="Buscar promotor, marca ou produto..."
-          oninput="filtrarDadosPublicoLocal()"
+          oninput="aplicarFiltros()"
         />
 
         <div class="filtros-dias-wrapper">
@@ -47,14 +47,19 @@
           </div>
         </div>
 
-        <button class="btn-atualizar" onclick="carregarLoja()">🔄 Atualizar Tabela</button>
+        <button class="btn-atualizar" onclick="inicializarLoja()">🔄 Atualizar Tabela</button>
       </div>
     </section>
 
-    <!-- Tabela ou Cards renderizados via JS -->
+    <!-- Tabela -->
     <section class="tabela-container">
       <h2 id="tituloLoja">Relatório de Promotores</h2>
-      <div id="tabelaPublica" class="table-or-cards"></div>
+      <div class="table-responsive">
+        <table id="tabelaPublica">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
 
   </main>
