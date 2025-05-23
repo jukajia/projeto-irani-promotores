@@ -75,6 +75,25 @@ body, body[data-theme="dark"] {
   margin-bottom: 0.5rem;
   color: #e0e0e0;
 }
+/* Botão fixo no topo direito */
+.btn-cadastrar-promotor {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--verde); /* Ou a cor que quiser */
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+}
+
+.btn-cadastrar-promotor:hover {
+  background-color: #44cc88; /* tom mais claro no hover */
+}
 
 /* ======================== */
 /* TABELA DE GESTOR         */
