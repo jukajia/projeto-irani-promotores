@@ -130,48 +130,48 @@ function renderizarTabelaHorizontal(dados) {
   });
 }
 
-function renderizarTabelaVertical(dados) {
-  const tbody = document.querySelector("#tabelaPublica tbody");
-  const thead = document.querySelector("#tabelaPublica thead");
-  tbody.innerHTML = "";
-  thead.innerHTML = "";
+function renderTabelaVertical(dados) {
+  const tabelaContainer = document.getElementById("tabelaPublica");
+  tabelaContainer.innerHTML = ""; // Limpa a tabela para recriar com cards
 
   if (dados.length === 0) return;
 
-  const headerRow = document.createElement("tr");
-  headerRow.appendChild(document.createElement("th")); // Canto vazio
-  dados.forEach((_, i) => {
-    const th = document.createElement("th");
-    th.textContent = `Promotor ${i + 1}`;
-    headerRow.appendChild(th);
-  });
-  thead.appendChild(headerRow);
-
+  const idxNome = cabecalhos.findIndex(h => h.toLowerCase().includes("nome"));
+  const idxMarcas = cabecalhos.findIndex(h => h.toLowerCase().includes("marca"));
+  const idxProdutos = cabecalhos.findIndex(h => h.toLowerCase().includes("produto"));
+  const idxDias = cabecalhos.findIndex(h => h.toLowerCase().includes("dia"));
   const idxTelefone = cabecalhos.findIndex(h => h.toLowerCase().includes("telefone"));
 
-  cabecalhos.forEach((rotulo, c) => {
-    const tr = document.createElement("tr");
+  dados.forEach(linha => {
+    const card = document.createElement("div");
+    card.className = "card-promotor";
+    card.style.border = "1px solid #444";
+    card.style.borderRadius = "12px";
+    card.style.padding = "12px";
+    card.style.marginBottom = "12px";
+    card.style.backgroundColor = "#1a1a1a";
 
-    const th = document.createElement("th");
-    th.textContent = rotulo;
-    tr.appendChild(th);
+    const formatItem = (emoji, label, valor) => {
+      if (!valor) return "";
+      const div = document.createElement("div");
+      div.style.marginBottom = "6px";
+      div.innerHTML = `<strong>${emoji} ${label}:</strong> ${valor}`;
+      return div;
+    };
 
-    dados.forEach(linha => {
-      const td = document.createElement("td");
-      td.setAttribute("data-label", rotulo);
-      const cel = linha[c];
+    card.appendChild(formatItem("👤", "Nome", linha[idxNome]));
+    card.appendChild(formatItem("🏷️", "Marcas", linha[idxMarcas]));
+    card.appendChild(formatItem("📦", "Produtos", linha[idxProdutos]));
+    card.appendChild(formatItem("📅", "Dias", linha[idxDias]));
 
-      if (c === idxTelefone && cel) {
-        const texto = String(cel).trim();
-        const limpo = texto.replace(/\D/g, "");
-        td.innerHTML = `<a href="https://wa.me/${limpo}" target="_blank" rel="noopener noreferrer" style="color:#25D366;">${texto}</a>`;
-      } else {
-        td.textContent = cel ?? "";
-      }
+    if (linha[idxTelefone]) {
+      const telefoneTexto = String(linha[idxTelefone]).trim();
+      const telefoneLimpo = telefoneTexto.replace(/\D/g, "");
+      const link = document.createElement("div");
+      link.innerHTML = `<strong>📱 WhatsApp:</strong> <a href="https://wa.me/${telefoneLimpo}" target="_blank" style="color:#25D366;">${telefoneTexto}</a>`;
+      card.appendChild(link);
+    }
 
-      tr.appendChild(td);
-    });
-
-    tbody.appendChild(tr);
+    tabelaContainer.appendChild(card);
   });
 }
